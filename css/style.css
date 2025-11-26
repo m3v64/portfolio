@@ -16,6 +16,18 @@ body {
     margin: 0;
 }
 
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
 /* Boot animation */
 
 #boot-screen {
@@ -23,16 +35,59 @@ body {
     overflow-y: hidden;
 }
 
-.tty {
-    display: inline-block;
-    animation: blink 0.8s infinite;
+#tty {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 40.625vw;
+    height: 72.22vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding: 2.22vw;
+    padding-bottom: 2.22vh;
+    overflow-y: hidden;
 }
 
 .logs {
     color: #ffffff;
 }
 
+#logo {
+    width: 10.36vw;
+    height: auto;
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 1s ease;
+  transition-delay: 0.3s;
+}
+
+.fade-in.show {
+  opacity: 1;
+}
+
+/* Login */
+
+#login-screen {
+    background-image: url()
+}
+
 /* Font */
 
 @import url('assets/fonts/fontSheet.css');
 
+/* Layout */
+
+.flex {
+    display: flex;
+}
+
+.center {
+    justify-content: center;
+    align-items: center;
+}

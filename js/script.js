@@ -86,8 +86,26 @@ function boot() {
             await printLine(line);
             await new Promise(r => setTimeout(r, 150));
         }
+        setTimeout(login, 300);
     }
     startBoot();
 }
 
-document.addEventListener("DOMContentLoaded", boot);
+function login() {
+    showScreen("login");
+}
+
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    document.getElementById(screenId).classList.remove('hidden');
+}
+
+
+window.addEventListener('load', () => {
+  document.querySelector('.fade-in').classList.add('show');
+});
+
+
+document.addEventListener("transitionend", () => {
+    setTimeout(boot, 300)
+});
