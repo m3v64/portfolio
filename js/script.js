@@ -1,71 +1,87 @@
 function boot() {
     const logLines = [
-        { text: "[nix-shell:~]$ bootctl", type: "command" },
-        { text: "[ OK ] Boot sequence initialized..." },
-        { text: "[0.000001] macOS Subsystem for Linux v26.4 build 521", type: "delay" },
-        { text: "[0.000312] Kernel: Darwin-x64 hybrid core detected", type: "delay" },
-        { text: "[0.000913] Mounting volumes...", type: "delay" },
-        { text: "[0.002101] /mnt/macroot mounted as extHFS+", type: "delay" },
-        { text: "[0.002559] /dev/sda1 → /Volumes/LINUX_SYS", type: "delay" },
+        { text: "[nix-shell:~]$ ", type: "command", command: "bootctl" },
+        { text: "[ OK ] Boot sequence initialized...", type: "nextDelay" },
+        { text: "[0.000001] macOS Subsystem for Linux v26.4 build 521", type: "nextDelay" },
+        { text: "[0.000312] Kernel: Darwin-x64 hybrid core detected", type: "nextDelay" },
+        { text: "[0.000913] Mounting volumes...", type: "nextDelay" },
+        { text: "[0.002101] /mnt/macroot mounted as extHFS+", type: "nextDelay" },
+        { text: "[0.002559] /dev/sda1 → /Volumes/LINUX_SYS" },
         { text: "[ OK ] Filesystem check complete" },
         { text: "[WARN ] Network adapter eno not responding, retrying..." },
         { text: "[ OK ] Connected: 195.169.153.147" },
-        { text: "[INFO] User profile loaded: m3v" },
-        { text: "[0.004833] Initializing GUI subsystem...", type: "delay" },
-        { text: "[0.005012] Launching Aqua compositor (compat mode)", type: "delay" },
-        { text: "[ OK ] Display environment: pseudo-X11 mode" },
-        { text: "[0.006204] Injecting Apple frameworks into Linux runtime", type: "delay" },
+        { text: "[INFO] User profile loaded: m3v", type: "nextDelay" },
+        { text: "[0.004833] Initializing GUI subsystem...", type: "nextDelay" },
+        { text: "[0.005012] Launching Aqua compositor (compat mode)" },
+        { text: "[ OK ] Display environment: pseudo-X11 mode", type: "nextDelay" },
+        { text: "[0.006204] Injecting Apple frameworks into Linux runtime" },
         { text: "[INFO] Starting shell instance for guest@m3v.terminal" },
         { text: "[ OK ] Environment variables loaded (PATH, SHELL)" },
-        { text: "[guest@m3v.terminal:~]$ uname -a", type: "command" },
-        { text: "subsystem m3v.local 26.4.52-applelinux" },
-        { text: "[guest@m3v.terminal:~]$ whoami", type: "command" },
+        { text: "[guest@m3v.terminal:~]$ ", type: "command", command: "uname -a" },
+        { text: ("Subsystem m3v.local.guest 26.4.52-applelinux " + formatDate() + " x86_64 GNU/Apple/Linux") },
+        { text: "[guest@m3v.terminal:~]$ ", type: "command", command: "whoami" },
         { text: "guest" },
-        { text: "[guest@m3v.terminal:~]$ echo \"Welcome to macOS Subsystem for Linux\"", type: "command" },
+        { text: "[guest@m3v.terminal:~]$ ", type: "command", command: "echo Welcome to macOS Subsystem for Linux" },
         { text: "Welcome to macOS Subsystem for Linux" },
-        { text: "[guest@m3v.terminal:~]$ ", type: "typing" }
+        { text: "[guest@m3v.terminal:~]$ ", type: "blink" }
     ];
 
-    const screen = document.getElementById("boot-screen");
-
     function printLine(line) {
-        const tty = screen.getElementById("tty");
+        const tty = document.getElementById("tty");
+        let lineDiv = document.createElement("div");
+        lineDiv.className = "logs";
+        tty.appendChild(lineDiv);
         return new Promise(resolve => {
             let modifier = line.type;
             switch(modifier) {
                 case "command":
-                    let div = document.createElement("div");
-                    screen.appendChild(div);
+                    lineDiv.textContent = line.text;
                     let i = 0;
-                    function typeCommandAnimetion() {
-                        if (i < line.text.length) {
-                            div.textContent += line.text[i];
+                    function typingEffect() {
+                        if (i < line.command.length) {
+                            lineDiv.textContent += line.command[i];
                             i++;
-                            setTimeout(typeCommandAnimetion, 35);
+                            let random = Math.floor(Math.random() * 51) + 25;
+                            setTimeout(typingEffect, random);
                         } else {
                             resolve();
                         }
                     }
-                    typeCommandAnimetion();
+                    typingEffect();
                     break;
-                case "delay":
-                    break;
-                case "typing":
-                    function dotDotDot() {
-                        
-                    }
-                    dotDotDot();
+                case "nextDelay":
+                    lineDiv.textContent = line.text;
+                    let random = Math.floor(Math.random() * 261) + 60;
+                    setTimeout(resolve, random);
                     break;
                 default:
-                    tty.innerHTML += line.text + "\n";
+                    lineDiv.textContent = line.text;
+                    resolve();
                     break;
             }
         });
     }
 
-    async function startBoot() {
-        screen.appendChild(tty);
+    function formatDate() {
+        const d = new Date();
 
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        const dayName = days[d.getUTCDay()];
+        const monthName = months[d.getUTCMonth()];
+        const day = d.getUTCDate().toString().padStart(2, "0");
+
+        const hours = d.getUTCHours().toString().padStart(2, "0");
+        const minutes = d.getUTCMinutes().toString().padStart(2, "0");
+        const seconds = d.getUTCSeconds().toString().padStart(2, "0");
+
+        const year = d.getUTCFullYear();
+
+        return `${dayName} ${monthName} ${day} ${hours}:${minutes}:${seconds} UTC ${year}`;
+    }
+
+    async function startBoot() {
         for (let line of logLines) {
             await printLine(line);
             await new Promise(r => setTimeout(r, 150));
