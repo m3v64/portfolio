@@ -86,26 +86,66 @@ function boot() {
             await printLine(line);
             await new Promise(r => setTimeout(r, 150));
         }
-        setTimeout(login, 300);
+        login();
     }
     startBoot();
 }
 
 function login() {
-    showScreen("login");
+    showScreen("login-screen", true, 800);
 }
 
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-    document.getElementById(screenId).classList.remove('hidden');
-}
+function showScreen(screenId, fade, delay) {
+    delay = (typeof delay === 'number') ? delay : 300;
 
+    if (fade === true) {
+        const target = document.getElementById(screenId);
+        if (target) {
+            target.classList.remove('hidden');
+        }
+
+        const current = document.querySelector('.screen:not(.hidden)');
+        if (current && current.id !== screenId) {
+            current.classList.add('fade-out', 'hide');
+        }
+        switchScreen(delay);
+    } else if (screenId != null || fade === false) {
+        switchScreen(delay);
+    }
+
+    function switchScreen(delay) {
+        setTimeout(() => {
+            document.querySelectorAll('.screen').forEach(s => {
+                if (s.id === screenId) {
+                    s.classList.remove('hidden');
+                    if (s.classList.contains('fade-in')) {
+                        void s.offsetWidth;
+                        s.classList.add('show');
+                    }
+                } else {
+                    s.classList.add('hidden');
+                    s.classList.remove('show', 'fade-out', 'hide');
+                }
+            });
+        }, delay);
+    }
+}
 
 window.addEventListener('load', () => {
-  document.querySelector('.fade-in').classList.add('show');
-});
+    showScreen("boot-screen", true, 300);
 
+    const fadingElement = document.querySelector('.fade-in');
+    if (fadingElement) {
+        void fadingElement.offsetWidth;
+        fadingElement.classList.add('show');
 
-document.addEventListener("transitionend", () => {
-    setTimeout(boot, 300)
+        const onFinished = (e) => {
+            if (e.propertyName !== 'opacity') return;
+            fadingElement.removeEventListener('transitionend', onFinished);
+            setTimeout(boot, 300);
+        };
+        fadingElement.addEventListener('transitionend', onFinished);
+    } else {
+        setTimeout(boot, 300);
+    }
 });
