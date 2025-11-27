@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3v.dev</title>
     <link rel="icon" type="image/svg+xml" sizes="128x128" href="assets/svg/86-icon-small.svg">
+    <link rel="preload" href="assets/jpg/login-wallpaper.jpg" as="image">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js"></script>
 </head>
 <body>
     <div id="boot-screen" class="screen fade-out center">
+        <div id="fade-overlay" aria-hidden="true"></div>
         <div id="tty"></div>
         <div><img id="logo" class="fade-in" src="assets/svg/86-boot.svg" alt="86 boot logo"></div>
     </div>
 
-    <div id="login-screen" class="screen">
+    <div id="login-screen" class="screen fade-in">
 
     </div>
 </body>

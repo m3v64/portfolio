@@ -102,12 +102,20 @@ function showScreen(screenId, fade, delay) {
         const target = document.getElementById(screenId);
         if (target) {
             target.classList.remove('hidden');
+            if (target.classList.contains('fade-in')) {
+                void target.offsetWidth;
+                target.classList.add('show');
+            } else if (target.classList.contains('fade-out')) {
+                void target.offsetWidth;
+                target.classList.add('hide');
+            }
         }
 
         const current = document.querySelector('.screen:not(.hidden)');
         if (current && current.id !== screenId) {
             current.classList.add('fade-out', 'hide');
         }
+
         switchScreen(delay);
     } else if (screenId != null || fade === false) {
         switchScreen(delay);
@@ -121,10 +129,13 @@ function showScreen(screenId, fade, delay) {
                     if (s.classList.contains('fade-in')) {
                         void s.offsetWidth;
                         s.classList.add('show');
+                    } else if (s.classList.contains('fade-out')) {
+                        void s.offsetWidth;
+                        s.classList.add('hide');
                     }
                 } else {
                     s.classList.add('hidden');
-                    s.classList.remove('show', 'fade-out', 'hide');
+                    s.classList.remove('show', 'hide');
                 }
             });
         }, delay);
