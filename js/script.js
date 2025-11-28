@@ -94,46 +94,22 @@ function boot() {
 function login() {
     showScreen("login-screen", true, 800);
 
-    const templatesMap = new Map();
-
-    async function loadTemplates() {
-        const r = await fetch("assets/templates.html");
-        const html = await r.text();
-
-        const container = document.createElement("div");
-        container.style.display = "none";
-        container.innerHTML = html;
-
-        container.querySelectorAll('template').forEach(t => {
-            if (t.id) templatesMap.set(t.id, t.innerHTML);
-        });
-
-        document.body.appendChild(container);
-    }
-
     async function startClock() {
-        await loadTemplates();
-
-        const tmpContainer = document.body.lastElementChild;
-        if (tmpContainer) {
-            tmpContainer.querySelectorAll('template').forEach(t => {
-                if (t.id) templatesMap.set(t.id, t.innerHTML);
-            });
-        }
-
         function setDigit(id, digit) {
-            const target = document.getElementById(id);
             const key = "svg-digit-" + digit;
-            const srcHtml = templatesMap.get(key);
-            if (!target) {
-                console.warn(`setDigit: target element with id '${id}' not found.`);
+            const templateElement = document.getElementById(key);
+            const clockElement = document.getElementById(id);
+
+            if (!clockElement) {
+                console.warn(`setDigit: target element '${id}' not found`);
                 return;
             }
-            if (!srcHtml) {
-                console.warn(`setDigit: source template '${key}' not found.`);
+            if (!templateElement) {
+                console.warn(`setDigit: template '${key}' not found`);
                 return;
             }
-            target.innerHTML = srcHtml;
+
+            clockElement.innerHTML = templateElement.innerHTML;
         }
 
         function update() {
@@ -143,7 +119,7 @@ function login() {
 
             setDigit("h1", h[0]);
             setDigit("h2", h[1]);
-            setDigit("colon", "colon");
+            setDigit("c", "10");
             setDigit("m1", m[0]);
             setDigit("m2", m[1]);
         }
@@ -151,8 +127,7 @@ function login() {
         setInterval(update, 1000);
         update();
     }
-
-    setTimeout(() => startClock(), 800);
+    startClock();
 }
 
 function showScreen(screenId, fade, delay) {
