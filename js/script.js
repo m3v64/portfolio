@@ -93,11 +93,70 @@ function boot() {
 
 function login() {
     showScreen("login-screen", true, 800);
+
+    const templatesMap = new Map();
+
+    async function loadTemplates() {
+        const r = await fetch("assets/templates.html");
+        const html = await r.text();
+
+        const container = document.createElement("div");
+        container.style.display = "none";
+        container.innerHTML = html;
+
+        container.querySelectorAll('template').forEach(t => {
+            if (t.id) templatesMap.set(t.id, t.innerHTML);
+        });
+
+        document.body.appendChild(container);
+    }
+
+    async function startClock() {
+        await loadTemplates();
+
+        const tmpContainer = document.body.lastElementChild;
+        if (tmpContainer) {
+            tmpContainer.querySelectorAll('template').forEach(t => {
+                if (t.id) templatesMap.set(t.id, t.innerHTML);
+            });
+        }
+
+        function setDigit(id, digit) {
+            const target = document.getElementById(id);
+            const key = "svg-digit-" + digit;
+            const srcHtml = templatesMap.get(key);
+            if (!target) {
+                console.warn(`setDigit: target element with id '${id}' not found.`);
+                return;
+            }
+            if (!srcHtml) {
+                console.warn(`setDigit: source template '${key}' not found.`);
+                return;
+            }
+            target.innerHTML = srcHtml;
+        }
+
+        function update() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, "0");
+            const m = String(now.getMinutes()).padStart(2, "0");
+
+            setDigit("h1", h[0]);
+            setDigit("h2", h[1]);
+            setDigit("colon", "colon");
+            setDigit("m1", m[0]);
+            setDigit("m2", m[1]);
+        }
+
+        setInterval(update, 1000);
+        update();
+    }
+
+    setTimeout(() => startClock(), 800);
 }
 
 function showScreen(screenId, fade, delay) {
     delay = (typeof delay === 'number') ? delay : 300;
-
     if (fade === true) {
         const target = document.getElementById(screenId);
         if (target) {
@@ -134,8 +193,27 @@ function showScreen(screenId, fade, delay) {
                         s.classList.add('hide');
                     }
                 } else {
-                    s.classList.add('hidden');
-                    s.classList.remove('show', 'hide');
+                    if (s.classList.contains('fade-out')) {
+                        s.classList.add('hide');
+
+                        const cleanup = (e) => {
+                            if (e && e.propertyName && e.propertyName !== 'opacity') return;
+                            s.removeEventListener('transitionend', cleanup);
+                            s.classList.add('hidden');
+                            s.classList.remove('show', 'hide', 'fade-out');
+                        };
+
+                        s.addEventListener('transitionend', cleanup, { once: true });
+
+                        setTimeout(() => {
+                            if (!s.classList.contains('hidden')) {
+                                cleanup();
+                            }
+                        }, 900);
+                    } else {
+                        s.classList.add('hidden');
+                        s.classList.remove('show', 'hide');
+                    }
                 }
             });
         }, delay);
