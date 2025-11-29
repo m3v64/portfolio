@@ -119,12 +119,12 @@ function login() {
 
             setDigit("h1", h[0]);
             setDigit("h2", h[1]);
-            setDigit("c", "10");
+            setDigit("colon", "10");
             setDigit("m1", m[0]);
             setDigit("m2", m[1]);
         }
 
-        setInterval(update, 1000);
+        setInterval(update, 10000000);
         update();
     }
     startClock();

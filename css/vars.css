@@ -1,0 +1,78 @@
+:root {
+  /* Figma color presets */
+  --glassy: radial-gradient(
+      closest-side,
+      rgba(0, 0, 0, 0.03) 50%,
+      rgba(255, 255, 255, 0.03) 100%
+    ),
+    linear-gradient(to left, rgba(52, 153, 217, 0.2), rgba(52, 153, 217, 0.2));
+  --lock-screen-glass: linear-gradient(
+      to left,
+      rgba(136, 232, 255, 0.15),
+      rgba(136, 232, 255, 0.15)
+    ),
+    linear-gradient(to left, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+    linear-gradient(to left, rgba(77, 77, 77, 0.75), rgba(77, 77, 77, 0.75)),
+    linear-gradient(to left, rgba(204, 204, 204, 0.3), rgba(204, 204, 204, 0.3)),
+    linear-gradient(to left, rgba(64, 64, 64, 0.4), rgba(64, 64, 64, 0.4));
+  --dark-glass-radial: radial-gradient(
+      closest-side,
+      rgba(0, 0, 0, 0.03) 50%,
+      rgba(255, 255, 255, 0.03) 100%
+    ),
+    linear-gradient(to left, rgba(6, 23, 45, 0.35), rgba(6, 23, 45, 0.35));
+  --window-blue: linear-gradient(
+      to left,
+      rgba(136, 232, 255, 0.1),
+      rgba(136, 232, 255, 0.1)
+    ),
+    linear-gradient(to left, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)),
+    linear-gradient(to left, rgba(204, 204, 204, 0.3), rgba(204, 204, 204, 0.3));
+  --drk-ish-window-stroke: linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.3)
+    ),
+    linear-gradient(to left, rgba(136, 232, 255, 0.2), rgba(136, 232, 255, 0.2)),
+    linear-gradient(to left, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+    linear-gradient(to left, rgba(77, 77, 77, 0.75), rgba(77, 77, 77, 0.75)),
+    linear-gradient(to left, rgba(204, 204, 204, 0.3), rgba(204, 204, 204, 0.3)),
+    linear-gradient(to left, rgba(64, 64, 64, 0.4), rgba(64, 64, 64, 0.4));
+
+  /* Figma Effect presets */
+  --glassy-box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.4),
+    inset -4px -4px 8px 0px rgba(255, 255, 255, 0.1),
+    inset 4px 4px 8px 0px rgba(0, 0, 0, 0.1);
+  --glassy-dot-box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.4),
+    inset 0px -4px 4px 0px rgba(255, 255, 255, 0.05),
+    inset 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+  --slider-glass-box-shadow: 0px 0px 44px 0px rgba(0, 0, 0, 0.1),
+    0px 0px 4px 0px rgba(0, 0, 0, 0.05), 0px 0px 1px 0px rgba(0, 0, 0, 0.05);
+  --glassy-selected-box-shadow: 0px 11.49px 28.72px 5.74px rgba(0, 0, 0, 0.4),
+    inset 0px -11.49px 11.49px 0px rgba(255, 255, 255, 0.05),
+    inset 0px 11.49px 11.49px 0px rgba(0, 0, 0, 0.2);
+  --settings-frosted-glass-box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.2),
+    inset 0px -11.49px 11.49px 0px rgba(255, 255, 255, 0.05),
+    inset 0px 11.49px 11.49px 0px rgba(0, 0, 0, 0.2);
+  --setting-glass-box-shadow: 4px 4px 16px 1px rgba(0, 0, 0, 0.2),
+    inset -4px -8px 8px 0px rgba(255, 255, 255, 0.1),
+    inset 4px 8px 8px 0px rgba(0, 0, 0, 0.1);
+  --frosted-window-box-shadow: 0px 4.03px 8.07px 2.02px rgba(0, 0, 0, 0.2),
+    inset 0px -11.58px 11.58px 0px rgba(255, 255, 255, 0.05),
+    inset 4px 8px 12px 0px rgba(0, 0, 0, 0.15);
+  --archived-box-shadow: inset -1px -1px 1px 0px rgba(153, 153, 153, 1),
+    inset -0.5px -0.5px 0.5px 0px rgba(38, 38, 38, 1),
+    inset -1px -1px 1px 0px rgba(16, 16, 16, 1),
+    inset 1px 1px 0.5px 0px rgba(13, 13, 13, 1),
+    inset 0.5px 0.5px 0.5px 0px rgba(38, 38, 38, 1),
+    inset 1px 1px 1px 0px rgba(16, 16, 16, 1),
+    inset 0.2px 0.2px 0px 0px rgba(128, 128, 128, 1),
+    0px 4px 200px 0px rgba(0, 0, 0, 0.4);
+  --archived-backdrop-filter: blur(15px);
+  --lock-screen-glass-numbers-box-shadow: 0px 8px 100px 0px rgba(0, 0, 0, 0.2),
+    inset -4px -4px 8px 0px rgba(153, 153, 153, 0.8),
+    inset -2px -2px 8px 0px rgba(38, 38, 38, 0.8),
+    inset 2px 2px 8px 0px rgba(16, 16, 16, 0.6),
+    inset 1px 1px 8px 0px rgba(128, 128, 128, 0.6);
+  --lock-screen-glass-numbers-backdrop-filter: blur(30px);
+}
