@@ -155,7 +155,7 @@ body {
     position: relative;
     top: 32vh;
 
-    width: 20vh;
+    width: 18vh;
     height: 18vh;
     gap: 16px;
 
@@ -175,6 +175,8 @@ body {
         align-items: center;
         gap: 8px;
         color: #ffffff;
+        font-family: 'Iosevka Bold';
+        font-size: 18px;
         text-align: center;
         cursor: pointer;
 
@@ -198,10 +200,7 @@ body {
 
     border-radius: 32px;
     background: rgba(0, 0, 0, 0);
-    box-shadow:
-        0 5px 5px rgba(0, 0, 0, 0.20) inset,
-        0 -5px 5px rgba(255, 255, 255, 0.05) inset,
-        0 5px 13px rgba(0, 0, 0, 0.40);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20) inset, 0 -5px 5px rgba(255, 255, 255, 0.05) inset, 0 5px 13px rgba(0, 0, 0, 0.40);
 }
 
 /* Layout */
