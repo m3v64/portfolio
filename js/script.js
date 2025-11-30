@@ -1,6 +1,6 @@
 function boot() {
     const logLines = [
-        { text: "[nix-shell:~]$ ", type: "command", command: "bootctl" },
+        { text: "[nix-shell:~]$ ", type: "command", type2: "delay", command: "bootctl" },
         { text: "[ OK ] Boot sequence initialized...", type: "nextDelay" },
         { text: "[0.000001] macOS Subsystem for Linux v26.4 build 521", type: "nextDelay" },
         { text: "[0.000312] Kernel: Darwin-x64 hybrid core detected", type: "nextDelay" },
@@ -21,7 +21,7 @@ function boot() {
         { text: ("Subsystem m3v.local.guest 26.4.52-applelinux " + formatDate() + " x86_64 GNU/Apple/Linux") },
         { text: "[guest@m3v.terminal:~]$ ", type: "command", command: "whoami" },
         { text: "guest" },
-        { text: "[guest@m3v.terminal:~]$ ", type: "command", command: "echo Welcome to macOS Subsystem for Linux" },
+        { text: "[guest@m3v.terminal:~]$ ", type: "command", type2: "fastType", command: "echo Welcome to macOS Subsystem for Linux" },
         { text: "Welcome to macOS Subsystem for Linux" },
         { text: "[guest@m3v.terminal:~]$ ", type: "blink" }
     ];
@@ -41,8 +41,13 @@ function boot() {
                         if (i < line.command.length) {
                             lineDiv.textContent += line.command[i];
                             i++;
-                            let random = Math.floor(Math.random() * 51) + 25;
+                            let random;
+                            if (line.type2 === "fastType") random = Math.floor(Math.random() * 21) + 10;
+                            else random = Math.floor(Math.random() * 61) + 30;
                             setTimeout(typingEffect, random);
+                        } else if (line.type2 === "delay") {
+                            let random = Math.floor(Math.random() * 241) + 120;
+                            setTimeout(resolve, random);
                         } else {
                             resolve();
                         }
@@ -51,7 +56,7 @@ function boot() {
                     break;
                 case "nextDelay":
                     lineDiv.textContent = line.text;
-                    let random = Math.floor(Math.random() * 261) + 60;
+                    let random = Math.floor(Math.random() * 281) + 140;
                     setTimeout(resolve, random);
                     break;
                 default:
@@ -124,7 +129,7 @@ function login() {
             setDigit("m2", m[1]);
         }
 
-        setInterval(update, 10000000);
+        setInterval(update, 1000);
         update();
     }
     startClock();
@@ -132,8 +137,11 @@ function login() {
 
 function showScreen(screenId, fade, delay) {
     delay = (typeof delay === 'number') ? delay : 300;
-    if (fade === true) {
-        const target = document.getElementById(screenId);
+
+    const screens = Array.from(document.querySelectorAll('.screen'));
+    const target = screenId ? document.getElementById(screenId) : null;
+
+    if (fade) {
         if (target) {
             target.classList.remove('hidden');
             if (target.classList.contains('fade-in')) {
@@ -149,50 +157,42 @@ function showScreen(screenId, fade, delay) {
         if (current && current.id !== screenId) {
             current.classList.add('fade-out', 'hide');
         }
-
-        switchScreen(delay);
-    } else if (screenId != null || fade === false) {
-        switchScreen(delay);
     }
 
-    function switchScreen(delay) {
-        setTimeout(() => {
-            document.querySelectorAll('.screen').forEach(s => {
-                if (s.id === screenId) {
-                    s.classList.remove('hidden');
-                    if (s.classList.contains('fade-in')) {
-                        void s.offsetWidth;
-                        s.classList.add('show');
-                    } else if (s.classList.contains('fade-out')) {
-                        void s.offsetWidth;
-                        s.classList.add('hide');
-                    }
-                } else {
-                    if (s.classList.contains('fade-out')) {
-                        s.classList.add('hide');
-
-                        const cleanup = (e) => {
-                            if (e && e.propertyName && e.propertyName !== 'opacity') return;
-                            s.removeEventListener('transitionend', cleanup);
-                            s.classList.add('hidden');
-                            s.classList.remove('show', 'hide', 'fade-out');
-                        };
-
-                        s.addEventListener('transitionend', cleanup, { once: true });
-
-                        setTimeout(() => {
-                            if (!s.classList.contains('hidden')) {
-                                cleanup();
-                            }
-                        }, 900);
-                    } else {
-                        s.classList.add('hidden');
-                        s.classList.remove('show', 'hide');
-                    }
+    setTimeout(() => {
+        screens.forEach(s => {
+            if (s.id === screenId) {
+                s.classList.remove('hidden');
+                if (s.classList.contains('fade-in')) {
+                    void s.offsetWidth;
+                    s.classList.add('show');
+                } else if (s.classList.contains('fade-out')) {
+                    void s.offsetWidth;
+                    s.classList.add('hide');
                 }
-            });
-        }, delay);
-    }
+            } else {
+                if (s.classList.contains('fade-out')) {
+                    s.classList.add('hide');
+
+                    const cleanup = (e) => {
+                        if (e && e.propertyName && e.propertyName !== 'opacity') return;
+                        s.removeEventListener('transitionend', cleanup);
+                        s.classList.add('hidden');
+                        s.classList.remove('show', 'hide', 'fade-out');
+                    };
+
+                    s.addEventListener('transitionend', cleanup, { once: true });
+
+                    setTimeout(() => {
+                        if (!s.classList.contains('hidden')) cleanup();
+                    }, 900);
+                } else {
+                    s.classList.add('hidden');
+                    s.classList.remove('show', 'hide');
+                }
+            }
+        });
+    }, delay);
 }
 
 window.addEventListener('load', () => {
