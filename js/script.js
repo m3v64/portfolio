@@ -196,7 +196,7 @@ function showScreen(screenId, fade, delay) {
 }
 
 window.addEventListener('load', () => {
-    showScreen("boot-screen", true, 300);
+    showScreen("boot-screen", true);
 
     const fadingElement = document.querySelector('.fade-in');
     if (fadingElement) {
@@ -212,4 +212,8 @@ window.addEventListener('load', () => {
     } else {
         setTimeout(boot, 300);
     }
+});
+
+document.getElementById("guest-button").addEventListener("click", () => {
+    showScreen("home-screen-guest", true)
 });

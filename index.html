@@ -28,61 +28,76 @@
         </div>
 
         <div class="user-selector flex center column">
-            <button type="button" class="guest none flex center row">
-                <img src="assets/jpg/guest-user.jpg" alt="guest pfp">
+            <button type="button" id="guest-button" class="guest none flex center row">
+                <div class="profile"><img src="assets/jpg/guest-user.jpg" alt="guest pfp"></div>
                 guest
             </button>
-            <button type="button" class="admin none flex center row">
-                <img src="assets/jpg/admin-user.jpg" alt="admin pfp">
+            <button type="button" id="admin-button" class="admin none flex center row">
+                <div class="profile"><img src="assets/jpg/admin-user.jpg" alt="admin pfp"></div>
                 admin
             </button>
         </div>
     </div>
 
+    <div id="home-screen-guest" class="screen flex">
+        <nav></nav>
+        <body>
+        </body>
+        <footer></footer>
+    </div>
+
     <div id="templates" style="display: none;">
-        <template id="svg-digit-0">
-            <img src="assets/png/Vector-0.png" alt="clock element">
-        </template>
+        <div id="clock-templates">
+            <template id="svg-digit-0">
+                <img src="assets/png/Vector-0.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-1">
-            <img src="assets/png/Vector-1.png" alt="clock element">
-        </template>
+            <template id="svg-digit-1">
+                <img src="assets/png/Vector-1.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-2">
-            <img src="assets/png/Vector-2.png" alt="clock element">
-        </template>
+            <template id="svg-digit-2">
+                <img src="assets/png/Vector-2.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-3">
-            <img src="assets/png/Vector-3.png" alt="clock element">
-        </template>
+            <template id="svg-digit-3">
+                <img src="assets/png/Vector-3.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-4">
-            <img src="assets/png/Vector-4.png" alt="clock element">
-        </template>
+            <template id="svg-digit-4">
+                <img src="assets/png/Vector-4.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-5">
-            <img src="assets/png/Vector-5.png" alt="clock element">
-        </template>
+            <template id="svg-digit-5">
+                <img src="assets/png/Vector-5.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-6">
-            <img src="assets/png/Vector-6.png" alt="clock element">
-        </template>
+            <template id="svg-digit-6">
+                <img src="assets/png/Vector-6.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-7">
-            <img src="assets/png/Vector-7.png" alt="clock element">
-        </template>
+            <template id="svg-digit-7">
+                <img src="assets/png/Vector-7.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-8">
-            <img src="assets/png/Vector-8.png" alt="clock element">
-        </template>
+            <template id="svg-digit-8">
+                <img src="assets/png/Vector-8.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-9">
-            <img src="assets/png/Vector-9.png" alt="clock element">
-        </template>
+            <template id="svg-digit-9">
+                <img src="assets/png/Vector-9.png" alt="clock element">
+            </template>
 
-        <template id="svg-digit-10">
-            <img src="assets/png/Vector-10.png" alt="clock element colon">
-        </template>
+            <template id="svg-digit-10">
+                <img src="assets/png/Vector-10.png" alt="clock element colon">
+            </template>
+        </div>
+
+        <div id="app-templates">
+            <template id="readme-dot-md">
+
+            </template>
+        </div>
     </div>
     <script src="js/script.js"></script>
 </body>

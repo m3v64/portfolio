@@ -14,7 +14,7 @@
 
 body {
     margin: 0;
-    font-family: 'Iosevka', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Iosevka', 'Iosevka Medium', Arial, sans-serif;
 }
 
 .screen {
@@ -111,43 +111,41 @@ body {
     top: 6vh;
 
     div {
-        position: relative;
-        width: 20vh;
+        height: 24vh;
 
         img {
-            width: 100%;
-            height: auto;
+            position: absolute;
+            width: auto;
+            height: 100%;
         }
     }
 
     #colon {
         position: relative;
-        width: 16vh;
+        height: 16vh;
 
         img {
             position: absolute;
-            top: +2.5vh;
+            top: 0.8vh;
+            left: 50%;
+            transform: translateX(-50%);
         }
     }
 
     .left img {
-        position: absolute;
-        right: -11vh;
+        right: 4vh;
     }
 
     .right img {
-        position: absolute;
-        left: -11vh;
+        left: 4vh;
     }
 
     .more-left img {
-        position: absolute;
-        right: -22vh;
+        right: 18vh;
     }
 
     .more-right img {
-        position: absolute;
-        left: -22vh;
+        left: 16vh;
     }
 }
 
@@ -159,20 +157,24 @@ body {
     height: 18vh;
     gap: 16px;
 
+    border-radius: 32.974px;
+    background: rgba(0, 0, 0, 0.05);
+    box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.20) inset, -4px -4px 8px 0 rgba(255, 255, 255, 0.30) inset, -0.5px -0.5px 2px 0 rgba(255, 255, 255, 0.40) inset, 8px 8px 16px 1px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(4px);
+
     .guest {
         position: absolute;
-        top: 1vh;
+        top: 2vh;
     }
 
     .admin {
         position: absolute;
-        top: 9vh;
+        top: 8vh;
     }
 
     button {
         position: absolute;
-        display: flex;
-        align-items: center;
+        border-radius: 40px;
         gap: 8px;
         color: #ffffff;
         font-family: 'Iosevka Bold';
@@ -181,13 +183,34 @@ body {
         cursor: pointer;
 
         padding: 4%;
-        transition: transform 200ms ease, background 120ms ease, box-shadow 220ms ease, border-radius 120ms ease;
+        transition: transform 200ms ease, background 120ms ease, box-shadow 220ms ease;
         will-change: transform;
 
-        img {
+        .profile {
+            position: relative;
+            display: inline-block;
+
             width: 6vh;
             height: 6vh;
             border-radius: 100px;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                border-radius: 100px;
+
+                filter: drop-shadow(6px 6px 12px rgba(0, 0, 0, 0.25));
+            }
+        }
+
+        .profile::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            box-shadow: -4px -4px 8px rgba(6, 23, 45, 0.80) inset, 4px 4px 8px rgba(6, 23, 45, 0.80) inset;
+            pointer-events: none;
         }
     }
 
@@ -195,7 +218,6 @@ body {
         transform: translateY(-8%) scale(1.05);
         background: rgba(34, 34, 34, 0.25);
         box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20) inset, 0 -5px 5px rgba(255, 255, 255, 0.05) inset, 0 8px 14px rgba(0, 0, 0, 0.45);
-        border-radius: 40px;
     }
 
     button:active {
