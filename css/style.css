@@ -84,7 +84,7 @@ body {
 }
 
 .logs {
-    color: #ffffff;
+    color: #FEFEFACC;
     font-family: 'Iosevka Semibold';
     line-height: 20px;
 }
@@ -155,36 +155,24 @@ body {
 
     width: 18vh;
     height: 18vh;
-    gap: 16px;
 
-    border-radius: 32.974px;
-    background: rgba(0, 0, 0, 0.05);
-    box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.20) inset, -4px -4px 8px 0 rgba(255, 255, 255, 0.30) inset, -0.5px -0.5px 2px 0 rgba(255, 255, 255, 0.40) inset, 8px 8px 16px 1px rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(4px);
-
-    .guest {
-        position: absolute;
-        top: 2vh;
-    }
-
-    .admin {
-        position: absolute;
-        top: 8vh;
-    }
+    justify-content: space-evenly !important;
 
     button {
-        position: absolute;
+        position: static !important;
         border-radius: 40px;
         gap: 8px;
-        color: #ffffff;
+        padding: 4%;
+        color: #FEFEFACC;
         font-family: 'Iosevka Bold';
         font-size: 18px;
         text-align: center;
         cursor: pointer;
 
-        padding: 4%;
         transition: transform 200ms ease, background 120ms ease, box-shadow 220ms ease;
+        transform: translateY(0) scale(1);
         will-change: transform;
+        transform-origin: center;
 
         .profile {
             position: relative;
@@ -209,13 +197,14 @@ body {
             position: absolute;
             inset: 0;
 
+            border-radius: 100px;
             box-shadow: -4px -4px 8px rgba(6, 23, 45, 0.80) inset, 4px 4px 8px rgba(6, 23, 45, 0.80) inset;
             pointer-events: none;
         }
     }
 
     button:hover {
-        transform: translateY(-8%) scale(1.05);
+        transform: translateY(-8%);
         background: rgba(34, 34, 34, 0.25);
         box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20) inset, 0 -5px 5px rgba(255, 255, 255, 0.05) inset, 0 8px 14px rgba(0, 0, 0, 0.45);
     }
