@@ -9,22 +9,30 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="boot-screen" class="screen flex center">
+    <section id="boot-screen" class="screen flex center">
         <div class="container center flex">
             <div id="tty" class="flex"></div>
             <div class="flex">
                 <img id="logo" class="fade-in" src="assets/svg/86-boot.svg" alt="86 boot logo">
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="login-screen" class="screen flex center">
+    <section id="login-screen" class="screen flex center">
         <div class="clock fitcontent flex center">
             <div id="h1" class="more-left"></div>
             <div id="h2" class="left"></div>
             <div id="colon"></div>
             <div id="m1" class="right"></div>
             <div id="m2" class="more-right"></div>
+        </div>
+
+        <div id="admin-login">
+            <form id="admin-login-form" class="flex none center column">
+                <input type="text" class="flex none center">
+                <input type="text" class="flex none center">
+                <button type="button" id="login-button" class="flex none center"></button>
+            </form>
         </div>
 
         <div class="user-selector flex center column">
@@ -37,17 +45,14 @@
                 admin
             </button>
         </div>
-    </div>
+    </section>
 
-    <div id="home-screen-guest" class="screen flex">
-        <nav></nav>
-        <body>
-        </body>
-        <footer></footer>
-    </div>
+    <section id="home-screen-guest" class="screen flex">
 
-    <div id="templates" style="display: none;">
-        <div id="clock-templates">
+    </section>
+
+    <section id="templates" style="display: none;">
+        <section id="clock-templates">
             <template id="svg-digit-0">
                 <img src="assets/png/Vector-0.png" alt="clock element">
             </template>
@@ -91,14 +96,14 @@
             <template id="svg-digit-10">
                 <img src="assets/png/Vector-10.png" alt="clock element colon">
             </template>
-        </div>
+        </section>
 
-        <div id="app-templates">
+        <section id="app-templates">
             <template id="readme-dot-md">
 
             </template>
-        </div>
-    </div>
+        </section>
+    </section>
     <script src="js/script.js"></script>
 </body>
 </html>

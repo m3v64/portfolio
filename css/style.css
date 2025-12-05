@@ -149,6 +149,32 @@ body {
     }
 }
 
+#admin-login {
+    width: 24vw;
+    height: fit-content;
+    padding: 32px;
+    border-radius: 32px;
+
+    background: rgba(0, 0, 0, 0.05);
+    box-shadow: 8px 8px 10px 0 rgba(0, 0, 0, 0.20) inset, -6px -6px 8px 0 rgba(255, 255, 255, 0.05) inset, 4px 4px 12px 2.64px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(4px);
+}
+
+#admin-login-form {
+    gap: 2vh;
+
+    input {
+        height: 2vh;
+        width: 80%;
+        padding: 16px;
+        border-radius: 32px;
+
+        background: rgba(0, 0, 0, 0.05);
+        box-shadow: 8px 8px 16px 0 rgba(0, 0, 0, 0.20) inset, -2px -2px 8px 0 rgba(255, 255, 255, 0.05) inset, 4px 4px 12px 1px rgba(0, 0, 0, 0.20);
+        backdrop-filter: blur(0.25px);
+    }
+}
+
 .user-selector {
     position: relative;
     top: 32vh;
