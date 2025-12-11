@@ -100,21 +100,48 @@ function login() {
     showScreen("login-screen", true, 800);
 
     async function startClock() {
-        function setDigit(id, digit) {
-            const key = "svg-digit-" + digit;
-            const templateElement = document.getElementById(key);
-            const clockElement = document.getElementById(id);
+        const templateCache = {};
+        let currentDigits = { h1: null, h2: null, m1: null, m2: null, colon: null };
 
+        // Pre-cache all templates for smooth switching
+        for (let i = 0; i <= 10; i++) {
+            const templateElement = document.getElementById(`svg-digit-${i}`);
+            if (templateElement && templateElement.content) {
+                templateCache[i] = templateElement.content.cloneNode(true);
+            } else if (templateElement) {
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = templateElement.innerHTML;
+                templateCache[i] = wrapper.firstElementChild;
+            }
+        }
+
+        function setDigit(id, digit) {
+            // Skip if digit hasn't changed
+            if (currentDigits[id] === digit) return;
+            
+            const clockElement = document.getElementById(id);
             if (!clockElement) {
                 console.warn(`setDigit: target element '${id}' not found`);
                 return;
             }
-            if (!templateElement) {
-                console.warn(`setDigit: template '${key}' not found`);
+
+            const template = templateCache[digit];
+            if (!template) {
+                console.warn(`setDigit: template for digit '${digit}' not found in cache`);
                 return;
             }
 
-            clockElement.innerHTML = templateElement.innerHTML;
+            // Use requestAnimationFrame for smooth DOM updates
+            requestAnimationFrame(() => {
+                clockElement.innerHTML = '';
+                const clone = template.cloneNode ? template.cloneNode(true) : template;
+                if (clone instanceof DocumentFragment) {
+                    clockElement.appendChild(clone);
+                } else {
+                    clockElement.appendChild(clone.cloneNode(true));
+                }
+                currentDigits[id] = digit;
+            });
         }
 
         function update() {
@@ -129,8 +156,17 @@ function login() {
             setDigit("m2", m[1]);
         }
 
-        setInterval(update, 1000);
+        // Initial update
         update();
+        
+        // Update every second, synchronized to the second boundary
+        const now = new Date();
+        const msUntilNextSecond = 1000 - now.getMilliseconds();
+        
+        setTimeout(() => {
+            update();
+            setInterval(update, 1000);
+        }, msUntilNextSecond);
     }
     startClock();
 }

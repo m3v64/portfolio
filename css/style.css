@@ -185,17 +185,43 @@ body {
   z-index: 0;
 }
 
+.glass-digit {
+  fill: rgba(255, 255, 255, 0.15);
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 0.5;
+  filter: 
+    drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2))
+    drop-shadow(-0.1px -0.2px 0.4px rgba(255, 255, 255, 0.4))
+    drop-shadow(-2px -2px 6px rgba(255, 255, 255, 0.25))
+    drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.glass-digit-svg {
+  width: 100%;
+  height: 100%;
+}
+
 .clock {
   position: absolute;
   top: 6vh;
+  will-change: transform;
 
   div {
     height: 24vh;
+    transition: opacity 150ms ease-in-out;
 
     img {
       position: absolute;
       width: auto;
       height: 100%;
+    }
+
+    svg {
+      position: absolute;
+      width: auto;
+      height: 100%;
+      transition: opacity 200ms ease-in-out;
+  
     }
   }
 
@@ -209,9 +235,20 @@ body {
       left: 50%;
       transform: translateX(-50%);
     }
+
+    svg {
+      position: absolute;
+      top: 0.8vh;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 
   .left img {
+    right: 4vh;
+  }
+
+  .left svg {
     right: 4vh;
   }
 
@@ -219,11 +256,23 @@ body {
     left: 4vh;
   }
 
+  .right svg {
+    left: 4vh;
+  }
+
   .more-left img {
     right: 18vh;
   }
 
+  .more-left svg {
+    right: 18vh;
+  }
+
   .more-right img {
+    left: 16vh;
+  }
+
+  .more-right svg {
     left: 16vh;
   }
 }
