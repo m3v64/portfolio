@@ -138,12 +138,19 @@ function login() {
 function showScreen(screenId, fade, delay) {
     delay = (typeof delay === 'number') ? delay : 300;
 
+    function setInert(el, set) {
+        if (!el) return;
+        if (set) el.setAttribute('inert', "");
+        else el.removeAttribute('inert');
+    }
+
     const screens = Array.from(document.querySelectorAll('.screen'));
     const target = screenId ? document.getElementById(screenId) : null;
 
     if (fade) {
         if (target) {
             target.classList.remove('hidden');
+            setInert(target, false);
             if (target.classList.contains('fade-in')) {
                 void target.offsetWidth;
                 target.classList.add('show');
@@ -163,6 +170,7 @@ function showScreen(screenId, fade, delay) {
         screens.forEach(s => {
             if (s.id === screenId) {
                 s.classList.remove('hidden');
+                setInert(s, false);
                 if (s.classList.contains('fade-in')) {
                     void s.offsetWidth;
                     s.classList.add('show');
@@ -178,6 +186,7 @@ function showScreen(screenId, fade, delay) {
                         if (e && e.propertyName && e.propertyName !== 'opacity') return;
                         s.removeEventListener('transitionend', cleanup);
                         s.classList.add('hidden');
+                        setInert(s, true);
                         s.classList.remove('show', 'hide', 'fade-out');
                     };
 
@@ -188,6 +197,7 @@ function showScreen(screenId, fade, delay) {
                     }, 900);
                 } else {
                     s.classList.add('hidden');
+                    setInert(s, true);
                     s.classList.remove('show', 'hide');
                 }
             }
