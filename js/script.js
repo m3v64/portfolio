@@ -103,7 +103,6 @@ function login() {
         const templateCache = {};
         let currentDigits = { h1: null, h2: null, m1: null, m2: null, colon: null };
 
-        // Pre-cache all templates for smooth switching
         for (let i = 0; i <= 10; i++) {
             const templateElement = document.getElementById(`svg-digit-${i}`);
             if (templateElement && templateElement.content) {
@@ -116,7 +115,6 @@ function login() {
         }
 
         function setDigit(id, digit) {
-            // Skip if digit hasn't changed
             if (currentDigits[id] === digit) return;
             
             const clockElement = document.getElementById(id);
@@ -131,7 +129,6 @@ function login() {
                 return;
             }
 
-            // Use requestAnimationFrame for smooth DOM updates
             requestAnimationFrame(() => {
                 clockElement.innerHTML = '';
                 const clone = template.cloneNode ? template.cloneNode(true) : template;
@@ -140,6 +137,21 @@ function login() {
                 } else {
                     clockElement.appendChild(clone.cloneNode(true));
                 }
+                
+                const svgPath = `url('../assets/svg/Vector-${digit}.svg')`;
+                clockElement.style.setProperty('--digit-mask', svgPath);
+                
+                const img = clockElement.querySelector('img');
+                if (img) {
+                    if (img.complete && img.naturalWidth) {
+                        clockElement.style.setProperty('--digit-aspect', img.naturalWidth / img.naturalHeight);
+                    } else {
+                        img.onload = () => {
+                            clockElement.style.setProperty('--digit-aspect', img.naturalWidth / img.naturalHeight);
+                        };
+                    }
+                }
+                
                 currentDigits[id] = digit;
             });
         }
@@ -155,11 +167,8 @@ function login() {
             setDigit("m1", m[0]);
             setDigit("m2", m[1]);
         }
-
-        // Initial update
         update();
         
-        // Update every second, synchronized to the second boundary
         const now = new Date();
         const msUntilNextSecond = 1000 - now.getMilliseconds();
         
@@ -262,4 +271,18 @@ window.addEventListener('load', () => {
 
 document.getElementById("guest-button").addEventListener("click", () => {
     showScreen("home-screen-guest", true)
+});
+
+document.getElementById("admin-button").addEventListener("click", () => {
+    const adminLogin = document.getElementById("admin-login");
+    adminLogin.style.display = "block";
+    adminLogin.removeAttribute("inert");
+
+    setTimeout(() => {
+        adminLogin.style.opacity = "1";
+    }, 10);
+    
+    const userSelector = document.querySelector(".user-selector");
+    userSelector.style.transform = "translateY(2vh)";
+    userSelector.style.opacity = "0.6";
 });

@@ -29,20 +29,25 @@
             <div id="m2" class="more-right"></div>
         </div>
 
-        <div id="admin-login">
+        <div id="admin-login" style="display: none;" inert>
             <form id="admin-login-form" class="flex glass none center column">
-                <input type="text" class="flex glass none center">
-                <input type="text" class="flex glass none center">
-                <button type="button" id="login-button" class="flex glass none center">Login</button>
+                <button type="button" class="button-close flex glass-child none center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 23 23" fill="none">
+                        <path d="M20.1681 20.1681L11.0925 11.0925M11.0925 11.0925L2.01685 2.01685M11.0925 11.0925L20.1681 2.01685M11.0925 11.0925L2.01685 20.1681" stroke="white" stroke-opacity="0.6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <input type="text" class="flex glass-child none center">
+                <input type="text" class="flex glass-child none center">
+                <button type="button" id="login-button" class="flex glass-child none center">Login</button>
             </form>
         </div>
 
         <div class="user-selector glass flex center column">
-            <button type="button" id="guest-button" class="none glass flex center row">
+            <button type="button" id="guest-button" class="none glass-child flex center row">
                 <div class="profile"><img src="assets/jpg/guest-user.jpg" alt="guest pfp"></div>
                 guest
             </button>
-            <button type="button" id="admin-button" class="none glass flex center row">
+            <button type="button" id="admin-button" class="none glass-child flex center row">
                 <div class="profile"><img src="assets/jpg/admin-user.jpg" alt="admin pfp"></div>
                 admin
             </button>
@@ -56,114 +61,11 @@
     <section id="templates" style="display: none;">
         <section id="clock-templates">
             <template id="svg-digit-0">
-                <svg class="glass-digit-svg" xmlns="http://www.w3.org/2000/svg" width="144" height="232" viewBox="0 0 144 232" fill="none">
-                    <foreignObject x="0" y="0" width="143.286" height="232">
-                        <div xmlns="http://www.w3.org/1999/xhtml"
-                            style="backdrop-filter:blur(2px);clip-path:url(#bgblur_0_309_77_clip_path);height:100%;width:100%">
-                        </div>
-                    </foreignObject>
-                    <g filter="url(#filter0_diii_309_77)" data-figma-bg-blur-radius="4">
-                        <path
-                            d="M71.6431 204C66.8708 204 62.1838 203.574 57.5819 202.722C52.98 201.87 48.5486 200.336 44.2876 198.12C40.1971 195.904 36.5326 193.092 33.2943 189.683C30.0559 186.274 27.4141 182.439 25.3688 178.178C23.3236 173.917 21.8748 169.486 21.0226 164.884C20.3409 160.282 20 155.595 20 150.823V65.1771C20 60.4048 20.3409 55.7177 21.0226 51.1158C21.8748 46.514 23.3236 42.0825 25.3688 37.8216C27.4141 33.5606 30.0559 29.7257 33.2943 26.3169C36.5326 22.9081 40.1971 20.0959 44.2876 17.8802C48.5486 15.6644 52.98 14.1305 57.5819 13.2783C62.1838 12.4261 66.8708 12 71.6431 12C76.4154 12 81.1025 12.4261 85.7044 13.2783C90.3063 14.1305 94.6525 15.6644 98.743 17.8802C103.004 20.0959 106.754 22.9081 109.992 26.3169C113.23 29.7257 115.872 33.5606 117.917 37.8216C119.963 42.0825 121.326 46.514 122.008 51.1158C122.86 55.7177 123.286 60.4048 123.286 65.1771V150.823C123.286 155.595 122.86 160.282 122.008 164.884C121.326 169.486 119.963 173.917 117.917 178.178C115.872 182.439 113.23 186.274 109.992 189.683C106.754 193.092 103.004 195.904 98.743 198.12C94.6525 200.336 90.3063 201.87 85.7044 202.722C81.1025 203.574 76.4154 204 71.6431 204ZM55.0253 107.105L88.261 80.7723V65.1771C88.261 62.4501 88.0053 59.723 87.494 56.996C87.1531 54.269 86.3009 51.7124 84.9374 49.3262C83.7443 46.7696 81.8695 44.8096 79.3129 43.4461C76.9268 41.9121 74.3702 41.1451 71.6431 41.1451C68.9161 41.1451 66.2743 41.9121 63.7177 43.4461C61.3316 44.8096 59.4567 46.7696 58.0932 49.3262C56.9001 51.7124 56.0479 54.269 55.5366 56.996C55.1957 59.723 55.0253 62.4501 55.0253 65.1771V107.105ZM71.6431 174.855C74.3702 174.855 76.9268 174.173 79.3129 172.81C81.8695 171.276 83.7443 169.316 84.9374 166.929C86.3009 164.373 87.1531 161.731 87.494 159.004C88.0053 156.277 88.261 153.55 88.261 150.823V108.895L55.0253 135.228V150.823C55.0253 153.55 55.1957 156.277 55.5366 159.004C56.0479 161.731 56.9001 164.373 58.0932 166.929C59.4567 169.316 61.3316 171.276 63.7177 172.81C66.2743 174.173 68.9161 174.855 71.6431 174.855Z"
-                            fill="#06172D" fill-opacity="0.05" shape-rendering="crispEdges" />
-                    </g>
-                    <defs>
-                        <filter id="filter0_diii_309_77" x="0" y="0" width="143.286" height="232"
-                            filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dy="8" />
-                            <feGaussianBlur stdDeviation="10" />
-                            <feComposite in2="hardAlpha" operator="out" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
-                            <feBlend mode="multiply" in2="BackgroundImageFix" result="effect1_dropShadow_309_77" />
-                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_309_77" result="shape" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dx="-0.4" dy="-0.8" />
-                            <feGaussianBlur stdDeviation="0.2" />
-                            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-                            <feBlend mode="overlay" in2="shape" result="effect2_innerShadow_309_77" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dx="-0.6" dy="-1" />
-                            <feGaussianBlur stdDeviation="2" />
-                            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-                            <feBlend mode="plus-lighter" in2="effect2_innerShadow_309_77"
-                                result="effect3_innerShadow_309_77" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dx="0.5" dy="1" />
-                            <feGaussianBlur stdDeviation="4" />
-                            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.8 0" />
-                            <feBlend mode="normal" in2="effect3_innerShadow_309_77"
-                                result="effect4_innerShadow_309_77" />
-                        </filter>
-                        <clipPath id="bgblur_0_309_77_clip_path" transform="translate(0 0)">
-                            <path
-                                d="M71.6431 204C66.8708 204 62.1838 203.574 57.5819 202.722C52.98 201.87 48.5486 200.336 44.2876 198.12C40.1971 195.904 36.5326 193.092 33.2943 189.683C30.0559 186.274 27.4141 182.439 25.3688 178.178C23.3236 173.917 21.8748 169.486 21.0226 164.884C20.3409 160.282 20 155.595 20 150.823V65.1771C20 60.4048 20.3409 55.7177 21.0226 51.1158C21.8748 46.514 23.3236 42.0825 25.3688 37.8216C27.4141 33.5606 30.0559 29.7257 33.2943 26.3169C36.5326 22.9081 40.1971 20.0959 44.2876 17.8802C48.5486 15.6644 52.98 14.1305 57.5819 13.2783C62.1838 12.4261 66.8708 12 71.6431 12C76.4154 12 81.1025 12.4261 85.7044 13.2783C90.3063 14.1305 94.6525 15.6644 98.743 17.8802C103.004 20.0959 106.754 22.9081 109.992 26.3169C113.23 29.7257 115.872 33.5606 117.917 37.8216C119.963 42.0825 121.326 46.514 122.008 51.1158C122.86 55.7177 123.286 60.4048 123.286 65.1771V150.823C123.286 155.595 122.86 160.282 122.008 164.884C121.326 169.486 119.963 173.917 117.917 178.178C115.872 182.439 113.23 186.274 109.992 189.683C106.754 193.092 103.004 195.904 98.743 198.12C94.6525 200.336 90.3063 201.87 85.7044 202.722C81.1025 203.574 76.4154 204 71.6431 204ZM55.0253 107.105L88.261 80.7723V65.1771C88.261 62.4501 88.0053 59.723 87.494 56.996C87.1531 54.269 86.3009 51.7124 84.9374 49.3262C83.7443 46.7696 81.8695 44.8096 79.3129 43.4461C76.9268 41.9121 74.3702 41.1451 71.6431 41.1451C68.9161 41.1451 66.2743 41.9121 63.7177 43.4461C61.3316 44.8096 59.4567 46.7696 58.0932 49.3262C56.9001 51.7124 56.0479 54.269 55.5366 56.996C55.1957 59.723 55.0253 62.4501 55.0253 65.1771V107.105ZM71.6431 174.855C74.3702 174.855 76.9268 174.173 79.3129 172.81C81.8695 171.276 83.7443 169.316 84.9374 166.929C86.3009 164.373 87.1531 161.731 87.494 159.004C88.0053 156.277 88.261 153.55 88.261 150.823V108.895L55.0253 135.228V150.823C55.0253 153.55 55.1957 156.277 55.5366 159.004C56.0479 161.731 56.9001 164.373 58.0932 166.929C59.4567 169.316 61.3316 171.276 63.7177 172.81C66.2743 174.173 68.9161 174.855 71.6431 174.855Z" />
-                        </clipPath>
-                    </defs>
-                </svg>
+                <img src="assets/png/Vector-0.png" alt="clock element">
             </template>
 
             <template id="svg-digit-1">
-                <svg class="glass-digit-svg" xmlns="http://www.w3.org/2000/svg" width="117" height="228" viewBox="0 0 117 228" fill="none">
-                    <foreignObject x="0" y="0" width="116.186" height="227.909">
-                        <div xmlns="http://www.w3.org/1999/xhtml"
-                            style="backdrop-filter:blur(2px);clip-path:url(#bgblur_0_309_76_clip_path);height:100%;width:100%">
-                        </div>
-                    </foreignObject>
-                    <g filter="url(#filter0_diii_309_76)" data-figma-bg-blur-radius="4">
-                        <path d="M61.4168 199.909V45.4913L38.4075 68.245L20 52.9054L61.4168 12H96.1864V199.909H61.4168Z"
-                            fill="#06172D" fill-opacity="0.05" shape-rendering="crispEdges" />
-                    </g>
-                    <defs>
-                        <filter id="filter0_diii_309_76" x="0" y="0" width="116.186" height="227.909"
-                            filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dy="8" />
-                            <feGaussianBlur stdDeviation="10" />
-                            <feComposite in2="hardAlpha" operator="out" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
-                            <feBlend mode="multiply" in2="BackgroundImageFix" result="effect1_dropShadow_309_76" />
-                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_309_76" result="shape" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dx="-0.4" dy="-0.8" />
-                            <feGaussianBlur stdDeviation="0.2" />
-                            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-                            <feBlend mode="overlay" in2="shape" result="effect2_innerShadow_309_76" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dx="-0.6" dy="-1" />
-                            <feGaussianBlur stdDeviation="2" />
-                            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-                            <feBlend mode="plus-lighter" in2="effect2_innerShadow_309_76"
-                                result="effect3_innerShadow_309_76" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dx="0.5" dy="1" />
-                            <feGaussianBlur stdDeviation="4" />
-                            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.8 0" />
-                            <feBlend mode="normal" in2="effect3_innerShadow_309_76"
-                                result="effect4_innerShadow_309_76" />
-                        </filter>
-                        <clipPath id="bgblur_0_309_76_clip_path" transform="translate(0 0)">
-                            <path
-                                d="M61.4168 199.909V45.4913L38.4075 68.245L20 52.9054L61.4168 12H96.1864V199.909H61.4168Z" />
-                        </clipPath>
-                    </defs>
-                </svg>
+                <img src="assets/png/Vector-1.png" alt="clock element">
             </template>
 
             <template id="svg-digit-2">

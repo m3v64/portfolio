@@ -1,10 +1,60 @@
 /* Archive (temporary) */
 
+/* Register custom properties - inherits: false prevents parent values from overriding child values */
+@property --c-glass {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: rgb(6, 23, 45);
+}
+
+@property --c-dark {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: black;
+}
+
+@property --c-light {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: white;
+}
+
+@property --blur {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 2px;
+}
+
+@property --saturation {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 90%;
+}
+
+@property --radius {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 8px;
+}
+
+@property --glass-reflex-dark {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 2;
+}
+
+@property --glass-reflex-light {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0.3;
+}
+
 .glass {
-  border-radius: var(--radius) !important;
-  background-color: color-mix(in srgb, var(--c-glass) 12%, transparent) !important;
+  position: relative;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
   backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
-  -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
   box-shadow: inset 0 0 0 1px color-mix(in srgb,
       var(--c-light) calc(var(--glass-reflex-light) * 10%),
       transparent),
@@ -24,35 +74,48 @@
     0px 1px 5px 0px color-mix(in srgb,
       var(--c-dark) calc(var(--glass-reflex-dark) * 10%),
       transparent),
-    0px 6px 16px 0px color-mix(in srgb,
+    0px 6px 2vh 0px color-mix(in srgb,
       var(--c-dark) calc(var(--glass-reflex-dark) * 8%),
       transparent);
 }
 
-.glass::after {
-  content: "";
-  position: absolute;
-  left: 4px;
-  top: 4px;
-  display: block;
-  border-radius: var(--radius) !important;
-  background-color: color-mix(in srgb, var(--c-glass) 36%, transparent) !important;
-  z-index: -1;
+/* For nested glass elements - uses ::before for independent backdrop-filter */
+.glass-child {
+  position: relative;
+  border-radius: var(--radius);
   box-shadow: inset 0 0 0 1px color-mix(in srgb,
       var(--c-light) calc(var(--glass-reflex-light) * 10%),
       transparent),
-    inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
-    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
-    inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
-    inset -1px 2px 3px -1px color-mix(in srgb,
+    inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb,
+      var(--c-dark) calc(var(--glass-reflex-dark) * 12%),
+      transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb,
       var(--c-dark) calc(var(--glass-reflex-dark) * 20%),
       transparent),
-    inset 0px -4px 1px -2px color-mix(in srgb,
+    inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb,
       var(--c-dark) calc(var(--glass-reflex-dark) * 10%),
       transparent),
-    0px 3px 6px 0px color-mix(in srgb,
+    0px 1px 5px 0px color-mix(in srgb,
+      var(--c-dark) calc(var(--glass-reflex-dark) * 10%),
+      transparent),
+    0px 6px 2vh 0px color-mix(in srgb,
       var(--c-dark) calc(var(--glass-reflex-dark) * 8%),
       transparent);
+}
+
+.glass-child::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+  backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
 }
 
 /* Top level */
@@ -63,15 +126,6 @@ body {
   margin: 0;
   font-family: 'Iosevka', 'Iosevka Medium', Arial, sans-serif;
   color: #FEFEFACC;
-
-  --c-glass: #06172D;
-  --c-light: #fff;
-  --c-dark: #000;
-
-  --glass-reflex-dark: 2;
-  --glass-reflex-light: 0.3;
-  --saturation: 90%;
-  --blur: 2px;
 
   transition: background 400ms cubic-bezier(1, 0, 0.4, 1),
     color 400ms cubic-bezier(1, 0, 0.4, 1);
@@ -196,7 +250,7 @@ body {
     drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.3));
 }
 
-.glass-digit-svg {
+.glass-digit-img {
   width: 100%;
   height: 100%;
 }
@@ -207,21 +261,34 @@ body {
   will-change: transform;
 
   div {
+    position: relative;
     height: 24vh;
     transition: opacity 150ms ease-in-out;
+
+    &::before {
+      content: "";
+      position: absolute;
+      height: 100%;
+      top: -6px;
+      aspect-ratio: var(--digit-aspect, 0.41);
+      z-index: 0;
+      background: rgba(6, 23, 45, 0.15);
+      backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
+      -webkit-mask-image: var(--digit-mask);
+      mask-image: var(--digit-mask);
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      transform: scale(0.84);
+    }
 
     img {
       position: absolute;
       width: auto;
       height: 100%;
-    }
-
-    svg {
-      position: absolute;
-      width: auto;
-      height: 100%;
-      transition: opacity 200ms ease-in-out;
-  
+      z-index: 1;
     }
   }
 
@@ -229,92 +296,101 @@ body {
     position: relative;
     height: 16vh;
 
+    &::before {
+      top: 0.4vh;
+      left: 50%;
+      transform: translateX(-50%) scale(0.8);
+    }
+
     img {
       position: absolute;
       top: 0.8vh;
       left: 50%;
       transform: translateX(-50%);
     }
-
-    svg {
-      position: absolute;
-      top: 0.8vh;
-      left: 50%;
-      transform: translateX(-50%);
-    }
   }
 
+  .left::before,
   .left img {
     right: 4vh;
   }
 
-  .left svg {
-    right: 4vh;
-  }
-
+  .right::before,
   .right img {
     left: 4vh;
   }
 
-  .right svg {
-    left: 4vh;
-  }
-
+  .more-left::before,
   .more-left img {
     right: 18vh;
   }
 
-  .more-left svg {
-    right: 18vh;
-  }
-
+  .more-right::before,
   .more-right img {
-    left: 16vh;
-  }
-
-  .more-right svg {
-    left: 16vh;
+    left: 18vh;
   }
 }
 
 #admin-login {
   position: absolute;
-  width: 24vw;
+  top:38vh;
+  width: 28vw;
   height: fit-content;
   padding: 32px;
-  --radius: 16px;
-  --blur: 6px;
+  
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+}
 
-  form {
-    gap: 2vh;
-    padding: 2vh;
-    --radius: 32px;
-    --blur: 2px;
+#admin-login form {
+  gap: 2vh;
+  padding: 4vh;
+  --radius: 32px;
+  --blur: 2px;
+}
 
-    input {
-      height: 2vh;
-      width: 80%;
-      padding: 16px;
-      --blur: 0px;
-    }
+#admin-login form input {
+  height: 2vh;
+  width: 72%;
+  max-width: 18vw;
+  padding: 2vh;
+  --saturation: 90%;
+  --blur: 2px;
+  backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
+  --radius: 2vw;
+}
 
-    button {
-      width: 6vw;
-      height: 2vw;
-      color: #FEFEFACC;
-    }
-  }
+#admin-login form .button-close {
+  position: absolute;
+  left: 96%;
+  top: 4%;
+  transform: translateX(-98%) scale(1);
+  width: 1.5vw;
+  height: 1.5vw;
+  --radius: 2vh;
+  --c-glass: rgba(0, 0, 0, 0.15);
+}
+
+#admin-login form #login-button {
+  width: 6vw;
+  height: 2vw;
+  color: #FEFEFACC;
 }
 
 .user-selector {
   position: relative;
   top: 32vh;
 
-  width: 20vh;
-  height: 20vh;
-  --radius: 32px;
+  width: 18vh;
+  height: 18vh;
+  --saturation: 90%;
+  --blur: 2px;
+  --radius: 2vw;
 
   justify-content: space-evenly !important;
+  
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 400ms ease-in-out;
 
   button {
     position: static !important;
@@ -327,10 +403,15 @@ body {
     text-align: center;
     cursor: pointer;
 
-    --glass-reflex-dark: 0;
-    --glass-reflex-light: 0;
-    --saturation: 0%;
-    --blur: 0px;
+    --c-glass: #06172D;
+    --c-light: #fff;
+    --c-dark: #000;
+
+    --glass-reflex-dark: 2;
+    --glass-reflex-light: 0.3;
+    --saturation: 90%;
+    --blur: 2px;
+    --radius: 2vw;
 
     transition: transform 200ms ease, background 120ms ease, box-shadow 220ms ease;
     transform: translateY(0) scale(1);
@@ -409,8 +490,7 @@ body {
   border: unset;
   margin: unset;
   will-change: unset;
-  background: unset;
-  border-radius: unset;
   outline: unset;
   resize: unset;
+  background-color: unset;
 }
