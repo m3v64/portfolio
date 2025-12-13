@@ -116,16 +116,12 @@ function login() {
         const userSelector = document.querySelector(".user-selector");
         const transitionTime = 420;
 
-        const isHidden = window.getComputedStyle(adminLogin).display === 'none' || adminLogin.classList.contains('hide');
+        const isHidden = adminLogin.style.display === 'none' || adminLogin.classList.contains('hide');
 
         if (isHidden) {
             adminLogin.removeAttribute('inert');
-            adminLogin.style.transition = 'opacity 400ms ease-in-out';
-
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-                adminLogin.classList.remove('hide');
-                adminLogin.classList.add('show');
-            }));
+            adminLogin.classList.remove('hide');
+            adminLogin.classList.add('show');
 
             if (userSelector) {
                 userSelector.style.transition = 'transform 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease-in-out';
@@ -141,75 +137,27 @@ function login() {
                 userSelector.style.opacity = '1';
             }
 
-            const cleanup = () => {
-                adminLogin.setAttribute('inert', '');
-                adminLogin.removeEventListener('transitionend', onTransitionEnd);
-            };
-
-            const onTransitionEnd = (e) => {
-                if (e.target === adminLogin || e.propertyName === 'opacity') cleanup();
-            };
-
-            adminLogin.addEventListener('transitionend', onTransitionEnd);
-            setTimeout(cleanup, transitionTime + 80);
+            adminLogin.setAttribute('inert', '');
         }
     }
 
-    async function startClock() {
+    function startClock() {
         const templateCache = {};
-        let currentDigits = { h1: null, h2: null, m1: null, m2: null, colon: null };
+        const currentDigits = {};
 
         for (let i = 0; i <= 10; i++) {
-            const templateElement = document.getElementById(`svg-digit-${i}`);
-            if (templateElement && templateElement.content) {
-                templateCache[i] = templateElement.content.cloneNode(true);
-            } else if (templateElement) {
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = templateElement.innerHTML;
-                templateCache[i] = wrapper.firstElementChild;
-            }
+            const template = document.getElementById(`svg-digit-${i}`);
+            templateCache[i] = template.content.cloneNode(true);
         }
 
         function setDigit(id, digit) {
             if (currentDigits[id] === digit) return;
             
-            const clockElement = document.getElementById(id);
-            if (!clockElement) {
-                console.warn(`setDigit: target element '${id}' not found`);
-                return;
-            }
-
-            const template = templateCache[digit];
-            if (!template) {
-                console.warn(`setDigit: template for digit '${digit}' not found in cache`);
-                return;
-            }
-
-            requestAnimationFrame(() => {
-                clockElement.innerHTML = '';
-                const clone = template.cloneNode ? template.cloneNode(true) : template;
-                if (clone instanceof DocumentFragment) {
-                    clockElement.appendChild(clone);
-                } else {
-                    clockElement.appendChild(clone.cloneNode(true));
-                }
-                
-                const svgPath = `url('../assets/svg/Vector-${digit}.svg')`;
-                clockElement.style.setProperty('--digit-mask', svgPath);
-                
-                const img = clockElement.querySelector('img');
-                if (img) {
-                    if (img.complete && img.naturalWidth) {
-                        clockElement.style.setProperty('--digit-aspect', img.naturalWidth / img.naturalHeight);
-                    } else {
-                        img.onload = () => {
-                            clockElement.style.setProperty('--digit-aspect', img.naturalWidth / img.naturalHeight);
-                        };
-                    }
-                }
-                
-                currentDigits[id] = digit;
-            });
+            const el = document.getElementById(id);
+            el.innerHTML = '';
+            el.appendChild(templateCache[digit].cloneNode(true));
+            el.style.setProperty('--digit-mask', `url('../assets/svg/Vector-${digit}.svg')`);
+            currentDigits[id] = digit;
         }
 
         function update() {
@@ -223,42 +171,26 @@ function login() {
             setDigit("m1", m[0]);
             setDigit("m2", m[1]);
         }
+        
         update();
-        
-        const now = new Date();
-        const msUntilNextSecond = 1000 - now.getMilliseconds();
-        
-        setTimeout(() => {
-            update();
-            setInterval(update, 1000);
-        }, msUntilNextSecond);
+        setInterval(update, 1000);
     }
     startClock();
 }
 
-function showScreen(screenId, fade, delay) {
-    delay = (typeof delay === 'number') ? delay : 300;
+function showScreen(screenId, fade, delay = 300) {
+    const screens = document.querySelectorAll('.screen');
+    const target = document.getElementById(screenId);
 
-    function setInert(el, set) {
-        if (!el) return;
-        if (set) el.setAttribute('inert', "");
-        else el.removeAttribute('inert');
-    }
-
-    const screens = Array.from(document.querySelectorAll('.screen'));
-    const target = screenId ? document.getElementById(screenId) : null;
-
-    if (fade) {
-        if (target) {
-            target.classList.remove('hidden');
-            setInert(target, false);
-            if (target.classList.contains('fade-in')) {
-                void target.offsetWidth;
-                target.classList.add('show');
-            } else if (target.classList.contains('fade-out')) {
-                void target.offsetWidth;
-                target.classList.add('hide');
-            }
+    if (fade && target) {
+        target.classList.remove('hidden');
+        target.removeAttribute('inert');
+        if (target.classList.contains('fade-in')) {
+            void target.offsetWidth;
+            target.classList.add('show');
+        } else if (target.classList.contains('fade-out')) {
+            void target.offsetWidth;
+            target.classList.add('hide');
         }
 
         const current = document.querySelector('.screen:not(.hidden)');
@@ -271,7 +203,7 @@ function showScreen(screenId, fade, delay) {
         screens.forEach(s => {
             if (s.id === screenId) {
                 s.classList.remove('hidden');
-                setInert(s, false);
+                s.removeAttribute('inert');
                 if (s.classList.contains('fade-in')) {
                     void s.offsetWidth;
                     s.classList.add('show');
@@ -282,23 +214,14 @@ function showScreen(screenId, fade, delay) {
             } else {
                 if (s.classList.contains('fade-out')) {
                     s.classList.add('hide');
-
-                    const cleanup = (e) => {
-                        if (e && e.propertyName && e.propertyName !== 'opacity') return;
-                        s.removeEventListener('transitionend', cleanup);
-                        s.classList.add('hidden');
-                        setInert(s, true);
-                        s.classList.remove('show', 'hide', 'fade-out');
-                    };
-
-                    s.addEventListener('transitionend', cleanup, { once: true });
-
                     setTimeout(() => {
-                        if (!s.classList.contains('hidden')) cleanup();
+                        s.classList.add('hidden');
+                        s.setAttribute('inert', '');
+                        s.classList.remove('show', 'hide', 'fade-out');
                     }, 900);
                 } else {
                     s.classList.add('hidden');
-                    setInert(s, true);
+                    s.setAttribute('inert', '');
                     s.classList.remove('show', 'hide');
                 }
             }
@@ -311,15 +234,8 @@ window.addEventListener('load', () => {
 
     const fadingElement = document.querySelector('.fade-in');
     if (fadingElement) {
-        void fadingElement.offsetWidth;
         fadingElement.classList.add('show');
-
-        const onFinished = (e) => {
-            if (e.propertyName !== 'opacity') return;
-            fadingElement.removeEventListener('transitionend', onFinished);
-            setTimeout(boot, 300);
-        };
-        fadingElement.addEventListener('transitionend', onFinished);
+        setTimeout(boot, 300);
     } else {
         setTimeout(boot, 300);
     }

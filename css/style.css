@@ -26,6 +26,12 @@
   initial-value: 2px;
 }
 
+@property --blur-opacity {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
 @property --saturation {
   syntax: '<percentage>';
   inherits: true;
@@ -70,8 +76,8 @@
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
+  backdrop-filter: blur(var(--blur)) saturate(var(--saturation)) opacity(var(--blur-opacity));
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation)) opacity(var(--blur-opacity));
   background-color: color-mix(in srgb, var(--c-glass) 12%, transparent) !important;
   transition: opacity var(--transition-time) ease, backdrop-filter var(--transition-time) ease, box-shadow var(--transition-time) ease, background-color var(--transition-time) ease;
   box-shadow: inset 0 0 0 1px color-mix(in srgb,
@@ -112,8 +118,8 @@
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
+  backdrop-filter: blur(var(--blur)) saturate(var(--saturation)) opacity(var(--blur-opacity));
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation)) opacity(var(--blur-opacity));
   background-color: color-mix(in srgb, var(--c-glass) 12%, transparent) !important;
   transition: backdrop-filter var(--transition-time) ease, box-shadow var(--transition-time) ease, background-color var(--transition-time) ease;
   box-shadow: inset 0 0 0 1px color-mix(in srgb,
@@ -173,7 +179,7 @@
 }
 
 .show {
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 .fade-out {
@@ -183,7 +189,7 @@
 }
 
 .hide {
-  opacity: 0;
+  opacity: 0 !important;
 }
 
 /* Boot animation */
@@ -298,8 +304,8 @@
       aspect-ratio: var(--digit-aspect, 0.41);
       z-index: 0;
       background: rgba(6, 23, 45, 0.15);
-      backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
-      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation));
+      backdrop-filter: blur(var(--blur)) saturate(var(--saturation)) opacity(var(--blur-opacity));
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturation)) opacity(var(--blur-opacity));
       -webkit-mask-image: var(--digit-mask);
       mask-image: var(--digit-mask);
       -webkit-mask-size: 100% 100%;
@@ -342,7 +348,7 @@
 
   .right::before,
   .right img {
-    left: 1vh;
+    left: 2vh;
   }
 
   .more-left::before,
@@ -352,7 +358,7 @@
 
   .more-right::before,
   .more-right img {
-    left: 12vh;
+    left: 14vh;
   }
 }
 
@@ -363,11 +369,7 @@
   height: fit-content;
   padding: 32px;
 
-  opacity: 0.8;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity var(--transition-time, 420ms) ease, visibility 1s linear var(--transition-time, 420ms);
-
+  transition: backdrop-filter 420ms ease;
   will-change: backdrop-filter;
   --transition-time: 420ms;
 
@@ -453,15 +455,13 @@
 }
 
 #admin-login.show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+  --blur-opacity: 1;
+  filter: opacity(1);
 }
 
 #admin-login.hide {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+  --blur-opacity: 0;
+  filter: opacity(0);
 }
 
 .user-selector {
@@ -534,6 +534,8 @@
     transform: translateY(-8%);
 
     --c-glass: #06172D;
+    --glass-reflex-dark: 2;
+    --glass-reflex-light: 0.3;
     --saturation: 120%;
     --blur: 4px;
   }
