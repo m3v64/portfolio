@@ -29,15 +29,13 @@
             <div id="m2" class="more-right"></div>
         </div>
 
-        <div id="admin-login" style="display: none;" inert>
+        <div id="admin-login" class="fade-in" inert>
             <form id="admin-login-form" class="flex glass none center column">
-                <button type="button" class="button-close flex glass-child none center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 23 23" fill="none">
-                        <path d="M20.1681 20.1681L11.0925 11.0925M11.0925 11.0925L2.01685 2.01685M11.0925 11.0925L20.1681 2.01685M11.0925 11.0925L2.01685 20.1681" stroke="white" stroke-opacity="0.6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <button type="button" id="button-close" class="flex glass-child none center">
+                    <img src="assets/png/close.png" alt="close">
                 </button>
-                <input type="text" class="flex glass-child none center">
-                <input type="text" class="flex glass-child none center">
+                <div class="input center flex glass-child"><input type="text" placeholder="Username" class="none"></div>
+                <div class="input center flex glass-child"><input type="password" placeholder="Password" class="none"></div>
                 <button type="button" id="login-button" class="flex glass-child none center">Login</button>
             </form>
         </div>
@@ -58,7 +56,11 @@
 
     </section>
 
-    <section id="templates" style="display: none;">
+    <section id="home-screen-admin" class="screen flex">
+
+    </section>
+
+    <section id="templates" style="display: none;" inert>
         <section id="clock-templates">
             <template id="svg-digit-0">
                 <img src="assets/png/Vector-0.png" alt="clock element">

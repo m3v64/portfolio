@@ -99,6 +99,62 @@ function boot() {
 function login() {
     showScreen("login-screen", true, 800);
 
+    document.getElementById("guest-button").addEventListener("click", () => {
+        showScreen("home-screen-guest", true)
+    });
+
+    document.getElementById("admin-button").addEventListener("click", () => {
+        adminForm();
+    });
+
+    document.getElementById("button-close").addEventListener("click", () => {
+        adminForm();
+    });
+
+    function adminForm() {
+        const adminLogin = document.getElementById("admin-login");
+        const userSelector = document.querySelector(".user-selector");
+        const transitionTime = 420;
+
+        const isHidden = window.getComputedStyle(adminLogin).display === 'none' || adminLogin.classList.contains('hide');
+
+        if (isHidden) {
+            adminLogin.removeAttribute('inert');
+            adminLogin.style.transition = 'opacity 400ms ease-in-out';
+
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                adminLogin.classList.remove('hide');
+                adminLogin.classList.add('show');
+            }));
+
+            if (userSelector) {
+                userSelector.style.transition = 'transform 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease-in-out';
+                userSelector.style.transform = 'translateY(2vh)';
+                userSelector.style.opacity = '0.6';
+            }
+        } else {
+            adminLogin.classList.remove('show');
+            adminLogin.classList.add('hide');
+
+            if (userSelector) {
+                userSelector.style.transform = 'translateY(-2vh)';
+                userSelector.style.opacity = '1';
+            }
+
+            const cleanup = () => {
+                adminLogin.setAttribute('inert', '');
+                adminLogin.removeEventListener('transitionend', onTransitionEnd);
+            };
+
+            const onTransitionEnd = (e) => {
+                if (e.target === adminLogin || e.propertyName === 'opacity') cleanup();
+            };
+
+            adminLogin.addEventListener('transitionend', onTransitionEnd);
+            setTimeout(cleanup, transitionTime + 80);
+        }
+    }
+
     async function startClock() {
         const templateCache = {};
         let currentDigits = { h1: null, h2: null, m1: null, m2: null, colon: null };
@@ -267,22 +323,4 @@ window.addEventListener('load', () => {
     } else {
         setTimeout(boot, 300);
     }
-});
-
-document.getElementById("guest-button").addEventListener("click", () => {
-    showScreen("home-screen-guest", true)
-});
-
-document.getElementById("admin-button").addEventListener("click", () => {
-    const adminLogin = document.getElementById("admin-login");
-    adminLogin.style.display = "block";
-    adminLogin.removeAttribute("inert");
-
-    setTimeout(() => {
-        adminLogin.style.opacity = "1";
-    }, 10);
-    
-    const userSelector = document.querySelector(".user-selector");
-    userSelector.style.transform = "translateY(2vh)";
-    userSelector.style.opacity = "0.6";
 });
