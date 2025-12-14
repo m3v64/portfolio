@@ -550,7 +550,7 @@ body {
 
 #guest-nav {
   position: relative;
-  top: -42vh;
+  top: -46vh;
 
   color: rgba(0, 0, 0, 0.75);
   font-size: 20px;
@@ -558,27 +558,27 @@ body {
 
   #guest-nav1 {
     position: relative;
-    left: -88vh;
+    left: -40vw;
     gap: 16px;
 
     img {
-      position: absolute;
-      top: 1vh;
-      right: 64vh;
+      position: relative;
+      top: 2.5vh;
+      right: -1vw;
 
-      height: 4vw;
+      height: 8vh;
       width: auto;
     }
   }
 
   #guest-nav2 {
     position: relative;
-    left: 90vh;
+    left: 39vw;
     top: -6vh;
     gap: 16px;
 
     img {
-      height: 4vh;
+      height: 2vh;
       width: auto;
     }
   }

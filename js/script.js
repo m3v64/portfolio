@@ -231,7 +231,7 @@ function showScreen(screenId, fade, delay = 300) {
 }
 
 function guest() {
-    var serverState = 1;
+    var serverState = 3;
     const battery = document.getElementById("nav-battery");
     const date = document.getElementById("nav-date");
     const time = document.getElementById("nav-time") ;
