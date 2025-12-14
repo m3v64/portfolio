@@ -100,7 +100,8 @@ function login() {
     showScreen("login-screen", true, 800);
 
     document.getElementById("guest-button").addEventListener("click", () => {
-        showScreen("home-screen-guest", true)
+        showScreen("home-screen-guest", true);
+        guest();
     });
 
     document.getElementById("admin-button").addEventListener("click", () => {
@@ -227,6 +228,58 @@ function showScreen(screenId, fade, delay = 300) {
             }
         });
     }, delay);
+}
+
+function guest() {
+    var serverState = 1;
+    const battery = document.getElementById("nav-battery");
+    const date = document.getElementById("nav-date");
+    const time = document.getElementById("nav-time") ;
+    if (!battery || !date || !time) { return; }
+    switch (serverState) {
+        case 3:
+            battery.innerHTML = '<img src="assets/svg/battery-full.svg" alt="battery-full">';
+            break;
+        case 2:
+            battery.innerHTML = '<img src="assets/svg/battery-medium.svg" alt="battery-medium">';
+            break;
+        case 1:
+            battery.innerHTML = '<img src="assets/svg/battery-empty.svg" alt="battery-empty">';
+            break;
+        default:
+            battery.innerHTML = '<img src="assets/svg/battery-full.svg" alt="battery-full">';
+            break;
+    }
+
+    
+    function formatShortDate(date = new Date()) {
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        const dayName = days[date.getDay()];
+        const day = date.getDate();
+        const monthName = months[date.getMonth()];
+        const year = date.getFullYear();
+
+        return `${dayName} ${day} ${monthName} ${year}`;
+    }
+
+    function updateDate() {
+        var shortDate = formatShortDate();
+        date.innerHTML = `${shortDate}`;
+    }
+
+    function updateTime() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, "0");
+        const m = String(now.getMinutes()).padStart(2, "0");
+        time.innerHTML = `${h}:${m}`;
+    }
+
+    updateTime();
+    updateDate();
+    setInterval(updateTime, 1000);
+    setInterval(updateDate, 60000);
 }
 
 window.addEventListener('load', () => {

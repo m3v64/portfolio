@@ -148,7 +148,7 @@
 
 /* Top level */
 
-* {
+body {
   margin: 0;
   font-family: 'Iosevka';
   font-weight: normal;
@@ -543,6 +543,44 @@
   button:active {
     transform: translateY(4%) scale(0.95);
     background: rgba(12, 12, 12, 0.25);
+  }
+}
+
+/* Guest page */
+
+#guest-nav {
+  position: relative;
+  top: -42vh;
+
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 20px;
+  font-weight: bold;
+
+  #guest-nav1 {
+    position: relative;
+    left: -88vh;
+    gap: 16px;
+
+    img {
+      position: absolute;
+      top: 1vh;
+      right: 64vh;
+
+      height: 4vw;
+      width: auto;
+    }
+  }
+
+  #guest-nav2 {
+    position: relative;
+    left: 90vh;
+    top: -6vh;
+    gap: 16px;
+
+    img {
+      height: 4vh;
+      width: auto;
+    }
   }
 }
 
