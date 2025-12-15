@@ -196,7 +196,7 @@ body {
 
 #boot-screen {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   overflow: hidden;
   background-color: #06172D;
   height: 100vh;
@@ -267,7 +267,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
-  z-index: 0;
+  z-index: 1;
 }
 
 .glass-digit {
@@ -479,14 +479,12 @@ body {
 
   button {
     position: static !important;
-    border-radius: 40px;
     gap: 8px;
     padding: 4%;
     color: #FEFEFACC;
     font-family: 'Iosevka Bold';
     font-size: 18px;
     text-align: center;
-    cursor: pointer;
 
     --c-glass: #0000;
     --glass-reflex-dark: 0;
@@ -548,39 +546,134 @@ body {
 
 /* Guest page */
 
+#home-screen-guest {
+  background-image: url('../assets/jpg/guest-wallpaper.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  z-index: 0;
+}
+
 #guest-nav {
   position: relative;
-  top: -46vh;
+  top: -47.5vh;
+
+  width: 99%;
+  justify-content: space-between;
+  gap: 1rem;
 
   color: rgba(0, 0, 0, 0.75);
-  font-size: 20px;
+  font-size: clamp(16px, 1.6vw, 20px);
   font-weight: bold;
+  box-sizing: border-box;
+}
 
-  #guest-nav1 {
+#guest-nav1 {
+  position: relative;
+  right: clamp(36px, 1vw, 80px);
+  gap: 1rem;
+}
+
+#guest-nav1 img {
+  position: relative;
+  left: clamp(20px, 1vw, 32px);
+  top: clamp(20px, 1vh, 32px);
+
+  height: clamp(64px, 8vh, 128px);
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+#guest-nav2 {
+  display: flex;
+  gap: 0.75rem;
+}
+
+#guest-nav2 .glass {
+  height: clamp(18px, 2.4vh, 36px);
+  width: auto;
+  display: block;
+}
+
+#nav-battery img {
+  height: clamp(20px, 2.8vh, 40px);
+}
+
+@media (max-width: 720px) {
+  #guest-nav {
+    top: -46vh;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  #guest-nav1,
+  #guest-nav2 {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  #guest-nav1 > div,
+  #guest-nav2 > div {
+    font-size: clamp(14px, 2.5vw, 16px);
+  }
+}
+
+@media (max-width: 420px) {
+  #guest-nav {
+    top: -46vh;
+    padding: 0.25rem;
+  }
+
+  #guest-nav1 img {
+    height: clamp(28px, 5vh, 40px);
+    top: clamp(8px, 1vh, 16px);
+  }
+
+  #guest-nav2 .glass {
+    height: clamp(12px, 2vh, 24px);
+  }
+}
+
+#guest-nav2 {
+  .glass {
     position: relative;
-    left: -40vw;
-    gap: 16px;
+    display: inline-block;
+
+    transition: transform 220ms ease, background 220ms ease;
+    transform: translateY(0) scale(1);
+    will-change: transform;
+    transform-origin: center center;
+    backface-visibility: hidden;
+
+    overflow: hidden;
+    padding: 0.25rem;
+
+    --c-glass: #0000;
+    --glass-reflex-dark: 0;
+    --glass-reflex-light: 0;
+    --saturation: 100%;
+    --blur: 0px;
+    --radius: 2vw;
+    --transition-time: 220ms;
 
     img {
-      position: relative;
-      top: 2.5vh;
-      right: -1vw;
-
-      height: 8vh;
-      width: auto;
+      position: static !important;
+      display: block;
+      width: 100%;
+      height: 100%;
     }
   }
 
-  #guest-nav2 {
-    position: relative;
-    left: 39vw;
-    top: -6vh;
-    gap: 16px;
+  .glass:hover {
+    transform: scale(1.1);
 
-    img {
-      height: 2vh;
-      width: auto;
-    }
+    --glass-reflex-dark: 2;
+    --glass-reflex-light: 0.4;
+    --saturation: 80%;
   }
 }
 

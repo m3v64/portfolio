@@ -234,10 +234,11 @@ function guest() {
     var serverState = 3;
     const battery = document.getElementById("nav-battery");
     const date = document.getElementById("nav-date");
-    const time = document.getElementById("nav-time") ;
+    const time = document.getElementById("nav-time");
+
     if (!battery || !date || !time) { return; }
     switch (serverState) {
-        case 3:
+        case 2:
             battery.innerHTML = '<img src="assets/svg/battery-full.svg" alt="battery-full">';
             break;
         case 2:
@@ -250,7 +251,6 @@ function guest() {
             battery.innerHTML = '<img src="assets/svg/battery-full.svg" alt="battery-full">';
             break;
     }
-
     
     function formatShortDate(date = new Date()) {
         const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
