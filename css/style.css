@@ -573,6 +573,30 @@ body {
   position: relative;
   right: clamp(36px, 1vw, 80px);
   gap: 1rem;
+
+  --c-glass: #0000;
+  --glass-reflex-dark: 0;
+  --glass-reflex-light: 0;
+  --saturation: 100%;
+  --blur: 0px;
+  --radius: 2vw;
+  --transition-time: 420ms;
+
+  .glass::before {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    padding-left: 0.3vw;
+    padding-right: 0.3vw;
+  }
+
+  .glass:hover {
+    --glass-reflex-dark: 2;
+    --glass-reflex-light: 0.4;
+    --saturation: 80%;
+  }
 }
 
 #guest-nav1 img {
@@ -592,7 +616,7 @@ body {
 }
 
 #guest-nav2 .glass {
-  height: clamp(18px, 2.4vh, 36px);
+  height: clamp(20px, 2vh, 40px);
   width: auto;
   display: block;
 }
@@ -629,7 +653,7 @@ body {
   }
 
   #guest-nav1 img {
-    height: clamp(28px, 5vh, 40px);
+    height: clamp(28px, 4vh, 40px);
     top: clamp(8px, 1vh, 16px);
   }
 
@@ -639,18 +663,11 @@ body {
 }
 
 #guest-nav2 {
+  box-sizing: border-box;
+
   .glass {
     position: relative;
     display: inline-block;
-
-    transition: transform 220ms ease, background 220ms ease;
-    transform: translateY(0) scale(1);
-    will-change: transform;
-    transform-origin: center center;
-    backface-visibility: hidden;
-
-    overflow: hidden;
-    padding: 0.25rem;
 
     --c-glass: #0000;
     --glass-reflex-dark: 0;
@@ -658,19 +675,25 @@ body {
     --saturation: 100%;
     --blur: 0px;
     --radius: 2vw;
-    --transition-time: 220ms;
+    --transition-time: 420ms;
 
     img {
-      position: static !important;
       display: block;
       width: 100%;
       height: 100%;
     }
   }
 
-  .glass:hover {
-    transform: scale(1.1);
+  .glass::before {
+    top: 50%;
+    left: 50%;
+    transform: translate(-53%, -50%);
+    width: 100%;
+    height: 100%;
+    padding: 0.35vw;
+  }
 
+  .glass:hover {
     --glass-reflex-dark: 2;
     --glass-reflex-light: 0.4;
     --saturation: 80%;
