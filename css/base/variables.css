@@ -1,0 +1,59 @@
+@property --c-glass {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgb(6, 23, 45);
+}
+
+@property --c-dark {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: black;
+}
+
+@property --c-light {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: white;
+}
+
+@property --blur {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 2px;
+}
+
+@property --blur-opacity {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --saturation {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 90%;
+}
+
+@property --radius {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 8px;
+}
+
+@property --glass-reflex-dark {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 2;
+}
+
+@property --glass-reflex-light {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0.3;
+}
+
+@property --transition-time {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 0ms;
+}

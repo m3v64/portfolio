@@ -114,7 +114,7 @@ function login() {
 
     function adminForm() {
         const adminLogin = document.getElementById("admin-login");
-        const userSelector = document.querySelector(".user-selector");
+        const userSelector = document.querySelector(".login-user-selector");
         const transitionTime = 420;
 
         const isHidden = adminLogin.style.display === 'none' || adminLogin.classList.contains('hide');
@@ -157,7 +157,7 @@ function login() {
             const el = document.getElementById(id);
             el.innerHTML = '';
             el.appendChild(templateCache[digit].cloneNode(true));
-            el.style.setProperty('--digit-mask', `url('../assets/svg/Vector-${digit}.svg')`);
+            el.style.setProperty('--digit-mask', `url('../../assets/svg/Vector-${digit}.svg')`);
             currentDigits[id] = digit;
         }
 

@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+    font-family: 'Iosevka';
+    font-weight: normal;
+    font-style: normal;
+    color: #FEFEFACC;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    transition: background 400ms cubic-bezier(1, 0, 0.4, 1),
+                color 400ms cubic-bezier(1, 0, 0.4, 1);
+}
+
+img,
+a {
+    -webkit-user-drag: none;
+}

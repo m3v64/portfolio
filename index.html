@@ -11,17 +11,17 @@
 </head>
 
 <body>
-    <section id="boot-screen" class="screen flex center">
-        <div class="container center flex">
-            <div id="tty" class="flex"></div>
+    <section id="boot-screen" class="screen screen--boot flex center">
+        <div class="boot-screen__container center flex">
+            <div id="tty" class="flex boot-screen__tty"></div>
             <div class="flex">
-                <img id="logo" class="fade-in" src="assets/svg/86-boot.svg" alt="86 boot logo">
+                <img id="logo" class="fade-in boot-screen__logo" src="assets/svg/86-boot.svg" alt="86 boot logo">
             </div>
         </div>
     </section>
 
-    <section id="login-screen" class="screen flex center">
-        <div class="clock fitcontent flex center">
+    <section id="login-screen" class="screen screen--login flex center">
+        <div class="clock u-fit-content flex center">
             <div id="h1" class="more-left"></div>
             <div id="h2" class="left"></div>
             <div id="colon"></div>
@@ -30,22 +30,22 @@
         </div>
 
         <div id="admin-login" class="hide" inert>
-            <form id="admin-login-form" class="flex glass none center column">
-                <button type="button" id="button-close" class="flex glass-child none center">
+            <form id="admin-login-form" class="flex glass u-reset center column">
+                <button type="button" id="button-close" class="flex glass-item u-reset center">
                     <img src="assets/png/close.png" alt="close">
                 </button>
-                <div class="input center flex glass-child"><input type="text" placeholder="Username" class="none"></div>
-                <div class="input center flex glass-child"><input type="password" placeholder="Password" class="none"></div>
-                <button type="button" id="login-button" class="flex glass-child none center">Login</button>
+                <div class="input login-form__field center flex glass-item"><input type="text" placeholder="Username" class="u-reset"></div>
+                <div class="input login-form__field center flex glass-item"><input type="password" placeholder="Password" class="u-reset"></div>
+                <button type="button" id="login-button" class="flex glass-item u-reset center">Login</button>
             </form>
         </div>
 
-        <div class="user-selector glass flex center column">
-            <button type="button" id="guest-button" class="none glass-child flex center row">
+        <div class="login-user-selector glass flex center column">
+            <button type="button" id="guest-button" class="u-reset glass-item flex center row">
                 <div class="profile"><img src="assets/jpg/guest-user.jpg" alt="guest pfp"></div>
                 guest
             </button>
-            <button type="button" id="admin-button" class="none glass-child flex center row">
+            <button type="button" id="admin-button" class="u-reset glass-item flex center row">
                 <div class="profile"><img src="assets/jpg/admin-user.jpg" alt="admin pfp"></div>
                 admin
             </button>
@@ -54,7 +54,7 @@
 
     <section id="home-screen-guest" class="screen flex center column">
         <div id="guest-nav" class="flex center">
-            <div id="guest-nav1" class="guest-nav flex center">
+            <div class="guest-nav guest-nav--links flex center">
                 <img src="assets/svg/86-icon.svg" alt="86-icon">
                 <div class="glass">About</div>
                 <div class="glass">Projects</div>
@@ -63,7 +63,7 @@
                 <div class="glass">Help</div>
             </div>
 
-            <div id="guest-nav2" class="guest-nav flex center">
+            <div class="guest-nav guest-nav--status flex center">
                 <div id="nav-battery" class="flex center">
                     <img src="assets/svg/battery-full.svg" alt="battery-full">
                 </div>
@@ -73,9 +73,9 @@
                 <div id="nav-date">Mon 5 Sep 1995</div>
                 <div id="nav-time">20:00</div>
             </div>
-
-            <div id="nav-menu"></div>
         </div>
+
+        <div id="nav-menu"></div>
 
         <div id="apps"></div>
         
