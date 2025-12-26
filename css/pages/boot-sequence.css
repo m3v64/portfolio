@@ -7,14 +7,14 @@
 	height: 100vh;
 }
 
-.boot-screen__container {
+.boot-screen-container {
 	position: relative;
 	width: 100%;
 	height: 100%;
 }
 
 #tty,
-.boot-screen__tty {
+.boot-screen-tty {
 	position: absolute;
 	z-index: 1;
 	bottom: 0;
@@ -59,7 +59,7 @@
 	line-height: 20px;
 }
 
-.boot-screen__logo,
+.boot-screen-logo,
 #logo {
 	position: relative;
 	width: 12vh;

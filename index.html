@@ -11,16 +11,16 @@
 </head>
 
 <body>
-    <section id="boot-screen" class="screen screen--boot flex center">
-        <div class="boot-screen__container center flex">
-            <div id="tty" class="flex boot-screen__tty"></div>
+    <section id="boot-screen" class="screen flex center">
+        <div class="boot-screen-container center flex">
+            <div id="tty" class="flex boot-screen-tty"></div>
             <div class="flex">
-                <img id="logo" class="fade-in boot-screen__logo" src="assets/svg/86-boot.svg" alt="86 boot logo">
+                <img draggable="false" id="logo" class="fade-in boot-screen-logo" src="assets/svg/86-boot.svg" alt="86 boot logo">
             </div>
         </div>
     </section>
 
-    <section id="login-screen" class="screen screen--login flex center">
+    <section id="login-screen" class="screen flex center">
         <div class="clock u-fit-content flex center">
             <div id="h1" class="more-left"></div>
             <div id="h2" class="left"></div>
@@ -32,21 +32,21 @@
         <div id="admin-login" class="hide" inert>
             <form id="admin-login-form" class="flex glass u-reset center column">
                 <button type="button" id="button-close" class="flex glass-item u-reset center">
-                    <img src="assets/png/close.png" alt="close">
+                    <img draggable="false" src="assets/png/close.png" alt="close">
                 </button>
-                <div class="input login-form__field center flex glass-item"><input type="text" placeholder="Username" class="u-reset"></div>
-                <div class="input login-form__field center flex glass-item"><input type="password" placeholder="Password" class="u-reset"></div>
+                <div class="input login-form-text-field center flex glass-item"><input type="text" placeholder="Username" class="u-reset"></div>
+                <div class="input login-form-text-field center flex glass-item"><input type="password" placeholder="Password" class="u-reset"></div>
                 <button type="button" id="login-button" class="flex glass-item u-reset center">Login</button>
             </form>
         </div>
 
         <div class="login-user-selector glass flex center column">
             <button type="button" id="guest-button" class="u-reset glass-item flex center row">
-                <div class="profile"><img src="assets/jpg/guest-user.jpg" alt="guest pfp"></div>
+                <div class="profile"><img draggable="false" src="assets/jpg/guest-user.jpg" alt="guest pfp"></div>
                 guest
             </button>
             <button type="button" id="admin-button" class="u-reset glass-item flex center row">
-                <div class="profile"><img src="assets/jpg/admin-user.jpg" alt="admin pfp"></div>
+                <div class="profile"><img draggable="false" src="assets/jpg/admin-user.jpg" alt="admin pfp"></div>
                 admin
             </button>
         </div>
@@ -54,8 +54,8 @@
 
     <section id="home-screen-guest" class="screen flex center column">
         <div id="guest-nav" class="flex center">
-            <div class="guest-nav guest-nav--links flex center">
-                <img src="assets/svg/86-icon.svg" alt="86-icon">
+            <div class="guest-nav guest-nav-quick-links flex center">
+                <img draggable="false" src="assets/svg/86-icon.svg" alt="86-icon">
                 <div class="glass">About</div>
                 <div class="glass">Projects</div>
                 <div class="glass">Contact</div>
@@ -63,19 +63,42 @@
                 <div class="glass">Help</div>
             </div>
 
-            <div class="guest-nav guest-nav--status flex center">
+            <div class="guest-nav guest-nav-control-center flex center">
                 <div id="nav-battery" class="flex center">
-                    <img src="assets/svg/battery-full.svg" alt="battery-full">
+                    <img draggable="false" src="assets/svg/battery-full.svg" alt="battery-full">
                 </div>
-                <div class="glass flex center"><img src="assets/svg/wifi.svg" alt="wifi"></div>
-                <div class="glass flex center"><img src="assets/svg/search.svg" alt="search"></div>
-                <div class="glass flex center"><img src="assets/svg/settings.svg" alt="settings"></div>
+                <div class="glass flex center"><img draggable="false" src="assets/svg/wifi.svg" alt="wifi"></div>
+                <div class="glass flex center"><img draggable="false" src="assets/svg/search.svg" alt="search"></div>
+                <div class="glass flex center"><img draggable="false" src="assets/svg/settings.svg" alt="settings"></div>
                 <div id="nav-date">Mon 5 Sep 1995</div>
                 <div id="nav-time">20:00</div>
             </div>
         </div>
 
-        <div id="nav-menu"></div>
+        <div id="control-center flex column">
+            <div class="control-center-group-1 control-center-group flex row">
+                <div class="flex column">
+                    <div></div>
+                    <div class="flex row">
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+            <div class="control-center-group-2 control-center-group">
+                <div></div>
+            </div>
+            <div class="control-center-group-3 control-center-group">
+                <div></div>
+            </div>
+            <div class="control-center-group-4 control-center-group flex row">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
 
         <div id="apps"></div>
         
@@ -89,47 +112,47 @@
     <section id="templates" style="display: none;" inert>
         <section id="clock-templates">
             <template id="svg-digit-0">
-                <img src="assets/png/Vector-0.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-0.png" alt="clock element">
             </template>
 
             <template id="svg-digit-1">
-                <img src="assets/png/Vector-1.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-1.png" alt="clock element">
             </template>
 
             <template id="svg-digit-2">
-                <img src="assets/png/Vector-2.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-2.png" alt="clock element">
             </template>
 
             <template id="svg-digit-3">
-                <img src="assets/png/Vector-3.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-3.png" alt="clock element">
             </template>
 
             <template id="svg-digit-4">
-                <img src="assets/png/Vector-4.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-4.png" alt="clock element">
             </template>
 
             <template id="svg-digit-5">
-                <img src="assets/png/Vector-5.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-5.png" alt="clock element">
             </template>
 
             <template id="svg-digit-6">
-                <img src="assets/png/Vector-6.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-6.png" alt="clock element">
             </template>
 
             <template id="svg-digit-7">
-                <img src="assets/png/Vector-7.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-7.png" alt="clock element">
             </template>
 
             <template id="svg-digit-8">
-                <img src="assets/png/Vector-8.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-8.png" alt="clock element">
             </template>
 
             <template id="svg-digit-9">
-                <img src="assets/png/Vector-9.png" alt="clock element">
+                <img draggable="false" src="assets/png/Vector-9.png" alt="clock element">
             </template>
 
             <template id="svg-digit-10">
-                <img src="assets/png/Vector-10.png" alt="clock element colon">
+                <img draggable="false" src="assets/png/Vector-10.png" alt="clock element colon">
             </template>
         </section>
 

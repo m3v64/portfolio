@@ -178,7 +178,7 @@
 	background: rgba(32, 32, 32, 0.25);
 }
 
-#admin-login form .login-form__field,
+#admin-login form .login-form-text-field,
 #admin-login form .input {
 	height: 2vh;
 	width: 72%;
@@ -188,7 +188,7 @@
 	--blur: 2px;
 }
 
-#admin-login form .login-form__field input,
+#admin-login form .login-form-text-field input,
 #admin-login form .input input {
 	height: 100%;
 	width: 100%;
