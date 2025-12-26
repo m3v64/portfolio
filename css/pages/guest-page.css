@@ -113,6 +113,12 @@
 	height: clamp(20px, 2.8vh, 40px);
 }
 
+/* .control-center {
+    height: clamp();
+    width: clamp(420px, 22vw, 560px);
+    --radius: clamp(40px, 6vw, 80px);
+} */
+
 @media (max-width: 720px) {
 	#guest-nav {
 		top: -46vh;
