@@ -1,4 +1,3 @@
-
 #boot-screen {
 	position: relative;
 	z-index: 2;
@@ -56,7 +55,7 @@
 .logs {
 	color: #FEFEFACC;
 	font-family: 'Iosevka Semibold';
-	line-height: 20px;
+	line-height: var(--len-24);
 }
 
 .boot-screen-logo,

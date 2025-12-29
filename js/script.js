@@ -91,26 +91,58 @@ function boot() {
             await printLine(line);
             await new Promise(r => setTimeout(r, 150));
         }
-        login();
+        navigate("login-screen", true, 800);
     }
     startBoot();
 }
 
+const SCREEN_ORDER = {
+    "boot-screen": { init: boot },
+    "login-screen": { init: login },
+    "home-screen-guest": { init: guest, enter: guest }
+};
+
+const displayedScreens = new Set();
+
+function runScreenOrder(screenId) {
+    const order = SCREEN_ORDER[screenId];
+    if (!order) return;
+
+    if (typeof order.init === "function" && !displayedScreens.has(screenId)) {
+        displayedScreens.add(screenId);
+        order.init();
+    }
+
+    if (typeof order.enter === "function") {
+        order.enter();
+    }
+}
+
+function navigate(screenId, fade = true, delay = 300) {
+    showScreen(screenId, fade, delay);
+}
+
 function login() {
-    showScreen("login-screen", true, 800);
+    const guestButton = document.getElementById("guest-button");
+    if (guestButton) {
+        guestButton.addEventListener("click", () => {
+            navigate("home-screen-guest", true);
+        });
+    }
 
-    document.getElementById("guest-button").addEventListener("click", () => {
-        showScreen("home-screen-guest", true);
-        guest();
-    });
+    const adminButton = document.getElementById("admin-button");
+    if (adminButton) {
+        adminButton.addEventListener("click", () => {
+            adminForm();
+        });
+    }
 
-    document.getElementById("admin-button").addEventListener("click", () => {
-        adminForm();
-    });
-
-    document.getElementById("button-close").addEventListener("click", () => {
-        adminForm();
-    });
+    const closeButton = document.getElementById("button-close");
+    if (closeButton) {
+        closeButton.addEventListener("click", () => {
+            adminForm();
+        });
+    }
 
     function adminForm() {
         const adminLogin = document.getElementById("admin-login");
@@ -148,6 +180,7 @@ function login() {
 
         for (let i = 0; i <= 10; i++) {
             const template = document.getElementById(`svg-digit-${i}`);
+            if (!template) return;
             templateCache[i] = template.content.cloneNode(true);
         }
 
@@ -227,10 +260,16 @@ function showScreen(screenId, fade, delay = 300) {
                 }
             }
         });
+
+        runScreenOrder(screenId);
     }, delay);
 }
 
 function guest() {
+    if (!guest._state) {
+        guest._state = { timersStarted: false, timeIntervalId: null, dateIntervalId: null };
+    }
+
     var serverState = 3;
     const battery = document.getElementById("nav-battery");
     const date = document.getElementById("nav-date");
@@ -238,7 +277,7 @@ function guest() {
 
     if (!battery || !date || !time) { return; }
     switch (serverState) {
-        case 2:
+        case 3:
             battery.innerHTML = '<img src="assets/svg/battery-full.svg" alt="battery-full">';
             break;
         case 2:
@@ -278,18 +317,22 @@ function guest() {
 
     updateTime();
     updateDate();
-    setInterval(updateTime, 1000);
-    setInterval(updateDate, 60000);
+
+    if (!guest._state.timersStarted) {
+        guest._state.timersStarted = true;
+        guest._state.timeIntervalId = setInterval(updateTime, 1000);
+        guest._state.dateIntervalId = setInterval(updateDate, 60000);
+    }
 }
 
 window.addEventListener('load', () => {
-    showScreen("boot-screen", true);
+    let startScreenId = "home-screen-guest";
+    if (!document.getElementById(startScreenId)) startScreenId = "boot-screen";
+
+    navigate(startScreenId, true);
 
     const fadingElement = document.querySelector('.fade-in');
     if (fadingElement) {
         fadingElement.classList.add('show');
-        setTimeout(boot, 300);
-    } else {
-        setTimeout(boot, 300);
     }
 });
