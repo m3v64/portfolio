@@ -278,16 +278,16 @@ function guest() {
     if (!battery || !date || !time) { return; }
     switch (serverState) {
         case 3:
-            battery.innerHTML = '<img src="assets/svg/battery-full.svg" alt="battery-full">';
+            battery.innerHTML = '<img draggable="false" src="assets/svg/battery-full.svg" alt="battery-full">';
             break;
         case 2:
-            battery.innerHTML = '<img src="assets/svg/battery-medium.svg" alt="battery-medium">';
+            battery.innerHTML = '<img draggable="false" src="assets/svg/battery-medium.svg" alt="battery-medium">';
             break;
         case 1:
-            battery.innerHTML = '<img src="assets/svg/battery-empty.svg" alt="battery-empty">';
+            battery.innerHTML = '<img draggable="false" src="assets/svg/battery-empty.svg" alt="battery-empty">';
             break;
         default:
-            battery.innerHTML = '<img src="assets/svg/battery-full.svg" alt="battery-full">';
+            battery.innerHTML = '<img draggable="false" src="assets/svg/battery-full.svg" alt="battery-full">';
             break;
     }
     
