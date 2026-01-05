@@ -40,6 +40,16 @@
   display: flex;
 }
 
+.space-around {
+  justify-content: space-around;
+  align-content: space-around;
+}
+
+.space-between {
+  justify-content: space-between;
+  align-content: space-between;
+}
+
 .u-fit-content {
   height: fit-content;
   width: fit-content;
