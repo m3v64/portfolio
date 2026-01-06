@@ -40,6 +40,10 @@
   display: flex;
 }
 
+.block {
+  display: block;
+}
+
 .space-around {
   justify-content: space-around;
   align-content: space-around;

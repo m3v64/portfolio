@@ -1,5 +1,6 @@
 
 #home-screen-guest {
+	justify-content: flex-start;
 	background-image: url('../../assets/jpg/guest-wallpaper.jpg');
 	background-size: cover;
 	background-position: center;
@@ -9,9 +10,6 @@
 }
 
 #guest-nav {
-	position: relative;
-	top: -26.5vh;
-
 	width: 99%;
 	justify-content: space-between;
 	gap: 1rem;
@@ -130,9 +128,6 @@
 }
 
 .control-center-container {
-	position: relative;
-	top: -26vh;
-
 	width: 99%;
 	justify-content: flex-end;
 }
@@ -152,7 +147,8 @@
 	height: var(--guest-control-center-height);
 	align-items: stretch;
 
-	--radius: 4vh;
+	--radius: var(--len-48);
+	--blur: 6px;
 }
 
 .control-center-group-1,
@@ -211,6 +207,25 @@
 	display: block;
 	width: auto;
 	height: var(--len-40);
+}
+
+.audio-control-section {
+	width: 80%;
+	height: 30%;
+}
+
+.control-center-cover-img {
+	border-radius: var(--len-16);
+	width: auto;
+	height: var(--len-72);
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	object-position: center;
+}
+
+.air-play {
+	width: var(--len-56);
+	height: var(--len-56);
 }
 
 @media (max-width: 720px) {

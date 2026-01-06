@@ -25,7 +25,7 @@
 @property --blur-opacity {
   syntax: '<number>';
   inherits: true;
-  initial-value: 0;
+  initial-value: 1;
 }
 
 @property --saturation {
@@ -61,48 +61,48 @@
 :root {
   /* reference viewport: 1920x1080 (sometimes) */
 
-  --len-0-1: clamp(0.0333px, 0.009259vmin, 0.2px);
-  --len-0-2: clamp(0.0667px, 0.018519vmin, 0.4px);
-  --len-0-4: clamp(0.1333px, 0.037037vmin, 0.8px);
-  --len-2: clamp(0.6667px, 0.185185vmin, 4px);
-  --len-4: clamp(1.3333px, 0.37037vmin, 8px);
-  --len-6: clamp(2px, 0.555556vmin, 12px);
-  --len-8: clamp(2.6667px, 0.740741vmin, 16px);
-  --len-12: clamp(4px, 1.111111vmin, 24px);
-  --len-16: clamp(5.3333px, 1.481481vmin, 32px);
-  --len-18: clamp(6px, 1.666667vmin, 36px);
-  --len-20: clamp(6.6667px, 1.851852vmin, 40px);
-  --len-24: clamp(8px, 2.222222vmin, 48px);
-  --len-28: clamp(9.3333px, 2.592593vmin, 56px);
-  --len-32: clamp(10.6667px, 2.962963vmin, 64px);
-  --len-40: clamp(13.3333px, 3.703704vmin, 80px);
-  --len-48: clamp(16px, 4.444444vmin, 96px);
-  --len-56: clamp(18.6667px, 5.185185vmin, 112px);
-  --len-64: clamp(21.3333px, 5.925926vmin, 128px);
-  --len-72: clamp(24px, 6.666667vmin, 144px);
-  --len-80: clamp(26.6667px, 7.407407vmin, 160px);
-  --len-88: clamp(29.3333px, 8.148148vmin, 176px);
-  --len-96: clamp(32px, 8.888889vmin, 192px);
-  --len-100: clamp(33.3333px, 9.259259vmin, 200px);
-  --len-104: clamp(34.6667px, 9.62963vmin, 208px);
-  --len-112: clamp(37.3333px, 10.37037vmin, 224px);
-  --len-120: clamp(40px, 11.111111vmin, 240px);
-  --len-128: clamp(42.6667px, 11.851852vmin, 256px);
-  --len-200: clamp(66.6667px, 18.518519vmin, 400px);
-  --len-800: clamp(266.6667px, 74.074074vmin, 1600px);
+  --len-0-1: clamp(0.0333px, 0.005208vw, 0.2px);
+  --len-0-2: clamp(0.0667px, 0.010417vw, 0.4px);
+  --len-0-4: clamp(0.1333px, 0.020833vw, 0.8px);
+  --len-2: clamp(0.6667px, 0.104167vw, 4px);
+  --len-4: clamp(1.3333px, 0.208333vw, 8px);
+  --len-6: clamp(2px, 0.3125vw, 12px);
+  --len-8: clamp(2.6667px, 0.416667vw, 16px);
+  --len-12: clamp(4px, 0.625vw, 24px);
+  --len-16: clamp(5.3333px, 0.833333vw, 32px);
+  --len-18: clamp(6px, 0.9375vw, 36px);
+  --len-20: clamp(6.6667px, 1.041666vw, 40px);
+  --len-24: clamp(8px, 1.25vw, 48px);
+  --len-28: clamp(9.3333px, 1.458333vw, 56px);
+  --len-32: clamp(10.6667px, 1.666667vw, 64px);
+  --len-40: clamp(13.3333px, 2.083333vw, 80px);
+  --len-48: clamp(16px, 2.5vw, 96px);
+  --len-56: clamp(18.6667px, 2.916667vw, 112px);
+  --len-64: clamp(21.3333px, 3.333333vw, 128px);
+  --len-72: clamp(24px, 3.75vw, 144px);
+  --len-80: clamp(26.6667px, 4.166667vw, 160px);
+  --len-88: clamp(29.3333px, 4.583333vw, 176px);
+  --len-96: clamp(32px, 5vw, 192px);
+  --len-100: clamp(33.3333px, 5.208333vw, 200px);
+  --len-104: clamp(34.6667px, 5.416667vw, 208px);
+  --len-112: clamp(37.3333px, 5.833333vw, 224px);
+  --len-120: clamp(40px, 6.25vw, 240px);
+  --len-128: clamp(42.6667px, 6.666667vw, 256px);
+  --len-200: clamp(66.6667px, 10.416667vw, 400px);
+  --len-800: clamp(266.6667px, 41.666667vw, 1600px);
 
   --guest-nav-font-size: clamp(16px, 1.0416667vw, 20px);
   --guest-nav-small-font-size: clamp(14px, 2.5vw, 16px);
   
   --guest-nav-quick-links-padding-left: clamp(32px, 2.7083333vw, 52px);
   --guest-nav-quick-links-logo-left: -20px;
-  --guest-nav-quick-links-logo-top: clamp(6px, 0.7407407vh, 8px);
-  --guest-nav-xs-logo-top: clamp(8px, 1vh, 16px);
+  --guest-nav-quick-links-logo-top: clamp(6px, 0.416667vw, 8px);
+  --guest-nav-xs-logo-top: clamp(8px, 0.5625vw, 16px);
   --guest-nav-quick-links-logo-height: clamp(64px, 4.2708333vw, 82px);
-  --guest-nav-xs-logo-height: clamp(28px, 4vh, 40px);
+  --guest-nav-xs-logo-height: clamp(28px, 2.25vw, 40px);
 
-  --guest-nav-control-center-icon-height: clamp(20px, 1.851852vh, 32px);
-  --guest-nav-xs-control-center-icon-height: clamp(12px, 2vh, 24px);
+  --guest-nav-control-center-icon-height: clamp(20px, 1.041667vw, 32px);
+  --guest-nav-xs-control-center-icon-height: clamp(12px, 1.125vw, 24px);
 
   --guest-control-center-width: calc((var(--guest-control-center-width-one) * 4) + (var(--guest-control-center-gap) * 3));
   --guest-control-center-height: calc((var(--guest-control-center-height-one) * 5) + (var(--guest-control-center-gap) * 4));
