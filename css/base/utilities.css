@@ -54,6 +54,11 @@
   align-content: space-between;
 }
 
+.space-evenly {
+  justify-content: space-evenly;
+  align-content: space-evenly;
+}
+
 .u-fit-content {
   height: fit-content;
   width: fit-content;

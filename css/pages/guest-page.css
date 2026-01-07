@@ -228,6 +228,36 @@
 	height: var(--len-56);
 }
 
+.air-play-img {
+	position: relative;
+	left: 1px;
+}
+
+.control-center-track {
+	position: relative;
+	top: 1rem;
+}
+
+.control-center-artist {
+	position: relative;
+	top: 0.35rem;
+
+	font-size: 12px;
+	color: #06172d40;
+}
+
+.audio-control {
+	height: 100%;
+}
+
+.audio-control-img-small {
+	height: var(--len-24);
+}
+
+.audio-control-img {
+	height: var(--len-32);
+}
+
 @media (max-width: 720px) {
 	#guest-nav {
 		top: -46vh;
