@@ -223,6 +223,14 @@
 	object-position: center;
 }
 
+.control-center-cover::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+
+	box-shadow: calc(0 - var(--len-4)) calc(0 - var(--len-4)) var(--len-8) rgba(6, 23, 45, 0.80) inset, var(--len-4) var(--len-4) var(--len-8) rgba(6, 23, 45, 0.80) inset;
+}
+
 .air-play {
 	width: var(--len-56);
 	height: var(--len-56);
