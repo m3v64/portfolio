@@ -217,7 +217,7 @@
 .control-center-cover-img {
 	border-radius: var(--len-16);
 	width: auto;
-	height: var(--len-72);
+	height: var(--len-64);
 	aspect-ratio: 1 / 1;
 	object-fit: cover;
 	object-position: center;
@@ -235,13 +235,11 @@
 
 .control-center-track {
 	position: relative;
-	top: 1rem;
+	top: 0.65rem;
+	right: 0.065rem;
 }
 
 .control-center-artist {
-	position: relative;
-	top: 0.35rem;
-
 	font-size: 12px;
 	color: #06172d40;
 }
@@ -251,7 +249,7 @@
 }
 
 .audio-control-img-small {
-	height: var(--len-24);
+	height: var(--len-20);
 }
 
 .audio-control-img {
