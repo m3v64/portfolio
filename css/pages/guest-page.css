@@ -206,7 +206,7 @@
 .control-center-img {
 	display: block;
 	width: auto;
-	height: var(--len-40);
+	height: 50%;
 }
 
 .audio-control-section {
@@ -236,7 +236,7 @@
 	height: var(--len-56);
 }
 
-.air-play-img {
+.control-center img {
 	position: relative;
 	left: 1px;
 }
@@ -265,8 +265,26 @@
 }
 
 .control-center-wifi-name {
+	position: relative;
+	top: -0.6rem;
+
 	font-size: 8px;
 	color: #06172d40;
+}
+
+.control-center-wifi-section {
+	width: 40%;
+	height: 100%;
+}
+
+.control-center-wifi-name-section {
+	width: 60%;
+	height: 100%;
+}
+
+.control-center-wifi-name:nth-of-type(3) {
+	position: absolute;
+	top: 2.5rem;
 }
 
 @media (max-width: 720px) {

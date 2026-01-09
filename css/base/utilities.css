@@ -81,6 +81,16 @@
   align-content: center;
 }
 
+.center-justify {
+  justify-content: center;
+  justify-items: center;
+}
+
+.center-align {
+  align-content: center;
+  align-items: center;
+}
+
 .column {
   flex-direction: column;
 }
