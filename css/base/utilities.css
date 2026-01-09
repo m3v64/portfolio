@@ -59,6 +59,16 @@
   align-content: space-evenly;
 }
 
+.flex-start {
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.flex-end {
+  justify-content: flex-end;
+  align-content: flex-end;
+}
+
 .u-fit-content {
   height: fit-content;
   width: fit-content;

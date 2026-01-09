@@ -231,7 +231,7 @@
 	box-shadow: calc(0 - var(--len-4)) calc(0 - var(--len-4)) var(--len-8) rgba(6, 23, 45, 0.80) inset, var(--len-4) var(--len-4) var(--len-8) rgba(6, 23, 45, 0.80) inset;
 }
 
-.air-play {
+.control-center-selectable {
 	width: var(--len-56);
 	height: var(--len-56);
 }
@@ -262,6 +262,11 @@
 
 .audio-control-img {
 	height: var(--len-32);
+}
+
+.control-center-wifi-name {
+	font-size: 8px;
+	color: #06172d40;
 }
 
 @media (max-width: 720px) {
