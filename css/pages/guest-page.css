@@ -352,10 +352,7 @@
 	width: var(--len-24);
 	height: var(--len-16);
 	background-color: #06172D;
-
 	cursor: grab;
-	touch-action: none;
-	pointer-events: auto;
 
 	--c-glass: #0000;
 	--glass-reflex-dark: 0;
@@ -367,7 +364,7 @@
 }
 
 .volume-slider-selector:active {
-	cursor: grabbing !important;
+	cursor: grabbing;
 }
 
 @media (max-width: 720px) {
