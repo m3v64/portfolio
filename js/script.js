@@ -265,9 +265,92 @@ function showScreen(screenId, fade, delay = 300) {
     }, delay);
 }
 
+function initDivSlider(trackEl, { onInput } = {}) {
+    if (!trackEl) return null;
+
+    const thumbEl = trackEl.querySelector(".volume-slider-selector");
+    if (!thumbEl) return null;
+
+    const min = Number.parseFloat(trackEl.dataset.min ?? "0") || 0;
+    const max = Number.parseFloat(trackEl.dataset.max ?? "1") || 1;
+    const stepRaw = Number.parseFloat(trackEl.dataset.step ?? "0.01");
+    const step = Number.isFinite(stepRaw) && stepRaw > 0 ? stepRaw : 0.01;
+
+    const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+    const snap = (n) => Math.round(n / step) * step;
+
+    let currentValue = clamp(
+        Number.parseFloat(trackEl.dataset.value ?? "0.5"),
+        min,
+        max
+    );
+    if (!Number.isFinite(currentValue)) currentValue = 0.5;
+
+    let dragging = false;
+    let activePointerId = null;
+    let hasMoved = false;
+
+    function setValue(nextValue, { emit = true } = {}) {
+        const v = clamp(snap(nextValue), min, max);
+        currentValue = v;
+        trackEl.dataset.value = String(v);
+
+        const percent = max === min ? 0 : ((v - min) / (max - min)) * 100;
+        trackEl.style.setProperty("--value-percent", String(percent));
+
+        trackEl.setAttribute("aria-valuemin", String(min));
+        trackEl.setAttribute("aria-valuemax", String(max));
+        trackEl.setAttribute("aria-valuenow", String(v));
+        trackEl.setAttribute("aria-valuetext", `${Math.round(percent)}%`);
+
+        if (emit && typeof onInput === "function") onInput(v);
+    }
+
+    function valueFromClientX(clientX) {
+        const rect = trackEl.getBoundingClientRect();
+        const x = clamp(clientX - rect.left, 0, rect.width);
+        const t = rect.width === 0 ? 0 : x / rect.width;
+        return min + t * (max - min);
+    }
+
+    thumbEl.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        hasMoved = false;
+        activePointerId = e.pointerId;
+        thumbEl.setPointerCapture?.(e.pointerId);
+        e.preventDefault();
+    });
+
+    thumbEl.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        if (activePointerId !== null && e.pointerId !== activePointerId) return;
+
+        hasMoved = true;
+        setValue(valueFromClientX(e.clientX));
+    });
+
+    function endDrag(e) {
+        if (activePointerId !== null && e?.pointerId !== undefined && e.pointerId !== activePointerId) return;
+        dragging = false;
+        activePointerId = null;
+    }
+
+    thumbEl.addEventListener("pointerup", endDrag);
+    thumbEl.addEventListener("pointercancel", endDrag);
+
+    setValue(currentValue, { emit: false });
+
+    return {
+        get value() {
+            return currentValue;
+        },
+        setValue
+    };
+}
+
 function guest() {
     if (!guest._state) {
-        guest._state = { timersStarted: false, timeIntervalId: null, dateIntervalId: null };
+        guest._state = { timersStarted: false, timeIntervalId: null, dateIntervalId: null, volumeSliderInit: false };
     }
 
     var serverState = 3;
@@ -317,6 +400,16 @@ function guest() {
 
     updateTime();
     updateDate();
+
+    if (!guest._state.volumeSliderInit) {
+        const sliderEl = document.querySelector(".volume-slider");
+        initDivSlider(sliderEl, {
+            onInput: (v) => {
+                // gotta add the logic to play music
+            }
+        });
+        guest._state.volumeSliderInit = true;
+    }
 
     if (!guest._state.timersStarted) {
         guest._state.timersStarted = true;

@@ -4,6 +4,7 @@
 	overflow: hidden;
 	background-color: #06172D;
 	height: 100vh;
+	cursor: none;
 }
 
 .boot-screen-container {

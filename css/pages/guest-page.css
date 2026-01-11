@@ -238,7 +238,7 @@
 
 .control-center img {
 	position: relative;
-	left: 1px;
+	/* left: 1px; */
 }
 
 .control-center-track {
@@ -273,18 +273,101 @@
 }
 
 .control-center-wifi-section {
-	width: 40%;
+	width: 45%;
 	height: 100%;
 }
 
 .control-center-wifi-name-section {
-	width: 60%;
+	width: 55%;
 	height: 100%;
 }
 
 .control-center-wifi-name:nth-of-type(3) {
 	position: absolute;
 	top: 2.5rem;
+}
+
+.volume-control {
+	width: 90%;
+	height: 100%;
+}
+
+.volume-control-slider-section {
+	width: 70%;
+	height: 80%;
+}
+
+.volume-control-airplay-section {
+	width: 20%;
+	height: 100%;
+}
+
+.volume-slider {
+	--value-percent: 50;
+
+	position: relative;
+	width: 10rem;
+	height: 0.5rem;
+	border-radius: 20rem;
+
+	cursor: default;
+	touch-action: none;
+	user-select: none;
+	pointer-events: none;
+}
+
+.volume-slider-unselected {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+
+	width: 10rem;
+	height: 0.5rem;
+
+	border-radius: 20rem;
+	background-color: #00000040;
+	pointer-events: none;
+}
+
+.volume-slider-selected {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1;
+
+	height: 100%;
+	width: calc(var(--value-percent) * 1%);
+	border-radius: 20rem;
+	background-color: #FFF;
+	pointer-events: none;
+}
+
+.volume-slider-selector {
+	position: absolute;
+	top: 50%;
+	left: calc(var(--value-percent) * 1%);
+	transform: translate(-50%, -50%);
+	z-index: 2;
+
+	width: var(--len-24);
+	height: var(--len-16);
+	background-color: #06172D;
+
+	cursor: grab;
+	touch-action: none;
+	pointer-events: auto;
+
+	--c-glass: #0000;
+	--glass-reflex-dark: 0;
+	--glass-reflex-light: 0;
+	--saturation: 100%;
+	--blur: 0;
+	--radius: 2vw;
+	--transition-time: 420ms;
+}
+
+.volume-slider-selector:active {
+	cursor: grabbing !important;
 }
 
 @media (max-width: 720px) {

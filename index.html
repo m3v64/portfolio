@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3v.dev</title>
     <link rel="icon" type="image/svg+xml" sizes="128x128" href="assets/svg/86-icon.svg">
-    <link rel="preload" href="assets/jpg/login-wallpaper.jpg" as="image">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -115,7 +114,36 @@
                 </div>
 
                 <div class="control-center-group-2">
-                    <div class="glass tile g2-bar"></div>
+                    <div class="volume-control glass tile g2-bar flex row flex-end center-align">
+                        <div class="volume-control-slider-section flex column flex-start">
+                            <div>Sound</div>
+                            <div class="flex row space-between">
+                                <div class="flex center"><img class="audio-control-img-small" src="assets/svg/NoAudio.svg" alt="NoAudio"></div>
+                                <div class="flex center">
+                                    <div
+                                        class="volume-slider"
+                                        role="slider"
+                                        tabindex="0"
+                                        aria-label="Sound"
+                                        aria-valuemin="0"
+                                        aria-valuemax="1"
+                                        aria-valuenow="0.4"
+                                        aria-valuetext="50%"
+                                        data-min="0"
+                                        data-max="1"
+                                        data-step="0.01"
+                                        data-value="0.4"
+                                    >
+                                        <div class="volume-slider-selected"></div>
+                                        <div class="glass volume-slider-selector"></div>
+                                        <div class="volume-slider-unselected"></div>
+                                    </div>
+                                </div>
+                                <div class="flex center"><img class="audio-control-img-small" src="assets/svg/Audio.svg" alt="Audio"></div>
+                            </div>
+                        </div>
+                        <div class="volume-control-airplay-section flex center"><div class="glass control-center-selectable flex center"><img class="control-center-img" src="assets/svg/AirPlay.svg" alt="AirPlay"></div></div>
+                    </div>
                 </div>
 
                 <div class="control-center-group-3">
