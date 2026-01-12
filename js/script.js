@@ -265,10 +265,10 @@ function showScreen(screenId, fade, delay = 300) {
     }, delay);
 }
 
-function initDivSlider(trackEl, { onInput } = {}) {
+function initDivSlider(trackEl, { onInput, initialValue, storageKey } = {}) {
     if (!trackEl) return null;
 
-    const thumbEl = trackEl.querySelector(".volume-slider-selector");
+    const thumbEl = trackEl.querySelector(".volume-slider-selector, .brightness-slider-selector");
     if (!thumbEl) return null;
 
     const min = Number.parseFloat(trackEl.dataset.min ?? "0") || 0;
@@ -279,21 +279,56 @@ function initDivSlider(trackEl, { onInput } = {}) {
     const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
     const snap = (n) => Math.round(n / step) * step;
 
-    let currentValue = clamp(
-        Number.parseFloat(trackEl.dataset.value ?? "0.5"),
-        min,
-        max
-    );
-    if (!Number.isFinite(currentValue)) currentValue = 0.5;
+    function readStoredValue() {
+        if (!storageKey) return null;
+        try {
+            const raw = localStorage.getItem(storageKey);
+            if (raw == null) return null;
+            const n = Number.parseFloat(raw);
+            return Number.isFinite(n) ? n : null;
+        } catch {
+            return null;
+        }
+    }
+
+    const stored = readStoredValue();
+    const starting = Number.isFinite(initialValue)
+        ? initialValue
+        : (stored ?? Number.parseFloat(trackEl.dataset.value ?? "0.5"));
+
+    let currentValue = clamp(starting, min, max);
+    if (!Number.isFinite(currentValue)) currentValue = clamp(0.5, min, max);
 
     let dragging = false;
     let activePointerId = null;
     let hasMoved = false;
 
+    const rootEl = document.documentElement;
+    let prevRootCursor = "";
+
+    function setDraggingCursor(isDragging) {
+        if (isDragging) {
+            prevRootCursor = rootEl.style.cursor;
+            rootEl.style.cursor = "grabbing";
+            thumbEl.style.cursor = "grabbing";
+        } else {
+            rootEl.style.cursor = prevRootCursor;
+            thumbEl.style.cursor = "grab";
+        }
+    }
+
     function setValue(nextValue, { emit = true } = {}) {
         const v = clamp(snap(nextValue), min, max);
         currentValue = v;
         trackEl.dataset.value = String(v);
+
+        if (storageKey) {
+            try {
+                localStorage.setItem(storageKey, String(v));
+            } catch {
+                console.log("was not able to save local storage variables");
+            }
+        }
 
         const percent = max === min ? 0 : ((v - min) / (max - min)) * 100;
         trackEl.style.setProperty("--value-percent", String(percent));
@@ -318,6 +353,7 @@ function initDivSlider(trackEl, { onInput } = {}) {
         hasMoved = false;
         activePointerId = e.pointerId;
         thumbEl.setPointerCapture?.(e.pointerId);
+        setDraggingCursor(true);
         e.preventDefault();
     });
 
@@ -333,10 +369,19 @@ function initDivSlider(trackEl, { onInput } = {}) {
         if (activePointerId !== null && e?.pointerId !== undefined && e.pointerId !== activePointerId) return;
         dragging = false;
         activePointerId = null;
+
+        setDraggingCursor(false);
     }
 
     thumbEl.addEventListener("pointerup", endDrag);
     thumbEl.addEventListener("pointercancel", endDrag);
+
+    window.addEventListener("blur", () => {
+        if (!dragging) return;
+        dragging = false;
+        activePointerId = null;
+        setDraggingCursor(false);
+    });
 
     setValue(currentValue, { emit: false });
 
@@ -350,7 +395,37 @@ function initDivSlider(trackEl, { onInput } = {}) {
 
 function guest() {
     if (!guest._state) {
-        guest._state = { timersStarted: false, timeIntervalId: null, dateIntervalId: null, volumeSliderInit: false };
+        guest._state = {
+            timersStarted: false,
+            timeIntervalId: null,
+            dateIntervalId: null,
+            slidersInit: false,
+            volumeSlider: null,
+            brightnessSlider: null,
+            volumeValue: null,
+            brightnessValue: null,
+            controlCenterInit: false
+        };
+    }
+
+    const controlCenterButton = document.getElementById("nav-control-center-settings");
+    if (controlCenterButton) {
+        controlCenterButton.addEventListener("click", () => {
+            if (guest._state.controlCenterInit) {
+                controlCenter(true);
+                guest._state.controlCenterInit = false;
+            } else {
+                controlCenter(false);
+                guest._state.controlCenterInit = true;
+            }
+        });
+    }
+
+    function controlCenter(extended) {
+        let sectionsIds = ["control-center-group-1", "control-center-group-2", "control-center-group-3", "control-center-group-4"]
+        if (extended === false) {
+            
+        }
     }
 
     var serverState = 3;
@@ -401,14 +476,28 @@ function guest() {
     updateTime();
     updateDate();
 
-    if (!guest._state.volumeSliderInit) {
-        const sliderEl = document.querySelector(".volume-slider");
-        initDivSlider(sliderEl, {
+    if (!guest._state.slidersInit) {
+        const volumeSliderEl = document.querySelector(".volume-slider");
+        guest._state.volumeSlider = initDivSlider(volumeSliderEl, {
+            storageKey: "portfolio.slider.volume",
+            initialValue: guest._state.volumeValue,
             onInput: (v) => {
+                guest._state.volumeValue = v;
                 // gotta add the logic to play music
             }
         });
-        guest._state.volumeSliderInit = true;
+
+        const brightnessSliderEl = document.querySelector(".brightness-slider");
+        guest._state.brightnessSlider = initDivSlider(brightnessSliderEl, {
+            storageKey: "portfolio.slider.brightness",
+            initialValue: guest._state.brightnessValue,
+            onInput: (v) => {
+                guest._state.brightnessValue = v;
+                // another thingy i gotta do
+            }
+        });
+
+        guest._state.slidersInit = true;
     }
 
     if (!guest._state.timersStarted) {
