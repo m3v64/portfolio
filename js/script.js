@@ -294,10 +294,10 @@ function initDivSlider(trackEl, { onInput, initialValue, storageKey } = {}) {
     const stored = readStoredValue();
     const starting = Number.isFinite(initialValue)
         ? initialValue
-        : (stored ?? Number.parseFloat(trackEl.dataset.value ?? "0.5"));
+        : (stored ?? Number.parseFloat(trackEl.dataset.value ?? "0.4"));
 
     let currentValue = clamp(starting, min, max);
-    if (!Number.isFinite(currentValue)) currentValue = clamp(0.5, min, max);
+    if (!Number.isFinite(currentValue)) currentValue = clamp(0.4, min, max);
 
     let dragging = false;
     let activePointerId = null;
