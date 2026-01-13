@@ -404,28 +404,152 @@ function guest() {
             brightnessSlider: null,
             volumeValue: null,
             brightnessValue: null,
-            controlCenterInit: false
+            controlCenterExpanded: false,
+            controlCenterListenerBound: false,
+            controlCenterAnimating: false,
+            controlCenterInitialApplied: false
         };
     }
 
-    const controlCenterButton = document.getElementById("nav-control-center-settings");
-    if (controlCenterButton) {
-        controlCenterButton.addEventListener("click", () => {
-            if (guest._state.controlCenterInit) {
-                controlCenter(true);
-                guest._state.controlCenterInit = false;
-            } else {
-                controlCenter(false);
-                guest._state.controlCenterInit = true;
+    const controlCenterButton = document.querySelector(".nav-control-center-settings");
+
+    const prefersReducedMotion = (() => {
+        try {
+            return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+        } catch {
+            return false;
+        }
+    })();
+
+    function getControlCenterGroupEls() {
+        return [
+            document.querySelector(".control-center-group-1"),
+            document.querySelector(".control-center-group-2"),
+            document.querySelector(".control-center-group-3"),
+            document.querySelector(".control-center-group-4")
+        ].filter(Boolean);
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function tilesForGroup(groupEl) {
+        return Array.from(groupEl.children);
+    }
+
+    async function collapseGroup(groupEl, { duration = 160 } = {}) {
+        const tiles = tilesForGroup(groupEl);
+        if (tiles.length === 0) {
+            groupEl.style.display = "none";
+            return;
+        }
+
+        if (prefersReducedMotion) {
+            groupEl.style.display = "none";
+            return;
+        }
+
+        const animations = tiles.map(tile => {
+            try {
+                return tile.animate(
+                    [
+                        { opacity: 1, transform: "translateY(0) scale(1)", filter: "blur(0px)" },
+                        { opacity: 0, transform: "translateY(-6px) scale(0.98)", filter: "blur(2px)" }
+                    ],
+                    { duration, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", fill: "forwards" }
+                );
+            } catch {
+                return null;
             }
+        }).filter(Boolean);
+
+        await Promise.allSettled(animations.map(a => a.finished));
+        groupEl.style.display = "none";
+        animations.forEach(a => {
+            try { a.cancel(); } catch {}
         });
     }
 
-    function controlCenter(extended) {
-        let sectionsIds = ["control-center-group-1", "control-center-group-2", "control-center-group-3", "control-center-group-4"]
-        if (extended === false) {
-            
+    async function expandGroup(groupEl, { duration = 190 } = {}) {
+        groupEl.style.display = "";
+
+        const tiles = tilesForGroup(groupEl);
+        if (tiles.length === 0) return;
+
+        if (prefersReducedMotion) return;
+
+        tiles.forEach(tile => {
+            tile.style.opacity = "0";
+            tile.style.transform = "translateY(-6px) scale(0.98)";
+            tile.style.filter = "blur(2px)";
+        });
+
+        const animations = tiles.map(tile => {
+            try {
+                return tile.animate(
+                    [
+                        { opacity: 0, transform: "translateY(-6px) scale(0.98)", filter: "blur(2px)" },
+                        { opacity: 1, transform: "translateY(0) scale(1)", filter: "blur(0px)" }
+                    ],
+                    { duration, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", fill: "forwards" }
+                );
+            } catch {
+                return null;
+            }
+        }).filter(Boolean);
+
+        await Promise.allSettled(animations.map(a => a.finished));
+
+        tiles.forEach(tile => {
+            tile.style.opacity = "";
+            tile.style.transform = "";
+            tile.style.filter = "";
+        });
+        animations.forEach(a => {
+            try { a.cancel(); } catch {}
+        });
+    }
+
+    async function setControlCenterExpanded(isExpanded) {
+        if (guest._state.controlCenterAnimating) return;
+        guest._state.controlCenterAnimating = true;
+
+        const groups = getControlCenterGroupEls();
+
+        try {
+            if (isExpanded) {
+                for (const groupEl of groups) {
+                    await expandGroup(groupEl);
+                    await sleep(55);
+                }
+            } else {
+                for (const groupEl of groups.slice().reverse()) {
+                    await collapseGroup(groupEl);
+                    await sleep(55);
+                }
+            }
+
+            guest._state.controlCenterExpanded = isExpanded;
+        } finally {
+            guest._state.controlCenterAnimating = false;
         }
+    }
+
+    if (!guest._state.controlCenterInitialApplied) {
+        guest._state.controlCenterInitialApplied = true;
+        const groups = getControlCenterGroupEls();
+        groups.forEach(groupEl => {
+            groupEl.style.display = "none";
+        });
+        guest._state.controlCenterExpanded = false;
+    }
+
+    if (controlCenterButton && !guest._state.controlCenterListenerBound) {
+        guest._state.controlCenterListenerBound = true;
+        controlCenterButton.addEventListener("click", () => {
+            setControlCenterExpanded(!guest._state.controlCenterExpanded);
+        });
     }
 
     var serverState = 3;

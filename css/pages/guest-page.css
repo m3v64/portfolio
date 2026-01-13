@@ -10,6 +10,7 @@
 }
 
 #guest-nav {
+	z-index: 3;
 	width: 99%;
 	justify-content: space-between;
 	gap: 1rem;
@@ -128,6 +129,7 @@
 }
 
 .control-center-container {
+	z-index: 2;
 	padding-top: 0.5%;
 	width: 99%;
 	justify-content: flex-end;
@@ -148,7 +150,7 @@
 	height: var(--guest-control-center-height);
 	align-items: stretch;
 
-	--radius: var(--len-48);
+	--radius: 2rem;
 	--blur: 6px;
 }
 
@@ -219,21 +221,29 @@
 	height: 35%;
 }
 
+.control-center-cover {
+	position: relative;
+	display: block;
+	width: 40%;
+}
+
+/* .control-center-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: calc(0 - var(--len-4)) calc(0 - var(--len-4)) var(--len-8) rgb(6, 23, 45) inset, var(--len-4) var(--len-4) var(--len-8) rgb(6, 23, 45) inset;
+} */
+
 .control-center-cover-img {
-	border-radius: var(--len-16);
-	width: auto;
-	height: var(--len-64);
+	border-radius: 1rem;
+	height: 130%;
+	position: relative;
+	
 	aspect-ratio: 1 / 1;
 	object-fit: cover;
 	object-position: center;
-}
-
-.control-center-cover::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-
-	box-shadow: calc(0 - var(--len-4)) calc(0 - var(--len-4)) var(--len-8) rgba(6, 23, 45, 0.80) inset, var(--len-4) var(--len-4) var(--len-8) rgba(6, 23, 45, 0.80) inset;
 }
 
 .control-center-selectable {
@@ -266,11 +276,15 @@
 }
 
 .audio-control-img-small {
-	height: var(--len-20);
+	height: 40%;
 }
 
 .audio-control-img {
-	height: var(--len-32);
+	height: 65%;
+}
+
+.slider-img-small {
+	height: 72.5%;
 }
 
 .control-center-wifi-name {
@@ -400,6 +414,69 @@
 .brightness-control-slider-section {
 	width: 80%;
 	height: 80%;
+}
+
+#taskbar-section {
+	z-index: 1;
+	width: 99%;
+	height: auto;
+	margin-top: auto;
+}
+
+.taskbar {
+	position: fixed;
+	bottom: 1.5rem;
+
+	width: 60%;
+	height: 4.5rem;
+
+	--radius: 2rem;
+}
+
+.taskbar-icons {
+	width: 95%;
+	height: 80%;
+}
+
+.taskbar-icon-1 {
+	position: relative;
+	height: 100%;
+	width: fit-content;
+}
+
+.taskbar-icon-img {
+	position: relative;
+	z-index: 2;
+	width: 3rem;
+	height: 3rem;
+}
+
+.taskbar-icon-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	width: 125%;
+	height: 105%;
+
+	z-index: 1;
+	pointer-events: none;
+
+	--c-glass: #0000;
+	--glass-reflex-dark: 0;
+	--glass-reflex-light: 0;
+	--blur: 0px;
+	--saturation: 100%;
+	--radius: 1rem;
+	--transition-time: 220ms;
+}
+
+.taskbar-icon-1:hover .taskbar-icon-container {
+	--glass-reflex-dark: 2;
+	--glass-reflex-light: 1;
+	--blur: 16px;
+	--saturation: 50%;
 }
 
 @media (max-width: 720px) {
