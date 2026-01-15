@@ -24,12 +24,10 @@
 	font-weight: 600;
 	font-style: normal;
 
-	width: 100%;
+	width: 400%;
 	height: 100%;
 
-	flex-direction: column;
-	justify-content: flex-end;
-
+	gap: 0.1vh;
 	padding: 2.22vw;
 	overflow: hidden;
 }

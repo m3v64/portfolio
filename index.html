@@ -12,7 +12,7 @@
 <body>
     <section id="boot-screen" class="screen flex center">
         <div class="boot-screen-container center flex">
-            <div id="tty" class="flex boot-screen-tty"></div>
+            <div id="tty" class="flex boot-screen-tty column flex-end"></div>
             <div class="flex">
                 <img draggable="false" id="logo" class="fade-in boot-screen-logo" src="assets/svg/86-boot.svg" alt="86 boot logo">
             </div>
@@ -177,8 +177,16 @@
         <div id="apps">
             <div class="notes-window glass flex column" data-window>
                 <div class="notes-top-nav flex center" data-drag-handle>
-                    <div class="notes-nav-container flex">
+                    <div class="notes-nav-container flex center">
                         <div class="window-header flex center">Notes</div>
+                        <div class="notes-options flex center row">
+                            <div class="glass new-notes-option flex"><img class="notes-options-img" src="assets/svg/Create.svg" alt="Create"></div>
+                            <div class="glass notes-text-options flex"></div>
+                            <div class="glass notes-search-option flex">
+                                <img class="notes-options-img" src="assets/svg/search.svg" alt="Search">
+                                <textarea name="notes-search" id="notes-search-box" placeholder="Search" style="display: none;" inert></textarea>
+                            </div>
+                        </div>
                         <div class="window-options flex row center-align flex-end">
                             <div class="glass flex window-option-minimize"><img class="window-option-img-minimize" src="assets/svg/Minimize.svg" alt="Minimize"></div>
                             <div class="glass flex window-option-maximize"><img class="window-option-img" src="assets/svg/Maximize.svg" alt="Restore/Maximize"></div>
