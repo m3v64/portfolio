@@ -175,8 +175,25 @@
         </div>
 
         <div id="apps">
-            <div class="readme-dot-md">
-
+            <div class="notes-window glass flex column" data-window>
+                <div class="notes-top-nav flex center" data-drag-handle>
+                    <div class="notes-nav-container flex">
+                        <div class="window-header flex center">Notes</div>
+                        <div class="window-options flex row center-align flex-end">
+                            <div class="glass flex window-option-minimize"><img class="window-option-img-minimize" src="assets/svg/Minimize.svg" alt="Minimize"></div>
+                            <div class="glass flex window-option-maximize"><img class="window-option-img" src="assets/svg/Maximize.svg" alt="Restore/Maximize"></div>
+                            <div class="glass flex window-option-close"><img class="window-option-img" src="assets/svg/Close.svg" alt="Close"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="devider-x flex"></div>
+                <div class="notes-body flex row">
+                    <div class="notes-explorer flex column"></div>
+                    <div class="devider-y"></div>
+                    <div class="notes-content flex">
+                        
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -249,6 +266,9 @@
             </template>
         </section>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
     <script src="js/script.js"></script>
 </body>
 
