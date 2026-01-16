@@ -457,6 +457,9 @@ function initNotesApp() {
             // Only handle DELETE key
             if (e.key !== 'Delete' && e.key !== 'Del') return;
             
+            // Don't handle if delete dialog is already open
+            if (document.querySelector('.delete-overlay')) return;
+            
             // Check if we're in the notes window and not in an input field
             const notesWindow = document.querySelector('.notes-window');
             if (!notesWindow || notesWindow.style.display === 'none') return;
@@ -479,6 +482,7 @@ function initNotesApp() {
             
             // Show confirmation dialog
             showDeleteConfirmation(note);
+            e.preventDefault();
         });
     }
     

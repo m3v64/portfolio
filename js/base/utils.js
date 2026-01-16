@@ -76,7 +76,7 @@ function makeDraggable(element, handle) {
     if (!element || !handle) return;
     
     let isDragging = false;
-    let startX, startY, initialLeft, initialTop;
+    let offsetX, offsetY;
     
     // Convert transform positioning to absolute positioning on first drag
     function initializePosition() {
@@ -98,13 +98,11 @@ function makeDraggable(element, handle) {
         }
         
         isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
         
-        // Get current position
+        // Calculate offset between mouse and element's top-left corner
         const rect = element.getBoundingClientRect();
-        initialLeft = rect.left;
-        initialTop = rect.top;
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
         
         handle.style.cursor = 'grabbing';
         e.preventDefault();
@@ -115,11 +113,20 @@ function makeDraggable(element, handle) {
         
         e.preventDefault();
         
-        const deltaX = e.clientX - startX;
-        const deltaY = e.clientY - startY;
+        // Calculate new position maintaining the offset
+        let newLeft = e.clientX - offsetX;
+        let newTop = e.clientY - offsetY;
         
-        const newLeft = initialLeft + deltaX;
-        const newTop = initialTop + deltaY;
+        // Get element and viewport dimensions for boundary checking
+        const rect = element.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Constrain to viewport boundaries
+        // Keep at least 50px of the element visible on each edge
+        const minVisible = 50;
+        newLeft = Math.max(-rect.width + minVisible, Math.min(newLeft, viewportWidth - minVisible));
+        newTop = Math.max(0, Math.min(newTop, viewportHeight - minVisible));
         
         element.style.left = `${newLeft}px`;
         element.style.top = `${newTop}px`;
