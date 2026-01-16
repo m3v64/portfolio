@@ -263,6 +263,8 @@ function initNotesApp() {
                     // Don't allow opening editor for locked notes
                     if (note && !note.locked) {
                         loadNote(currentNoteId, !editorVisible);
+                    } else if (note && note.locked) {
+                        editorError('This note is locked and cannot be edited');
                     }
                 }
             });
@@ -277,7 +279,7 @@ function initNotesApp() {
             if (buttons[0]) {
                 buttons[0].addEventListener('click', (e) => {
                     if (editorVisible) showHeaderDropdown(e.target);
-                    else editorError('That option');
+                    else editorError('Text formatting requires editor mode');
                 });
             }
             
@@ -285,7 +287,7 @@ function initNotesApp() {
             if (buttons[1]) {
                 buttons[1].addEventListener('click', (e) => {
                     if (editorVisible) showImageDropdown(e.target);
-                    else editorError(e.target);
+                    else editorError('Image insertion requires editor mode');
                 });
             }
             
@@ -293,7 +295,7 @@ function initNotesApp() {
             if (buttons[2]) {
                 buttons[2].addEventListener('click', (e) => {
                     if (editorVisible) showLinkDropdown(e.target);
-                    else editorError(e.target);
+                    else editorError('Link insertion requires editor mode');
                 });
             }
         }
@@ -319,28 +321,71 @@ function initNotesApp() {
         }
     }
 
-    function editorError(content) {
-        const warnEl = document.createElement('div');
-        warnEl.className = 'editor-error-pop-up notes-dropdown-title glass flex center';
-
-        const warnContent = document.createElement('div');
-        warnContent.textContent = content;
-        warnEl.appendChild(warnContent);
-
-        const submitBtn = document.createElement('button');
-        submitBtn.textContent = 'Insert';
-        submitBtn.className = 'notes-dropdown-submit';
-        submitBtn.addEventListener('click', () => {
-            inputs.forEach(input => {
-                const inputEl = warnEl.querySelector(`#${input.id}`);
-                values[input.id] = inputEl.value;
-            });
-            onSubmit(values);
-            warnEl.remove();
-        });
-        warnEl.appendChild(submitBtn);
+    // Show error notification when trying to access editor-only features
+    function editorError(message) {
+        // Create error notification element
+        const errorEl = document.createElement('div');
+        errorEl.className = 'editor-error-popup glass';
+        errorEl.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: rgba(220, 50, 50, 0.95);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        `;
         
-        return warnEl;
+        // Determine message based on input
+        let displayMessage = 'Editor is not available';
+        if (typeof message === 'string') {
+            displayMessage = message;
+        } else {
+            displayMessage = 'This action requires the editor to be open';
+        }
+        
+        errorEl.textContent = displayMessage;
+        
+        // Add animation keyframes if not already added
+        if (!document.querySelector('#editorErrorAnimations')) {
+            const style = document.createElement('style');
+            style.id = 'editorErrorAnimations';
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(errorEl);
+        
+        // Auto remove after 3 seconds with animation
+        setTimeout(() => {
+            errorEl.style.animation = 'slideOut 0.3s ease-in';
+            setTimeout(() => errorEl.remove(), 300);
+        }, 3000);
     }
 
     // Show header dropdown
