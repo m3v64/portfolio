@@ -10,14 +10,15 @@ function initNotesApp() {
             const stored = localStorage.getItem(STORAGE_KEY);
             notes = stored ? JSON.parse(stored) : [];
             if (notes.length === 0) {
-                // Create default welcome note (locked)
+                // Create default welcome note (locked and pinned)
                 notes.push({
                     id: Date.now(),
                     title: 'Welcome to Notes',
                     content: '# Welcome to Notes\n\nThis is a dynamic markdown note-taking app.\n\n## Features\n- **Bold** and *italic* text\n- [Links](https://example.com)\n- Images\n- Headers (H1-H6)\n\nStart editing to see the live preview!',
                     created: new Date().toISOString(),
                     modified: new Date().toISOString(),
-                    locked: true
+                    locked: true,
+                    pinned: true
                 });
                 saveNotes();
             }
@@ -65,7 +66,17 @@ function initNotesApp() {
 
         explorer.innerHTML = '';
         
-        notes.forEach(note => {
+        // Sort notes: pinned notes first, then by creation date (newest first)
+        const sortedNotes = [...notes].sort((a, b) => {
+            // Pinned notes always come first
+            if (a.pinned && !b.pinned) return -1;
+            if (!a.pinned && b.pinned) return 1;
+            
+            // For non-pinned notes, sort by creation date (newest first)
+            return new Date(b.created) - new Date(a.created);
+        });
+        
+        sortedNotes.forEach(note => {
             const noteItem = document.createElement('div');
             noteItem.className = 'note-item glass';
             noteItem.textContent = note.title;
@@ -249,8 +260,8 @@ function initNotesApp() {
                 if (currentNoteId) {
                     const note = notes.find(n => n.id === currentNoteId);
                     
-                    // Toggle based on current editorVisible state
-                    if (note) {
+                    // Don't allow opening editor for locked notes
+                    if (note && !note.locked) {
                         loadNote(currentNoteId, !editorVisible);
                     }
                 }
