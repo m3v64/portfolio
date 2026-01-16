@@ -657,18 +657,25 @@
 	height: 80%;
 	border-radius: 8px;
 	background-color: #06172D1A;
+}
+
+/* Notes app specific resizable divider */
+.notes-resizable-divider {
+	width: 4px;
+	height: 100%;
+	background-color: #06172D1A;
 	cursor: col-resize;
 	position: relative;
 	flex-shrink: 0;
 	transition: background-color 200ms ease, width 200ms ease;
 }
 
-.semi-devider-y:hover {
+.notes-resizable-divider:hover {
 	background-color: #06172D40;
 	width: 6px;
 }
 
-.semi-devider-y:active {
+.notes-resizable-divider:active {
 	background-color: #06172D60;
 }
 
@@ -911,7 +918,7 @@
 .note-input::-webkit-scrollbar,
 .note-preview::-webkit-scrollbar,
 .notes-explorer::-webkit-scrollbar {
-	width: 8px;
+	width: 5px;
 }
 
 .note-input::-webkit-scrollbar-track,
@@ -924,14 +931,14 @@
 .note-preview::-webkit-scrollbar-thumb,
 .notes-explorer::-webkit-scrollbar-thumb {
 	background: transparent;
-	border-radius: 4px;
+	border-radius: 2.5px;
 	transition: background-color 200ms ease;
 }
 
 .note-input:hover::-webkit-scrollbar-thumb,
 .note-preview:hover::-webkit-scrollbar-thumb,
 .notes-explorer:hover::-webkit-scrollbar-thumb {
-	background: rgba(6, 23, 45, 0.3);
+	background: rgba(6, 23, 45, 0.25);
 }
 
 .note-input::-webkit-scrollbar-thumb:hover,

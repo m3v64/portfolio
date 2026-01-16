@@ -14,13 +14,14 @@ function initNotesApp() {
             const stored = localStorage.getItem(STORAGE_KEY);
             notes = stored ? JSON.parse(stored) : [];
             if (notes.length === 0) {
-                // Create default welcome note
+                // Create default welcome note (locked)
                 notes.push({
                     id: Date.now(),
                     title: 'Welcome to Notes',
                     content: '# Welcome to Notes\n\nThis is a dynamic markdown note-taking app.\n\n## Features\n- **Bold** and *italic* text\n- [Links](https://example.com)\n- Images\n- Headers (H1-H6)\n\nStart editing to see the live preview!',
                     created: new Date().toISOString(),
-                    modified: new Date().toISOString()
+                    modified: new Date().toISOString(),
+                    locked: true
                 });
                 saveNotes();
             }
@@ -87,7 +88,7 @@ function initNotesApp() {
     }
 
     // Load and display a note
-    function loadNote(noteId) {
+    function loadNote(noteId, showEditor = false) {
         const note = notes.find(n => n.id === noteId);
         if (!note) return;
 
@@ -95,33 +96,62 @@ function initNotesApp() {
         
         const noteInput = document.querySelector('.note-input');
         const notePreview = document.querySelector('.note-preview');
-        const semiDivider = document.querySelector('.semi-devider-y');
+        const semiDivider = document.querySelector('.notes-resizable-divider');
         
         if (!noteInput || !notePreview) return;
 
-        // Show editor and preview
-        noteInput.style.display = 'block';
-        noteInput.removeAttribute('inert');
-        semiDivider.style.display = 'block';
-        semiDivider.removeAttribute('inert');
+        // Check if note is locked
+        const isLocked = note.locked === true;
         
-        // Create or get textarea
-        let textarea = noteInput.querySelector('textarea');
-        if (!textarea) {
-            textarea = document.createElement('textarea');
-            textarea.className = 'note-textarea';
-            textarea.placeholder = 'Start typing your note in markdown...';
-            noteInput.appendChild(textarea);
+        // For locked notes, only show preview unless explicitly requested
+        if (isLocked && !showEditor) {
+            // Hide editor and divider, show only preview
+            noteInput.style.display = 'none';
+            noteInput.setAttribute('inert', '');
+            if (semiDivider) {
+                semiDivider.style.display = 'none';
+                semiDivider.setAttribute('inert', '');
+            }
+            
+            // Show preview full width
+            notePreview.style.flex = '1 1 100%';
+            notePreview.innerHTML = renderMarkdown(note.content);
+        } else {
+            // Show editor and preview
+            noteInput.style.display = 'block';
+            noteInput.removeAttribute('inert');
+            if (semiDivider) {
+                semiDivider.style.display = 'block';
+                semiDivider.removeAttribute('inert');
+            }
+            
+            // Reset flex to default split view
+            noteInput.style.flex = '1 1 50%';
+            notePreview.style.flex = '1 1 50%';
+            
+            // Create or get textarea
+            let textarea = noteInput.querySelector('textarea');
+            if (!textarea) {
+                textarea = document.createElement('textarea');
+                textarea.className = 'note-textarea';
+                textarea.placeholder = 'Start typing your note in markdown...';
+                noteInput.appendChild(textarea);
+            }
+            
+            textarea.value = note.content;
+            notePreview.innerHTML = renderMarkdown(note.content);
+            
+            // Update preview on input (only for unlocked notes)
+            if (!isLocked) {
+                textarea.removeEventListener('input', handleTextareaInput);
+                textarea.addEventListener('input', handleTextareaInput);
+            } else {
+                // Make textarea read-only for locked notes
+                textarea.setAttribute('readonly', 'readonly');
+            }
         }
         
-        textarea.value = note.content;
-        notePreview.innerHTML = renderMarkdown(note.content);
-        
         renderNotesList();
-        
-        // Update preview on input
-        textarea.removeEventListener('input', handleTextareaInput);
-        textarea.addEventListener('input', handleTextareaInput);
     }
 
     // Handle textarea input
@@ -171,13 +201,14 @@ function initNotesApp() {
             title: 'New Note',
             content: '# New Note\n\nStart writing...',
             created: new Date().toISOString(),
-            modified: new Date().toISOString()
+            modified: new Date().toISOString(),
+            locked: false
         };
         
         notes.unshift(newNote);
         saveNotes();
         renderNotesList();
-        loadNote(newNote.id);
+        loadNote(newNote.id, true); // Show editor for new notes
     }
 
     // Setup UI controls
@@ -186,6 +217,23 @@ function initNotesApp() {
         const newNoteBtn = document.querySelector('.new-notes-option');
         if (newNoteBtn) {
             newNoteBtn.addEventListener('click', createNewNote);
+        }
+
+        // Preview toggle button
+        const previewBtn = document.querySelector('.notes-preview-toggle');
+        if (previewBtn) {
+            previewBtn.addEventListener('click', () => {
+                if (currentNoteId) {
+                    const note = notes.find(n => n.id === currentNoteId);
+                    const noteInput = document.querySelector('.note-input');
+                    const isEditorVisible = noteInput && noteInput.style.display !== 'none';
+                    
+                    // Toggle editor visibility
+                    if (note) {
+                        loadNote(currentNoteId, !isEditorVisible);
+                    }
+                }
+            });
         }
 
         // Text formatting controls
@@ -211,13 +259,6 @@ function initNotesApp() {
             if (buttons[2]) {
                 buttons[2].addEventListener('click', (e) => {
                     showLinkDropdown(e.target);
-                });
-            }
-            
-            // Share button (not implemented yet)
-            if (buttons[3]) {
-                buttons[3].addEventListener('click', () => {
-                    alert('Share functionality coming soon!');
                 });
             }
         }
@@ -396,8 +437,9 @@ function initNotesApp() {
     }
 
     // Make divider draggable for resizing
+    // Make divider draggable for resizing (notes-specific)
     function setupResizableDivider() {
-        const divider = document.querySelector('.semi-devider-y');
+        const divider = document.querySelector('.notes-resizable-divider');
         const noteInput = document.querySelector('.note-input');
         const notePreview = document.querySelector('.note-preview');
         
