@@ -113,15 +113,33 @@
         parse: parseMarkdown
     };
 
-    // Simple DOMPurify fallback (basic sanitization)
+    // Simple DOMPurify fallback (enhanced sanitization)
     window.DOMPurify = {
         sanitize: function(html) {
-            // Basic sanitization - remove script tags and event handlers
-            let clean = html;
-            clean = clean.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-            clean = clean.replace(/on\w+\s*=\s*["'][^"']*["']/gi, '');
-            clean = clean.replace(/on\w+\s*=\s*[^\s>]*/gi, '');
-            return clean;
+            // Create a temporary DOM element to parse HTML safely
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            
+            // Remove dangerous elements
+            const dangerousElements = temp.querySelectorAll('script, iframe, object, embed, link[rel="import"], meta[http-equiv]');
+            dangerousElements.forEach(el => el.remove());
+            
+            // Remove event handler attributes from all elements
+            const allElements = temp.querySelectorAll('*');
+            allElements.forEach(el => {
+                // Get all attributes
+                const attrs = Array.from(el.attributes);
+                attrs.forEach(attr => {
+                    const attrName = attr.name.toLowerCase();
+                    // Remove event handlers (on*) and javascript: URLs
+                    if (attrName.startsWith('on') || 
+                        (attr.value && attr.value.toLowerCase().includes('javascript:'))) {
+                        el.removeAttribute(attr.name);
+                    }
+                });
+            });
+            
+            return temp.innerHTML;
         }
     };
 
