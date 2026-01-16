@@ -645,6 +645,228 @@
 	background-color: #06172D1A;
 }
 
+/* Notes App Styles */
+.note-item {
+	padding: 0.75rem;
+	margin: 0.5rem;
+	cursor: pointer;
+	font-size: 14px;
+	color: #06172D;
+	transition: all 200ms ease;
+	
+	--blur: 8px;
+	--c-glass: #fff;
+	--glass-reflex-dark: 0.5;
+	--glass-reflex-light: 0.1;
+	--radius: 0.5rem;
+}
+
+.note-item:hover {
+	--glass-reflex-dark: 1;
+	--glass-reflex-light: 0.3;
+	--blur: 12px;
+}
+
+.note-item.active {
+	--c-glass: #e0f0ff;
+	--glass-reflex-dark: 1.5;
+	--glass-reflex-light: 0.5;
+}
+
+.note-input {
+	flex: 1 1 50%;
+	min-width: 0;
+	height: 100%;
+	padding: 1rem;
+	overflow: auto;
+}
+
+.note-textarea {
+	width: 100%;
+	height: 100%;
+	border: none;
+	outline: none;
+	background: transparent;
+	color: #06172D;
+	font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+	font-size: 14px;
+	line-height: 1.6;
+	resize: none;
+}
+
+.note-preview {
+	flex: 1 1 50%;
+	min-width: 0;
+	height: 100%;
+	padding: 1rem;
+	overflow: auto;
+	color: #06172D;
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+.note-preview h1,
+.note-preview h2,
+.note-preview h3,
+.note-preview h4,
+.note-preview h5,
+.note-preview h6 {
+	margin-top: 1.5rem;
+	margin-bottom: 0.75rem;
+	font-weight: 600;
+	line-height: 1.25;
+}
+
+.note-preview h1 { font-size: 2em; }
+.note-preview h2 { font-size: 1.5em; }
+.note-preview h3 { font-size: 1.25em; }
+.note-preview h4 { font-size: 1em; }
+.note-preview h5 { font-size: 0.875em; }
+.note-preview h6 { font-size: 0.85em; }
+
+.note-preview p {
+	margin-bottom: 1rem;
+}
+
+.note-preview a {
+	color: #0066cc;
+	text-decoration: none;
+}
+
+.note-preview a:hover {
+	text-decoration: underline;
+}
+
+.note-preview img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 0.5rem;
+	margin: 1rem 0;
+}
+
+.note-preview code {
+	background-color: rgba(6, 23, 45, 0.1);
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+	font-size: 0.9em;
+}
+
+.note-preview pre {
+	background-color: rgba(6, 23, 45, 0.1);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	overflow-x: auto;
+	margin: 1rem 0;
+}
+
+.note-preview pre code {
+	background-color: transparent;
+	padding: 0;
+}
+
+.note-preview ul,
+.note-preview ol {
+	margin-left: 2rem;
+	margin-bottom: 1rem;
+}
+
+.note-preview blockquote {
+	border-left: 4px solid #06172D40;
+	padding-left: 1rem;
+	margin-left: 0;
+	margin-bottom: 1rem;
+	color: #06172D80;
+}
+
+/* Dropdown Styles */
+.notes-dropdown {
+	min-width: 200px;
+	padding: 0.5rem 0;
+	backdrop-filter: blur(20px);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+	
+	--blur: 20px;
+	--c-glass: #fff;
+	--glass-reflex-dark: 1;
+	--glass-reflex-light: 0.3;
+	--radius: 0.75rem;
+}
+
+.notes-dropdown-item {
+	padding: 0.75rem 1rem;
+	cursor: pointer;
+	transition: background-color 150ms ease;
+	color: #06172D;
+	font-size: 14px;
+}
+
+.notes-dropdown-item:hover {
+	background-color: rgba(6, 23, 45, 0.1);
+}
+
+.notes-dropdown-form {
+	padding: 1rem;
+	min-width: 300px;
+}
+
+.notes-dropdown-title {
+	font-size: 16px;
+	font-weight: 600;
+	color: #06172D;
+	margin-bottom: 1rem;
+}
+
+.notes-dropdown-input-group {
+	margin-bottom: 0.75rem;
+}
+
+.notes-dropdown-label {
+	display: block;
+	font-size: 12px;
+	color: #06172D80;
+	margin-bottom: 0.25rem;
+}
+
+.notes-dropdown-input {
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid #06172D20;
+	border-radius: 0.375rem;
+	background-color: rgba(255, 255, 255, 0.5);
+	color: #06172D;
+	font-size: 14px;
+	outline: none;
+	transition: all 150ms ease;
+}
+
+.notes-dropdown-input:focus {
+	border-color: #06172D40;
+	background-color: rgba(255, 255, 255, 0.8);
+}
+
+.notes-dropdown-submit {
+	width: 100%;
+	padding: 0.625rem;
+	background-color: #06172D;
+	color: white;
+	border: none;
+	border-radius: 0.375rem;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 150ms ease;
+	margin-top: 0.5rem;
+}
+
+.notes-dropdown-submit:hover {
+	background-color: #0a2442;
+}
+
+.notes-dropdown-submit:active {
+	background-color: #051220;
+}
+
 @media (max-height: 720px) {
 	.window-header {
 		font-size: 12px;
