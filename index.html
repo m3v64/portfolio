@@ -181,7 +181,12 @@
                         <div class="window-header flex center">Notes</div>
                         <div class="notes-options flex center row">
                             <div class="glass new-notes-option flex"><img class="notes-options-img" src="assets/svg/Create.svg" alt="Create"></div>
-                            <div class="glass notes-text-options flex"></div>
+                            <div class="glass notes-text-options flex row">
+                                <img class="notes-text-options-img" src="assets/svg/Text.svg" alt="Text">
+                                <img class="notes-text-options-img" src="assets/svg/ImagePlaceholder.svg" alt="ImagePlaceholder">
+                                <img class="notes-text-options-img" src="assets/svg/Link.svg" alt="Link">
+                                <img class="notes-text-options-img" src="assets/svg/Share.svg" alt="Share">
+                            </div>
                             <div class="glass notes-search-option flex">
                                 <img class="notes-options-img" src="assets/svg/search.svg" alt="Search">
                                 <textarea name="notes-search" id="notes-search-box" placeholder="Search" style="display: none;" inert></textarea>
@@ -199,7 +204,9 @@
                     <div class="notes-explorer flex column"></div>
                     <div class="devider-y"></div>
                     <div class="notes-content flex">
-                        
+                        <div class="note-input" style="display: none;" inert></div>
+                        <div class="semi-devider-y" style="display: none;" inert></div>
+                        <div class="note-preview"></div>
                     </div>
                 </div>
             </div>
