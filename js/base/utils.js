@@ -71,6 +71,71 @@ function showScreen(screenId, fade, delay = 300) {
     }, delay);
 }
 
+// Make element draggable by a handle
+function makeDraggable(element, handle) {
+    if (!element || !handle) return;
+    
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+    
+    // Convert transform positioning to absolute positioning on first drag
+    function initializePosition() {
+        const rect = element.getBoundingClientRect();
+        element.style.left = `${rect.left}px`;
+        element.style.top = `${rect.top}px`;
+        element.style.transform = 'none';
+    }
+    
+    handle.addEventListener('mousedown', (e) => {
+        // Don't drag if clicking on buttons, inputs, or other interactive elements
+        if (e.target.closest('button, input, textarea, img, select, a')) {
+            return;
+        }
+        
+        // Initialize position if using transform
+        if (element.style.transform !== 'none' && element.style.transform !== '') {
+            initializePosition();
+        }
+        
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        
+        // Get current position
+        const rect = element.getBoundingClientRect();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+        
+        handle.style.cursor = 'grabbing';
+        e.preventDefault();
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        
+        e.preventDefault();
+        
+        const deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+        
+        const newLeft = initialLeft + deltaX;
+        const newTop = initialTop + deltaY;
+        
+        element.style.left = `${newLeft}px`;
+        element.style.top = `${newTop}px`;
+    });
+    
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            handle.style.cursor = 'grab';
+        }
+    });
+    
+    // Set initial cursor
+    handle.style.cursor = 'grab';
+}
+
 // Slider utility
 function initDivSlider(trackEl, { onInput, initialValue, storageKey } = {}) {
     if (!trackEl) return null;

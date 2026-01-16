@@ -367,43 +367,8 @@ function initNotesApp() {
         
         if (!dragHandle || !notesWindow) return;
         
-        let isDragging = false;
-        let currentX, currentY, initialX, initialY;
-        
-        dragHandle.addEventListener('mousedown', (e) => {
-            // Don't drag if clicking on buttons or inputs
-            if (e.target.closest('button, input, textarea, img, .notes-options')) {
-                return;
-            }
-            
-            isDragging = true;
-            initialX = e.clientX - notesWindow.offsetLeft;
-            initialY = e.clientY - notesWindow.offsetTop;
-            
-            dragHandle.style.cursor = 'grabbing';
-        });
-        
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            
-            e.preventDefault();
-            currentX = e.clientX - initialX;
-            currentY = e.clientY - initialY;
-            
-            notesWindow.style.left = `${currentX}px`;
-            notesWindow.style.top = `${currentY}px`;
-            notesWindow.style.transform = 'none';
-        });
-        
-        document.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                dragHandle.style.cursor = 'grab';
-            }
-        });
-        
-        // Set initial cursor
-        dragHandle.style.cursor = 'grab';
+        // Use the utility function from utils.js
+        makeDraggable(notesWindow, dragHandle);
     }
     
     // Make window resizable from corners
