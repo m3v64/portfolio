@@ -1036,6 +1036,63 @@ function initNotesApp() {
         }, 10);
     }
 
+    // Make divider draggable for resizing
+    function setupResizableDivider() {
+        const divider = document.querySelector('.semi-devider-y');
+        const noteInput = document.querySelector('.note-input');
+        const notePreview = document.querySelector('.note-preview');
+        
+        if (!divider || !noteInput || !notePreview) return;
+        
+        let isDragging = false;
+        let startX = 0;
+        let startInputWidth = 0;
+        let startPreviewWidth = 0;
+        
+        divider.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startInputWidth = noteInput.offsetWidth;
+            startPreviewWidth = notePreview.offsetWidth;
+            
+            // Prevent text selection while dragging
+            document.body.style.userSelect = 'none';
+            document.body.style.cursor = 'col-resize';
+            
+            e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.clientX - startX;
+            const containerWidth = noteInput.parentElement.offsetWidth - divider.offsetWidth;
+            
+            // Calculate new widths
+            const newInputWidth = startInputWidth + deltaX;
+            const newPreviewWidth = startPreviewWidth - deltaX;
+            
+            // Set minimum widths (20% of container)
+            const minWidth = containerWidth * 0.2;
+            
+            if (newInputWidth >= minWidth && newPreviewWidth >= minWidth) {
+                const inputPercent = (newInputWidth / containerWidth) * 100;
+                const previewPercent = (newPreviewWidth / containerWidth) * 100;
+                
+                noteInput.style.flex = `1 1 ${inputPercent}%`;
+                notePreview.style.flex = `1 1 ${previewPercent}%`;
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                document.body.style.userSelect = '';
+                document.body.style.cursor = '';
+            }
+        });
+    }
+
     // Initialize
     loadNotes();
     renderNotesList();
@@ -1043,6 +1100,7 @@ function initNotesApp() {
         loadNote(notes[0].id);
     }
     setupControls();
+    setupResizableDivider();
 }
 
 window.addEventListener('load', () => {

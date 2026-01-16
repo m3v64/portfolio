@@ -577,7 +577,9 @@
 	flex: 1 1 auto;
     min-width: 0;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
+	display: flex;
+	flex-direction: row;
 }
 
 .notes-options {
@@ -634,9 +636,22 @@
 }
 
 .semi-devider-y {
-	width: 2px;
-	height: 80%;
+	width: 4px;
+	height: 100%;
 	background-color: #06172D1A;
+	cursor: col-resize;
+	position: relative;
+	flex-shrink: 0;
+	transition: background-color 200ms ease, width 200ms ease;
+}
+
+.semi-devider-y:hover {
+	background-color: #06172D40;
+	width: 6px;
+}
+
+.semi-devider-y:active {
+	background-color: #06172D60;
 }
 
 .semi-devider-x {
@@ -678,7 +693,8 @@
 	min-width: 0;
 	height: 100%;
 	padding: 1rem;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .note-textarea {
@@ -699,10 +715,15 @@
 	min-width: 0;
 	height: 100%;
 	padding: 1rem;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 	color: #06172D;
 	font-size: 14px;
 	line-height: 1.6;
+	user-select: text;
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
 }
 
 .note-preview h1,
@@ -865,6 +886,59 @@
 
 .notes-dropdown-submit:active {
 	background-color: #051220;
+}
+
+/* Custom Scrollbar Styles */
+.note-input::-webkit-scrollbar,
+.note-preview::-webkit-scrollbar,
+.notes-explorer::-webkit-scrollbar {
+	width: 8px;
+}
+
+.note-input::-webkit-scrollbar-track,
+.note-preview::-webkit-scrollbar-track,
+.notes-explorer::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.note-input::-webkit-scrollbar-thumb,
+.note-preview::-webkit-scrollbar-thumb,
+.notes-explorer::-webkit-scrollbar-thumb {
+	background: transparent;
+	border-radius: 4px;
+	transition: background-color 200ms ease;
+}
+
+.note-input:hover::-webkit-scrollbar-thumb,
+.note-preview:hover::-webkit-scrollbar-thumb,
+.notes-explorer:hover::-webkit-scrollbar-thumb {
+	background: rgba(6, 23, 45, 0.3);
+}
+
+.note-input::-webkit-scrollbar-thumb:hover,
+.note-preview::-webkit-scrollbar-thumb:hover,
+.notes-explorer::-webkit-scrollbar-thumb:hover {
+	background: rgba(6, 23, 45, 0.5);
+}
+
+.note-input::-webkit-scrollbar-thumb:active,
+.note-preview::-webkit-scrollbar-thumb:active,
+.notes-explorer::-webkit-scrollbar-thumb:active {
+	background: rgba(6, 23, 45, 0.7);
+}
+
+/* Firefox scrollbar */
+.note-input,
+.note-preview,
+.notes-explorer {
+	scrollbar-width: thin;
+	scrollbar-color: transparent transparent;
+}
+
+.note-input:hover,
+.note-preview:hover,
+.notes-explorer:hover {
+	scrollbar-color: rgba(6, 23, 45, 0.3) transparent;
 }
 
 @media (max-height: 720px) {
