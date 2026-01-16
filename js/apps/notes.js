@@ -306,6 +306,45 @@ function initNotesApp() {
         const closeBtn = document.querySelector('.window-option-close');
         const notesWindow = document.querySelector('.notes-window');
         
+        // Minimize - hides the window
+        if (minimizeBtn && notesWindow) {
+            minimizeBtn.addEventListener('click', () => {
+                notesWindow.style.display = 'none';
+            });
+        }
+        
+        // Maximize - toggles fullscreen
+        if (maximizeBtn && notesWindow) {
+            let isMaximized = false;
+            let previousStyles = {};
+            
+            maximizeBtn.addEventListener('click', () => {
+                if (!isMaximized) {
+                    // Save current styles
+                    previousStyles = {
+                        width: notesWindow.style.width,
+                        height: notesWindow.style.height,
+                        top: notesWindow.style.top,
+                        left: notesWindow.style.left,
+                        transform: notesWindow.style.transform
+                    };
+                    
+                    // Maximize
+                    notesWindow.style.width = '100vw';
+                    notesWindow.style.height = '100vh';
+                    notesWindow.style.top = '0';
+                    notesWindow.style.left = '0';
+                    notesWindow.style.transform = 'none';
+                    isMaximized = true;
+                } else {
+                    // Restore previous size
+                    Object.assign(notesWindow.style, previousStyles);
+                    isMaximized = false;
+                }
+            });
+        }
+        
+        // Close - hides the window
         if (closeBtn && notesWindow) {
             closeBtn.addEventListener('click', () => {
                 notesWindow.style.display = 'none';
@@ -319,6 +358,316 @@ function initNotesApp() {
                 notesWindow.style.display = notesWindow.style.display === 'none' ? 'flex' : 'none';
             });
         }
+    }
+    
+    // Make window draggable by nav bar
+    function makeWindowDraggable() {
+        const dragHandle = document.querySelector('[data-drag-handle]');
+        const notesWindow = document.querySelector('.notes-window');
+        
+        if (!dragHandle || !notesWindow) return;
+        
+        let isDragging = false;
+        let currentX, currentY, initialX, initialY;
+        
+        dragHandle.addEventListener('mousedown', (e) => {
+            // Don't drag if clicking on buttons or inputs
+            if (e.target.closest('button, input, textarea, img, .notes-options')) {
+                return;
+            }
+            
+            isDragging = true;
+            initialX = e.clientX - (parseInt(notesWindow.style.left) || 0);
+            initialY = e.clientY - (parseInt(notesWindow.style.top) || 0);
+            
+            dragHandle.style.cursor = 'grabbing';
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+            
+            notesWindow.style.left = `${currentX}px`;
+            notesWindow.style.top = `${currentY}px`;
+            notesWindow.style.transform = 'none';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                dragHandle.style.cursor = 'grab';
+            }
+        });
+        
+        // Set initial cursor
+        dragHandle.style.cursor = 'grab';
+    }
+    
+    // Make window resizable from corners
+    function makeWindowResizable() {
+        const notesWindow = document.querySelector('.notes-window');
+        if (!notesWindow) return;
+        
+        // Create resize handles for all corners
+        const corners = ['nw', 'ne', 'sw', 'se'];
+        const minWidth = 400;
+        const minHeight = 300;
+        
+        corners.forEach(corner => {
+            const handle = document.createElement('div');
+            handle.className = `resize-handle resize-${corner}`;
+            handle.style.cssText = `
+                position: absolute;
+                width: 15px;
+                height: 15px;
+                z-index: 1000;
+            `;
+            
+            // Position handles
+            if (corner === 'nw') {
+                handle.style.top = '0';
+                handle.style.left = '0';
+                handle.style.cursor = 'nwse-resize';
+            } else if (corner === 'ne') {
+                handle.style.top = '0';
+                handle.style.right = '0';
+                handle.style.cursor = 'nesw-resize';
+            } else if (corner === 'sw') {
+                handle.style.bottom = '0';
+                handle.style.left = '0';
+                handle.style.cursor = 'nesw-resize';
+            } else if (corner === 'se') {
+                handle.style.bottom = '0';
+                handle.style.right = '0';
+                handle.style.cursor = 'nwse-resize';
+            }
+            
+            notesWindow.appendChild(handle);
+            
+            let isResizing = false;
+            let startX, startY, startWidth, startHeight, startLeft, startTop;
+            
+            handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                isResizing = true;
+                
+                startX = e.clientX;
+                startY = e.clientY;
+                startWidth = notesWindow.offsetWidth;
+                startHeight = notesWindow.offsetHeight;
+                startLeft = notesWindow.offsetLeft;
+                startTop = notesWindow.offsetTop;
+                
+                document.addEventListener('mousemove', resize);
+                document.addEventListener('mouseup', stopResize);
+            });
+            
+            function resize(e) {
+                if (!isResizing) return;
+                
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+                
+                let newWidth = startWidth;
+                let newHeight = startHeight;
+                let newLeft = startLeft;
+                let newTop = startTop;
+                
+                // Calculate new dimensions based on corner
+                if (corner.includes('e')) {
+                    newWidth = Math.max(minWidth, startWidth + deltaX);
+                } else if (corner.includes('w')) {
+                    newWidth = Math.max(minWidth, startWidth - deltaX);
+                    if (newWidth > minWidth) newLeft = startLeft + deltaX;
+                }
+                
+                if (corner.includes('s')) {
+                    newHeight = Math.max(minHeight, startHeight + deltaY);
+                } else if (corner.includes('n')) {
+                    newHeight = Math.max(minHeight, startHeight - deltaY);
+                    if (newHeight > minHeight) newTop = startTop + deltaY;
+                }
+                
+                notesWindow.style.width = `${newWidth}px`;
+                notesWindow.style.height = `${newHeight}px`;
+                notesWindow.style.left = `${newLeft}px`;
+                notesWindow.style.top = `${newTop}px`;
+                notesWindow.style.transform = 'none';
+            }
+            
+            function stopResize() {
+                isResizing = false;
+                document.removeEventListener('mousemove', resize);
+                document.removeEventListener('mouseup', stopResize);
+            }
+        });
+        
+        // Set initial position style
+        notesWindow.style.position = 'fixed';
+    }
+    
+    // Delete note on DELETE key press
+    function setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Only handle DELETE key
+            if (e.key !== 'Delete' && e.key !== 'Del') return;
+            
+            // Check if we're in the notes window and not in an input field
+            const notesWindow = document.querySelector('.notes-window');
+            if (!notesWindow || notesWindow.style.display === 'none') return;
+            
+            // Don't delete if user is typing in textarea
+            if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+            
+            // Don't delete if no note is selected
+            if (!currentNoteId) return;
+            
+            // Get current note
+            const note = notes.find(n => n.id === currentNoteId);
+            if (!note) return;
+            
+            // Don't delete locked notes (like the default note)
+            if (note.locked) {
+                editorError('Cannot delete locked notes');
+                return;
+            }
+            
+            // Show confirmation dialog
+            showDeleteConfirmation(note);
+        });
+    }
+    
+    // Show delete confirmation popup
+    function showDeleteConfirmation(note) {
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+        
+        // Create dialog
+        const dialog = document.createElement('div');
+        dialog.className = 'glass';
+        dialog.style.cssText = `
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        `;
+        
+        // Title
+        const title = document.createElement('h2');
+        title.textContent = 'Delete Note?';
+        title.style.cssText = `
+            margin: 0 0 15px 0;
+            font-size: 20px;
+            color: #333;
+        `;
+        
+        // Message
+        const message = document.createElement('p');
+        message.textContent = `Are you sure you want to delete "${note.title}"? This action cannot be undone.`;
+        message.style.cssText = `
+            margin: 0 0 25px 0;
+            color: #666;
+            line-height: 1.5;
+        `;
+        
+        // Buttons container
+        const buttonsDiv = document.createElement('div');
+        buttonsDiv.style.cssText = `
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        `;
+        
+        // Cancel button
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = 'Cancel';
+        cancelBtn.style.cssText = `
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #e0e0e0;
+            color: #333;
+            cursor: pointer;
+            font-size: 14px;
+        `;
+        cancelBtn.addEventListener('click', () => overlay.remove());
+        
+        // Delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.style.cssText = `
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #dc3232;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        `;
+        deleteBtn.addEventListener('click', () => {
+            deleteNote(note.id);
+            overlay.remove();
+        });
+        
+        // Assemble dialog
+        buttonsDiv.appendChild(cancelBtn);
+        buttonsDiv.appendChild(deleteBtn);
+        dialog.appendChild(title);
+        dialog.appendChild(message);
+        dialog.appendChild(buttonsDiv);
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+        
+        // Close on overlay click
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.remove();
+        });
+        
+        // Close on Escape key
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                overlay.remove();
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    }
+    
+    // Delete a note
+    function deleteNote(noteId) {
+        const index = notes.findIndex(n => n.id === noteId);
+        if (index === -1) return;
+        
+        // Remove note
+        notes.splice(index, 1);
+        saveNotes();
+        
+        // Load another note if available
+        if (notes.length > 0) {
+            loadNote(notes[0].id);
+        } else {
+            // Clear content if no notes left (shouldn't happen due to default note)
+            const notePreview = document.querySelector('.note-preview');
+            if (notePreview) notePreview.innerHTML = '';
+        }
+        
+        renderNotesList();
     }
 
     // Show error notification when trying to access editor-only features
@@ -606,4 +955,7 @@ function initNotesApp() {
     }
     setupControls();
     setupResizableDivider();
+    makeWindowDraggable();
+    makeWindowResizable();
+    setupKeyboardShortcuts();
 }
