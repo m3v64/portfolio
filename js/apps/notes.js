@@ -377,8 +377,8 @@ function initNotesApp() {
             }
             
             isDragging = true;
-            initialX = e.clientX - (parseInt(notesWindow.style.left) || 0);
-            initialY = e.clientY - (parseInt(notesWindow.style.top) || 0);
+            initialX = e.clientX - notesWindow.offsetLeft;
+            initialY = e.clientY - notesWindow.offsetTop;
             
             dragHandle.style.cursor = 'grabbing';
         });
@@ -480,15 +480,17 @@ function initNotesApp() {
                 if (corner.includes('e')) {
                     newWidth = Math.max(minWidth, startWidth + deltaX);
                 } else if (corner.includes('w')) {
-                    newWidth = Math.max(minWidth, startWidth - deltaX);
-                    if (newWidth > minWidth) newLeft = startLeft + deltaX;
+                    const proposedWidth = startWidth - deltaX;
+                    newWidth = Math.max(minWidth, proposedWidth);
+                    if (proposedWidth >= minWidth) newLeft = startLeft + deltaX;
                 }
                 
                 if (corner.includes('s')) {
                     newHeight = Math.max(minHeight, startHeight + deltaY);
                 } else if (corner.includes('n')) {
-                    newHeight = Math.max(minHeight, startHeight - deltaY);
-                    if (newHeight > minHeight) newTop = startTop + deltaY;
+                    const proposedHeight = startHeight - deltaY;
+                    newHeight = Math.max(minHeight, proposedHeight);
+                    if (proposedHeight >= minHeight) newTop = startTop + deltaY;
                 }
                 
                 notesWindow.style.width = `${newWidth}px`;
@@ -557,6 +559,21 @@ function initNotesApp() {
             justify-content: center;
         `;
         
+        // Escape key handler
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                overlay.remove();
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+        
+        // Helper to close dialog
+        const closeDialog = () => {
+            overlay.remove();
+            document.removeEventListener('keydown', escHandler);
+        };
+        
         // Create dialog
         const dialog = document.createElement('div');
         dialog.className = 'glass';
@@ -606,7 +623,7 @@ function initNotesApp() {
             cursor: pointer;
             font-size: 14px;
         `;
-        cancelBtn.addEventListener('click', () => overlay.remove());
+        cancelBtn.addEventListener('click', closeDialog);
         
         // Delete button
         const deleteBtn = document.createElement('button');
@@ -622,7 +639,7 @@ function initNotesApp() {
         `;
         deleteBtn.addEventListener('click', () => {
             deleteNote(note.id);
-            overlay.remove();
+            closeDialog();
         });
         
         // Assemble dialog
@@ -636,17 +653,8 @@ function initNotesApp() {
         
         // Close on overlay click
         overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) overlay.remove();
+            if (e.target === overlay) closeDialog();
         });
-        
-        // Close on Escape key
-        const escHandler = (e) => {
-            if (e.key === 'Escape') {
-                overlay.remove();
-                document.removeEventListener('keydown', escHandler);
-            }
-        };
-        document.addEventListener('keydown', escHandler);
     }
     
     // Delete a note
