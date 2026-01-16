@@ -973,6 +973,135 @@
 	scrollbar-color: rgba(6, 23, 45, 0.3) transparent;
 }
 
+/* Resize handles for window corners */
+.resize-handle {
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	z-index: 1000;
+}
+
+.resize-nw {
+	top: 0;
+	left: 0;
+	cursor: nwse-resize;
+}
+
+.resize-ne {
+	top: 0;
+	right: 0;
+	cursor: nesw-resize;
+}
+
+.resize-sw {
+	bottom: 0;
+	left: 0;
+	cursor: nesw-resize;
+}
+
+.resize-se {
+	bottom: 0;
+	right: 0;
+	cursor: nwse-resize;
+}
+
+/* Delete confirmation dialog */
+.delete-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 10001;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.delete-dialog {
+	padding: 30px;
+	border-radius: 12px;
+	max-width: 400px;
+	background: rgba(255, 255, 255, 0.95);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.delete-dialog-title {
+	margin: 0 0 15px 0;
+	font-size: 20px;
+	color: #333;
+}
+
+.delete-dialog-message {
+	margin: 0 0 25px 0;
+	color: #666;
+	line-height: 1.5;
+}
+
+.delete-dialog-buttons {
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+}
+
+.delete-dialog-cancel {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 6px;
+	background: #e0e0e0;
+	color: #333;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.delete-dialog-confirm {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 6px;
+	background: #dc3232;
+	color: white;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+/* Error notification popup */
+.editor-error-popup {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	padding: 15px 20px;
+	background: rgba(220, 50, 50, 0.95);
+	color: white;
+	border-radius: 8px;
+	font-size: 14px;
+	z-index: 10000;
+	animation: slideIn 0.3s ease-out;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes slideOut {
+	from {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	to {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+}
+
 @media (max-height: 720px) {
 	.window-header {
 		font-size: 12px;

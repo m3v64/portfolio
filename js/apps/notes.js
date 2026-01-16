@@ -419,31 +419,6 @@ function initNotesApp() {
         corners.forEach(corner => {
             const handle = document.createElement('div');
             handle.className = `resize-handle resize-${corner}`;
-            handle.style.cssText = `
-                position: absolute;
-                width: 15px;
-                height: 15px;
-                z-index: 1000;
-            `;
-            
-            // Position handles
-            if (corner === 'nw') {
-                handle.style.top = '0';
-                handle.style.left = '0';
-                handle.style.cursor = 'nwse-resize';
-            } else if (corner === 'ne') {
-                handle.style.top = '0';
-                handle.style.right = '0';
-                handle.style.cursor = 'nesw-resize';
-            } else if (corner === 'sw') {
-                handle.style.bottom = '0';
-                handle.style.left = '0';
-                handle.style.cursor = 'nesw-resize';
-            } else if (corner === 'se') {
-                handle.style.bottom = '0';
-                handle.style.right = '0';
-                handle.style.cursor = 'nwse-resize';
-            }
             
             notesWindow.appendChild(handle);
             
@@ -546,18 +521,7 @@ function initNotesApp() {
     function showDeleteConfirmation(note) {
         // Create overlay
         const overlay = document.createElement('div');
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        `;
+        overlay.className = 'delete-overlay';
         
         // Escape key handler
         const escHandler = (e) => {
@@ -576,67 +540,32 @@ function initNotesApp() {
         
         // Create dialog
         const dialog = document.createElement('div');
-        dialog.className = 'glass';
-        dialog.style.cssText = `
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        `;
+        dialog.className = 'glass delete-dialog';
         
         // Title
         const title = document.createElement('h2');
+        title.className = 'delete-dialog-title';
         title.textContent = 'Delete Note?';
-        title.style.cssText = `
-            margin: 0 0 15px 0;
-            font-size: 20px;
-            color: #333;
-        `;
         
         // Message
         const message = document.createElement('p');
+        message.className = 'delete-dialog-message';
         message.textContent = `Are you sure you want to delete "${note.title}"? This action cannot be undone.`;
-        message.style.cssText = `
-            margin: 0 0 25px 0;
-            color: #666;
-            line-height: 1.5;
-        `;
         
         // Buttons container
         const buttonsDiv = document.createElement('div');
-        buttonsDiv.style.cssText = `
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        `;
+        buttonsDiv.className = 'delete-dialog-buttons';
         
         // Cancel button
         const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'delete-dialog-cancel';
         cancelBtn.textContent = 'Cancel';
-        cancelBtn.style.cssText = `
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            background: #e0e0e0;
-            color: #333;
-            cursor: pointer;
-            font-size: 14px;
-        `;
         cancelBtn.addEventListener('click', closeDialog);
         
         // Delete button
         const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-dialog-confirm';
         deleteBtn.textContent = 'Delete';
-        deleteBtn.style.cssText = `
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            background: #dc3232;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-        `;
         deleteBtn.addEventListener('click', () => {
             deleteNote(note.id);
             closeDialog();
@@ -683,19 +612,6 @@ function initNotesApp() {
         // Create error notification element
         const errorEl = document.createElement('div');
         errorEl.className = 'editor-error-popup glass';
-        errorEl.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background: rgba(220, 50, 50, 0.95);
-            color: white;
-            border-radius: 8px;
-            font-size: 14px;
-            z-index: 10000;
-            animation: slideIn 0.3s ease-out;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        `;
         
         // Determine message based on input
         let displayMessage = 'Editor is not available';
@@ -706,35 +622,6 @@ function initNotesApp() {
         }
         
         errorEl.textContent = displayMessage;
-        
-        // Add animation keyframes if not already added
-        if (!document.querySelector('#editorErrorAnimations')) {
-            const style = document.createElement('style');
-            style.id = 'editorErrorAnimations';
-            style.textContent = `
-                @keyframes slideIn {
-                    from {
-                        transform: translateX(100%);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                }
-                @keyframes slideOut {
-                    from {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                    to {
-                        transform: translateX(100%);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        }
         
         document.body.appendChild(errorEl);
         
