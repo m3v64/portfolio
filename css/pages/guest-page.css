@@ -36,6 +36,12 @@
 	--transition-time: 420ms;
 }
 
+.guest-nav-quick-links .nav-link {
+	color: inherit;
+	text-decoration: none;
+	cursor: pointer;
+}
+
 .guest-nav-quick-links .glass::before {
 	top: 50%;
 	left: 50%;
@@ -823,6 +829,167 @@
 	margin-left: 0;
 	margin-bottom: 1rem;
 	color: #06172D80;
+}
+
+.note-preview .notes-welcome {
+	max-width: 56rem;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+/* Hero Section */
+.note-preview .notes-welcome__hero {
+	text-align: center;
+	margin-bottom: 3rem;
+}
+
+.note-preview .notes-welcome__title {
+	font-family: 'Iosevka', monospace;
+	font-weight: 800;
+	font-size: clamp(3rem, 10vw, 8rem);
+	color: rgba(0, 0, 0, 0.8);
+	margin: 0;
+	line-height: 1.1;
+}
+
+.note-preview .notes-welcome__subtitle {
+	font-family: 'Iosevka', monospace;
+	font-weight: 600;
+	font-size: clamp(1.25rem, 3vw, 2.5rem);
+	color: rgba(0, 0, 0, 0.7);
+	margin: 0.5rem 0 0 0;
+}
+
+/* Sections */
+.note-preview .notes-welcome__section {
+	margin-bottom: 2.5rem;
+}
+
+.note-preview .notes-welcome__heading {
+	font-family: 'Iosevka', monospace;
+	font-weight: 700;
+	font-size: clamp(1.5rem, 3vw, 2.5rem);
+	color: rgba(0, 0, 0, 0.8);
+	margin: 0 0 1rem 0;
+}
+
+/* About */
+.note-preview .notes-welcome__about {
+	font-family: 'Iosevka', monospace;
+	font-weight: 400;
+	font-size: clamp(1rem, 2vw, 1.5rem);
+	color: rgba(0, 0, 0, 0.75);
+	line-height: 1.6;
+	margin: 0;
+}
+
+/* Projects List */
+.note-preview .notes-welcome__project-list {
+	font-family: 'Iosevka', monospace;
+	font-weight: 400;
+	font-size: clamp(1rem, 2vw, 1.25rem);
+	color: rgba(0, 0, 0, 0.75);
+	line-height: 2;
+	margin: 0;
+	padding-left: 1.5rem;
+}
+
+.note-preview .notes-welcome__project-list li {
+	margin-bottom: 0.25rem;
+}
+
+/* Contact */
+.note-preview .notes-welcome__contact-text {
+	font-family: 'Iosevka', monospace;
+	font-weight: 400;
+	font-size: clamp(0.9rem, 1.8vw, 1.25rem);
+	color: rgba(0, 0, 0, 0.75);
+	margin: 0 0 0.75rem 0;
+}
+
+.note-preview .notes-welcome__contact-text a {
+	color: rgba(0, 0, 0, 0.85);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.note-preview .notes-welcome__contact-text a:hover {
+	color: rgba(0, 0, 0, 1);
+}
+
+.note-preview .notes-welcome__contact-btn {
+	display: inline-block;
+	padding: 0.75rem 2rem;
+	font-family: 'Iosevka', monospace;
+	font-weight: 600;
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.8);
+	text-decoration: none;
+	cursor: pointer;
+	margin-top: 0.5rem;
+	
+	--c-glass: rgba(255, 255, 255, 0.25);
+	--glass-reflex-dark: 1;
+	--glass-reflex-light: 0.4;
+	--blur: 16px;
+	--radius: 3rem;
+	--transition-time: 200ms;
+}
+
+.note-preview .notes-welcome__contact-btn:hover {
+	--c-glass: rgba(255, 255, 255, 0.4);
+	--glass-reflex-light: 0.6;
+}
+
+.note-preview .notes-welcome__lead {
+	font-size: 15px;
+	color: #06172DB3;
+}
+
+.note-preview .notes-welcome__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+.note-preview .notes-welcome__card {
+	padding: 1rem;
+	border-radius: 0.75rem;
+	background: rgba(255, 255, 255, 0.35);
+	border: 1px solid rgba(6, 23, 45, 0.12);
+}
+
+.note-preview .notes-welcome__card h2 {
+	margin-top: 0;
+}
+
+.note-preview .notes-welcome__pill-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+.note-preview .notes-welcome__pill {
+	padding: 0.25rem 0.5rem;
+	border-radius: 999px;
+	background: rgba(6, 23, 45, 0.08);
+	border: 1px solid rgba(6, 23, 45, 0.12);
+	font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+	font-size: 12px;
+}
+
+.note-preview .notes-welcome__footer {
+	margin-top: 1.25rem;
+	color: #06172D80;
+	font-size: 12px;
+}
+
+@media (max-width: 720px) {
+	.note-preview .notes-welcome__grid {
+		grid-template-columns: 1fr;
+	}
 }
 
 .editor-error-pop-up{

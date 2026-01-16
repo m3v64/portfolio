@@ -7,21 +7,116 @@ function initNotesApp() {
     let currentNoteId = null;
     let editorVisible = false;
 
+    let DEFAULT_WELCOME_NOTE_HTML = `
+<div class="notes-welcome">
+    <header class="notes-welcome__hero">
+        <h1 class="notes-welcome__title">Max Viehofer</h1>
+        <p class="notes-welcome__subtitle">Backend Software Developer</p>
+    </header>
+
+    <section id="about" class="notes-welcome__section">
+        <p class="notes-welcome__about">
+            Hey, I'm a 17-year-old software developer currently studying at ROC Nijmegen. 
+            I am mostly focused on backend development and enjoy building reliable and effecient applications.
+        </p>
+    </section>
+
+    <section id="projects" class="notes-welcome__section">
+        <h2 class="notes-welcome__heading">Projects (School)</h2>
+        <ul class="notes-welcome__project-list">
+            <li>Pink Goose - WebDev</li>
+            <li>Mastermind - Java</li>
+            <li>OVOOP - Train Simulation in Java</li>
+        </ul>
+    </section>
+
+    <section id="contact" class="notes-welcome__section">
+        <h2 class="notes-welcome__heading">Contact</h2>
+        <p class="notes-welcome__contact-text">
+            Get in touch with me via email: <a href="mailto:max@m3v.dev">max@m3v.dev</a>
+        </p>
+        <p class="notes-welcome__contact-text">
+            Or click here for a contact form:
+        </p>
+        <a href="#contact-form" class="notes-welcome__contact-btn glass">Contact</a>
+    </section>
+</div>
+    `;
+
     function loadNotes() {
         try {
             const stored = localStorage.getItem(STORAGE_KEY);
             notes = stored ? JSON.parse(stored) : [];
-            if (notes.length === 0) {
+            const nowIso = new Date().toISOString();
+
+            let welcome = null;
+            for (const n of notes) {
+                if (n && n.isDefaultWelcome === true) {
+                    welcome = n;
+                    break;
+                }
+            }
+            if (!welcome) {
+                for (const n of notes) {
+                    if (!n) continue;
+                    if (n.title === 'About' && n.locked === true && n.pinned === true) {
+                        welcome = n;
+                        break;
+                    }
+                }
+            }
+
+            if (!welcome) {
                 notes.push({
                     id: Date.now(),
-                    title: 'Welcome to Notes',
-                    content: '# Welcome to Notes\n\nThis is a dynamic markdown note-taking app.\n\n## Features\n- **Bold** and *italic* text\n- [Links](https://example.com)\n- Images\n- Headers (H1-H6)\n\nStart editing to see the live preview!',
-                    created: new Date().toISOString(),
-                    modified: new Date().toISOString(),
+                    title: 'About',
+                    content: DEFAULT_WELCOME_NOTE_HTML,
+                    format: 'html',
+                    isDefaultWelcome: true,
+                    created: nowIso,
+                    modified: nowIso,
                     locked: true,
                     pinned: true
                 });
                 saveNotes();
+            } else {
+                let changed = false;
+
+                if (welcome.title !== 'About') {
+                    welcome.title = 'About';
+                    changed = true;
+                }
+                if (welcome.isDefaultWelcome !== true) {
+                    welcome.isDefaultWelcome = true;
+                    changed = true;
+                }
+                if (welcome.format !== 'html') {
+                    welcome.format = 'html';
+                    changed = true;
+                }
+                if (welcome.locked !== true) {
+                    welcome.locked = true;
+                    changed = true;
+                }
+                if (welcome.pinned !== true) {
+                    welcome.pinned = true;
+                    changed = true;
+                }
+
+                const desired = String(DEFAULT_WELCOME_NOTE_HTML || '');
+                const current = String(welcome.content || '');
+                if (current !== desired) {
+                    welcome.content = desired;
+                    welcome.modified = nowIso;
+                    changed = true;
+                }
+
+                if (!welcome.created) {
+                    welcome.created = nowIso;
+                    changed = true;
+                }
+
+                if (changed) saveNotes();
             }
         } catch (e) {
             console.error('Error loading notes:', e);
@@ -55,6 +150,19 @@ function initNotesApp() {
             console.error('Error rendering markdown:', e);
             return '<p>Error rendering markdown</p>';
         }
+    }
+
+    function renderNoteContent(note) {
+        if (note && note.format === 'html') {
+            try {
+                return DOMPurify.sanitize(String(note.content || ''), { USE_PROFILES: { html: true } });
+            } catch (e) {
+                console.error('Error rendering HTML note:', e);
+                return '<p>Error rendering note</p>';
+            }
+        }
+
+        return renderMarkdown(String(note && note.content ? note.content : ''));
     }
 
     function renderNotesList() {
@@ -93,14 +201,14 @@ function initNotesApp() {
         if (!note) return;
 
         currentNoteId = noteId;
-        
+
         const noteInput = document.querySelector('.note-input');
         const notePreview = document.querySelector('.note-preview');
         const semiDivider = document.querySelector('.notes-resizable-divider');
-        
+
         if (!noteInput || !notePreview) return;
         const isLocked = note.locked === true;
-        
+
         let shouldShowEditor;
         if (showEditor !== null) {
             shouldShowEditor = showEditor;
@@ -108,7 +216,7 @@ function initNotesApp() {
         } else {
             shouldShowEditor = isLocked ? false : editorVisible;
         }
-        
+
         if (isLocked && !shouldShowEditor) {
             noteInput.style.display = 'none';
             noteInput.setAttribute('inert', '');
@@ -118,7 +226,7 @@ function initNotesApp() {
             }
 
             notePreview.style.flex = '1 1 100%';
-            notePreview.innerHTML = renderMarkdown(note.content);
+            notePreview.innerHTML = renderNoteContent(note);
             editorVisible = false;
         } else if (shouldShowEditor) {
             noteInput.style.display = 'block';
@@ -138,9 +246,9 @@ function initNotesApp() {
                 textarea.placeholder = 'Start typing your note in markdown...';
                 noteInput.appendChild(textarea);
             }
-            
+
             textarea.value = note.content;
-            notePreview.innerHTML = renderMarkdown(note.content);
+            notePreview.innerHTML = renderNoteContent(note);
 
             if (!isLocked) {
                 textarea.removeEventListener('input', handleTextareaInput);
@@ -159,29 +267,29 @@ function initNotesApp() {
             }
 
             notePreview.style.flex = '1 1 100%';
-            notePreview.innerHTML = renderMarkdown(note.content);
+            notePreview.innerHTML = renderNoteContent(note);
             editorVisible = false;
         }
-        
+
         renderNotesList();
     }
 
     function handleTextareaInput(e) {
         const textarea = e.target;
         const content = textarea.value;
-        
+
         const note = notes.find(n => n.id === currentNoteId);
         if (note) {
             note.content = content;
             note.title = getNoteTitle(content);
             note.modified = new Date().toISOString();
             saveNotes();
-            
+
             const notePreview = document.querySelector('.note-preview');
             if (notePreview) {
-                notePreview.innerHTML = renderMarkdown(content);
+                notePreview.innerHTML = renderNoteContent(note);
             }
-            
+
             renderNotesList();
         }
     }
@@ -281,7 +389,7 @@ function initNotesApp() {
             let previousStyles = {};
 
             const maximizeIcon = maximizeBtn.querySelector('img');
-            const maximizeSrc = maximizeIcon?.getAttribute('src') || 'assets/svg/Maximize.svg';
+            const maximizeSrc = (maximizeIcon && maximizeIcon.getAttribute('src')) ? maximizeIcon.getAttribute('src') : 'assets/svg/Maximize.svg';
             const restoreSrc = 'assets/svg/Restore.svg';
 
             function setMaximizeIcon(maximized) {
@@ -327,7 +435,7 @@ function initNotesApp() {
             notesIcon.addEventListener('click', () => {
                 notesWindow.style.display = 'flex';
 
-                const nextZ = (initNotesApp._z = (initNotesApp._z ?? 30) + 1);
+                const nextZ = (initNotesApp._z = ((initNotesApp._z != null ? initNotesApp._z : 30) + 1));
                 notesWindow.style.zIndex = String(nextZ);
             });
         }
