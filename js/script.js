@@ -407,7 +407,8 @@ function guest() {
             controlCenterExpanded: false,
             controlCenterListenerBound: false,
             controlCenterAnimating: false,
-            controlCenterInitialApplied: false
+            controlCenterInitialApplied: false,
+            notesInitialized: false
         };
     }
 
@@ -629,6 +630,17 @@ function guest() {
         guest._state.timeIntervalId = setInterval(updateTime, 1000);
         guest._state.dateIntervalId = setInterval(updateDate, 60000);
     }
+
+    // Initialize notes app if not already initialized
+    if (!guest._state.notesInitialized) {
+        guest._state.notesInitialized = false; // Will be set to true by initNotesApp
+        setTimeout(() => {
+            if (!guest._state.notesInitialized) {
+                initNotesApp();
+                guest._state.notesInitialized = true;
+            }
+        }, 100);
+    }
 }
 
 // Notes App Functionality
@@ -681,9 +693,6 @@ function initNotesApp() {
 
     // Render markdown to HTML
     function renderMarkdown(markdown) {
-        if (typeof marked === 'undefined' || typeof DOMPurify === 'undefined') {
-            return '<p>Error: Markdown libraries not loaded</p>';
-        }
         try {
             const html = marked.parse(markdown || '');
             return DOMPurify.sanitize(html);
@@ -1037,8 +1046,10 @@ function initNotesApp() {
 }
 
 window.addEventListener('load', () => {
-    let startScreenId = "home-screen-guest";
-    if (!document.getElementById(startScreenId)) startScreenId = "boot-screen";
+    // Default to boot screen, but can be overridden for development/testing
+    // Set to "home-screen-guest" to skip boot sequence during development
+    let startScreenId = "boot-screen";
+    if (!document.getElementById(startScreenId)) startScreenId = "home-screen-guest";
 
     navigate(startScreenId, true);
 

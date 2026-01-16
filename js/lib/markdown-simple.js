@@ -43,11 +43,11 @@
         // Images ![alt](url)
         html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
         
-        // Inline code
-        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+        // Inline code (improved to handle backticks better)
+        html = html.replace(/`([^`\n]+)`/g, '<code>$1</code>');
         
-        // Code blocks (simple version)
-        html = html.replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>');
+        // Code blocks (simple version - handles multiline)
+        html = html.replace(/```([\s\S]+?)```/g, '<pre><code>$1</code></pre>');
         
         // Line breaks and paragraphs
         const lines = html.split('\n');
@@ -92,7 +92,8 @@
                     inOrderedList = false;
                 }
                 
-                if (line.trim() !== '' && !line.match(/^<h[1-6]>/) && !line.match(/^<pre>/) && !line.match(/^<\/pre>/)) {
+                // Don't wrap headers, pre tags, or empty lines in paragraphs
+                if (line.trim() !== '' && !line.match(/^<h[1-6]>/) && !line.match(/<pre>/) && !line.match(/<\/pre>/) && !line.match(/<code>/)) {
                     result.push('<p>' + line + '</p>');
                 } else {
                     result.push(line);
