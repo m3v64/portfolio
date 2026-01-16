@@ -1,4 +1,4 @@
-/**
+/*
  * Notes app functionality
  * Handles markdown note-taking with live preview, local storage, and UI controls
  */

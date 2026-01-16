@@ -518,6 +518,14 @@
 	--saturation: 60%;
 }
 
+.notes-window-clip {
+	width: 99%;
+	height: 99%;
+	border-radius: inherit;
+	overflow: hidden;
+	overflow: clip;
+}
+
 .notes-top-nav {
 	height: var(--len-48);
 }
@@ -587,7 +595,7 @@
 	min-width: 0;
     height: 80%;
 
-	gap: 2.5%;
+	gap: 2%;
 }
 
 .notes-options > .glass {
@@ -600,13 +608,14 @@
 	--glass-reflex-light: 0.1;
 }
 
+.notes-note-options,
 .notes-text-options {
 	gap: var(--len-16);
 	padding-left: 1.9%;
 }
 
 .notes-text-options-img:nth-of-type(4) {
-	height: 60%;
+	height: 60% !important;
 }
 
 .notes-text-options-img {
@@ -615,12 +624,20 @@
 
 .notes-text-options-img,
 .notes-options-img {
+	height: 50%;
+}
+
+.notes-more-options-img {
+	width: 50%;
+}
+
+.notes-text-options-img,
+.notes-more-options-img,
+.notes-options-img {
 	position: relative;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-
-	height: 50%;
 }
 
 .devider-y {
@@ -636,8 +653,9 @@
 }
 
 .semi-devider-y {
-	width: 4px;
-	height: 100%;
+	width: 2px;
+	height: 80%;
+	border-radius: 8px;
 	background-color: #06172D1A;
 	cursor: col-resize;
 	position: relative;
@@ -657,6 +675,7 @@
 .semi-devider-x {
 	height: 2px;
 	width: 80%;
+	border-radius: 8px;
 	background-color: #06172D1A;
 }
 
