@@ -1,9 +1,3 @@
-/**
- * Utility functions
- * Shared utilities for navigation, screen management, and sliders
- */
-
-// Screen management state
 const displayedScreens = new Set();
 
 function runScreenOrder(screenId) {

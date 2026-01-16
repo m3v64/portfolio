@@ -1,8 +1,3 @@
-/**
- * Boot sequence functionality
- * Handles the boot screen animation and text display
- */
-
 function boot() {
     const logLines = [
         { text: "[nix-shell:~]$ ", type: "command", type2: "delay", command: "bootctl" },

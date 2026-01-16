@@ -1,8 +1,3 @@
-/**
- * Guest screen functionality
- * Handles the guest home screen including control center, sliders, and navigation bar
- */
-
 function guest() {
     if (!guest._state) {
         guest._state = {
@@ -241,9 +236,8 @@ function guest() {
         guest._state.dateIntervalId = setInterval(updateDate, 60000);
     }
 
-    // Initialize notes app if not already initialized
     if (!guest._state.notesInitialized) {
-        guest._state.notesInitialized = false; // Will be set to true by initNotesApp
+        guest._state.notesInitialized = false;
         setTimeout(() => {
             if (!guest._state.notesInitialized) {
                 initNotesApp();

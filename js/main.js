@@ -1,8 +1,3 @@
-/**
- * Main entry point
- * Initializes the application and sets up the initial screen
- */
-
 const SCREEN_ORDER = {
     "boot-screen": { init: boot },
     "login-screen": { init: login },

@@ -1,13 +1,8 @@
-/*
- * Notes app functionality
- * Handles markdown note-taking with live preview, local storage, and UI controls
- */
-
 function initNotesApp() {
     const STORAGE_KEY = 'portfolio.notes';
     let notes = [];
     let currentNoteId = null;
-    let editorVisible = false; // Track editor visibility state
+    let editorVisible = false;
 
     // Load notes from localStorage
     function loadNotes() {
@@ -270,21 +265,24 @@ function initNotesApp() {
             // Text/Header dropdown button
             if (buttons[0]) {
                 buttons[0].addEventListener('click', (e) => {
-                    showHeaderDropdown(e.target);
+                    if (editorVisible) showHeaderDropdown(e.target);
+                    else editorError('That option');
                 });
             }
             
             // Image button
             if (buttons[1]) {
                 buttons[1].addEventListener('click', (e) => {
-                    showImageDropdown(e.target);
+                    if (editorVisible) showImageDropdown(e.target);
+                    else editorError(e.target);
                 });
             }
             
             // Link button
             if (buttons[2]) {
                 buttons[2].addEventListener('click', (e) => {
-                    showLinkDropdown(e.target);
+                    if (editorVisible) showLinkDropdown(e.target);
+                    else editorError(e.target);
                 });
             }
         }
@@ -308,6 +306,30 @@ function initNotesApp() {
                 notesWindow.style.display = notesWindow.style.display === 'none' ? 'flex' : 'none';
             });
         }
+    }
+
+    function editorError(content) {
+        const warnEl = document.createElement('div');
+        warnEl.className = 'editor-error-pop-up notes-dropdown-title glass flex center';
+
+        const warnContent = document.createElement('div');
+        warnContent.textContent = content;
+        warnEl.appendChild(warnContent);
+
+        const submitBtn = document.createElement('button');
+        submitBtn.textContent = 'Insert';
+        submitBtn.className = 'notes-dropdown-submit';
+        submitBtn.addEventListener('click', () => {
+            inputs.forEach(input => {
+                const inputEl = warnEl.querySelector(`#${input.id}`);
+                values[input.id] = inputEl.value;
+            });
+            onSubmit(values);
+            warnEl.remove();
+        });
+        warnEl.appendChild(submitBtn);
+        
+        return warnEl;
     }
 
     // Show header dropdown

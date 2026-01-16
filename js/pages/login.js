@@ -1,8 +1,3 @@
-/**
- * Login screen functionality
- * Handles login screen interactions and animated clock
- */
-
 function login() {
     const guestButton = document.getElementById("guest-button");
     if (guestButton) {
