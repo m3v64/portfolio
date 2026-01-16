@@ -71,79 +71,98 @@ function showScreen(screenId, fade, delay = 300) {
     }, delay);
 }
 
-// Make element draggable by a handle
 function makeDraggable(element, handle) {
-    if (!element || !handle) return;
-    
+    if (!element) return;
+    if (!handle) handle = element;
+
     let isDragging = false;
-    let offsetX, offsetY;
-    
-    // Convert transform positioning to absolute positioning on first drag
+    let activePointerId = null;
+    let offsetX = 0;
+    let offsetY = 0;
+    let elementWidth = 0;
+    let elementHeight = 0;
+
+    const blockedTargetsSelector = 'button, input, textarea, img, select, a';
+
+    function ensurePositioned() {
+        const computed = window.getComputedStyle(element);
+        if (computed.position !== 'fixed') element.style.position = 'fixed';
+    }
+
     function initializePosition() {
+        ensurePositioned();
         const rect = element.getBoundingClientRect();
         element.style.left = `${rect.left}px`;
         element.style.top = `${rect.top}px`;
+        element.style.right = '';
+        element.style.bottom = '';
         element.style.transform = 'none';
     }
-    
-    handle.addEventListener('mousedown', (e) => {
-        // Don't drag if clicking on buttons, inputs, or other interactive elements
-        if (e.target.closest('button, input, textarea, img, select, a')) {
-            return;
-        }
-        
-        // Initialize position if using transform
-        if (element.style.transform !== 'none' && element.style.transform !== '') {
-            initializePosition();
-        }
-        
-        isDragging = true;
-        
-        // Calculate offset between mouse and element's top-left corner
+
+    function clamp(n, min, max) {
+        return Math.min(max, Math.max(min, n));
+    }
+
+    function setHandleCursor(cursor) {
+        handle.style.cursor = cursor;
+    }
+
+    handle.style.touchAction = 'none';
+    setHandleCursor('grab');
+
+    handle.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        if (e.target?.closest?.(blockedTargetsSelector)) return;
+
+        initializePosition();
+
         const rect = element.getBoundingClientRect();
+        elementWidth = rect.width;
+        elementHeight = rect.height;
+
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
-        
-        handle.style.cursor = 'grabbing';
+
+        isDragging = true;
+        activePointerId = e.pointerId;
+        setHandleCursor('grabbing');
+
+        handle.setPointerCapture?.(e.pointerId);
         e.preventDefault();
     });
-    
-    document.addEventListener('mousemove', (e) => {
+
+    handle.addEventListener('pointermove', (e) => {
         if (!isDragging) return;
-        
-        e.preventDefault();
-        
-        // Calculate new position maintaining the offset
-        let newLeft = e.clientX - offsetX;
-        let newTop = e.clientY - offsetY;
-        
-        // Get element and viewport dimensions for boundary checking
-        const rect = element.getBoundingClientRect();
+        if (activePointerId !== null && e.pointerId !== activePointerId) return;
+
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        
-        // Constrain to viewport boundaries
-        // Keep at least 50px of the element visible on each edge
         const minVisible = 50;
-        newLeft = Math.max(-rect.width + minVisible, Math.min(newLeft, viewportWidth - minVisible));
-        newTop = Math.max(0, Math.min(newTop, viewportHeight - minVisible));
-        
+
+        let newLeft = e.clientX - offsetX;
+        let newTop = e.clientY - offsetY;
+
+        newLeft = clamp(newLeft, -elementWidth + minVisible, viewportWidth - minVisible);
+        newTop = clamp(newTop, 0, viewportHeight - minVisible);
+
         element.style.left = `${newLeft}px`;
         element.style.top = `${newTop}px`;
+        e.preventDefault();
     });
-    
-    document.addEventListener('mouseup', () => {
-        if (isDragging) {
-            isDragging = false;
-            handle.style.cursor = 'grab';
-        }
-    });
-    
-    // Set initial cursor
-    handle.style.cursor = 'grab';
+
+    function endDrag(e) {
+        if (!isDragging) return;
+        if (activePointerId !== null && e?.pointerId !== undefined && e.pointerId !== activePointerId) return;
+        isDragging = false;
+        activePointerId = null;
+        setHandleCursor('grab');
+    }
+
+    handle.addEventListener('pointerup', endDrag);
+    handle.addEventListener('pointercancel', endDrag);
+    window.addEventListener('blur', endDrag);
 }
 
-// Slider utility
 function initDivSlider(trackEl, { onInput, initialValue, storageKey } = {}) {
     if (!trackEl) return null;
 
