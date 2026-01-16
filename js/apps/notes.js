@@ -7,6 +7,7 @@ function initNotesApp() {
     const STORAGE_KEY = 'portfolio.notes';
     let notes = [];
     let currentNoteId = null;
+    let editorVisible = false; // Track editor visibility state
 
     // Load notes from localStorage
     function loadNotes() {
@@ -88,7 +89,7 @@ function initNotesApp() {
     }
 
     // Load and display a note
-    function loadNote(noteId, showEditor = false) {
+    function loadNote(noteId, showEditor = null) {
         const note = notes.find(n => n.id === noteId);
         if (!note) return;
 
@@ -103,8 +104,19 @@ function initNotesApp() {
         // Check if note is locked
         const isLocked = note.locked === true;
         
+        // Determine if editor should be shown
+        // If showEditor is explicitly set, use that
+        // If null, use current editorVisible state for unlocked notes, false for locked
+        let shouldShowEditor;
+        if (showEditor !== null) {
+            shouldShowEditor = showEditor;
+            editorVisible = showEditor; // Update state
+        } else {
+            shouldShowEditor = isLocked ? false : editorVisible;
+        }
+        
         // For locked notes, only show preview unless explicitly requested
-        if (isLocked && !showEditor) {
+        if (isLocked && !shouldShowEditor) {
             // Hide editor and divider, show only preview
             noteInput.style.display = 'none';
             noteInput.setAttribute('inert', '');
@@ -116,7 +128,8 @@ function initNotesApp() {
             // Show preview full width
             notePreview.style.flex = '1 1 100%';
             notePreview.innerHTML = renderMarkdown(note.content);
-        } else {
+            editorVisible = false;
+        } else if (shouldShowEditor) {
             // Show editor and preview
             noteInput.style.display = 'block';
             noteInput.removeAttribute('inert');
@@ -145,10 +158,25 @@ function initNotesApp() {
             if (!isLocked) {
                 textarea.removeEventListener('input', handleTextareaInput);
                 textarea.addEventListener('input', handleTextareaInput);
+                textarea.removeAttribute('readonly');
             } else {
                 // Make textarea read-only for locked notes
                 textarea.setAttribute('readonly', 'readonly');
             }
+            editorVisible = true;
+        } else {
+            // Show only preview (for unlocked notes when editor is hidden)
+            noteInput.style.display = 'none';
+            noteInput.setAttribute('inert', '');
+            if (semiDivider) {
+                semiDivider.style.display = 'none';
+                semiDivider.setAttribute('inert', '');
+            }
+            
+            // Show preview full width
+            notePreview.style.flex = '1 1 100%';
+            notePreview.innerHTML = renderMarkdown(note.content);
+            editorVisible = false;
         }
         
         renderNotesList();
@@ -225,12 +253,10 @@ function initNotesApp() {
             previewBtn.addEventListener('click', () => {
                 if (currentNoteId) {
                     const note = notes.find(n => n.id === currentNoteId);
-                    const noteInput = document.querySelector('.note-input');
-                    const isEditorVisible = noteInput && noteInput.style.display !== 'none';
                     
-                    // Toggle editor visibility
+                    // Toggle based on current editorVisible state
                     if (note) {
-                        loadNote(currentNoteId, !isEditorVisible);
+                        loadNote(currentNoteId, !editorVisible);
                     }
                 }
             });
