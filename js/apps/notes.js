@@ -963,6 +963,47 @@ function initNotesApp() {
         });
     }
 
+    function setupNavLinks() {
+        const notesWindow = document.querySelector('.notes-window');
+
+        const navItems = [
+            { selector: '.nav-about', type: 'about' },
+            { selector: '.nav-projects', type: 'projects' },
+            { selector: '.nav-contact', type: 'contact' },
+            { selector: '.nav-cv', type: 'wip' },
+            { selector: '.nav-help', type: 'wip' }
+        ];
+
+        navItems.forEach(({ selector, type }) => {
+            const link = document.querySelector(selector);
+            if (!link) return;
+
+            link.addEventListener('click', () => {
+                if (type === 'wip') {
+                    editorError('This feature is a work in progress');
+                    return;
+                }
+
+                if (notesWindow) {
+                    notesWindow.style.display = 'flex';
+                    const nextZ = (initNotesApp._z = ((initNotesApp._z != null ? initNotesApp._z : 30) + 1));
+                    notesWindow.style.zIndex = String(nextZ);
+                }
+
+                let targetNote = null;
+                if (type === 'about' || type === 'projects') {
+                    targetNote = notes.find(n => n.isDefaultWelcome === true);
+                } else if (type === 'contact') {
+                    targetNote = notes.find(n => n.isDefaultContact === true);
+                }
+
+                if (targetNote) {
+                    loadNote(targetNote.id);
+                }
+            });
+        });
+    }
+
     loadNotes();
     renderNotesList();
 
@@ -975,39 +1016,5 @@ function initNotesApp() {
     makeWindowDraggable();
     makeWindowResizable();
     setupKeyboardShortcuts();
-
-    function setupNavLinks() {
-        const navLinks = document.querySelectorAll('[data-nav]');
-        const notesWindow = document.querySelector('.notes-window');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                const nav = link.dataset.nav;
-
-                if (nav === 'cv' || nav === 'help') {
-                    editorError('This feature is a work in progress');
-                    return;
-                }
-
-                if (notesWindow) {
-                    notesWindow.style.display = 'flex';
-                    const nextZ = (initNotesApp._z = ((initNotesApp._z != null ? initNotesApp._z : 30) + 1));
-                    notesWindow.style.zIndex = String(nextZ);
-                }
-
-                let targetNote = null;
-                if (nav === 'about' || nav === 'projects') {
-                    targetNote = notes.find(n => n.isDefaultWelcome === true);
-                } else if (nav === 'contact') {
-                    targetNote = notes.find(n => n.isDefaultContact === true);
-                }
-
-                if (targetNote) {
-                    loadNote(targetNote.id);
-                }
-            });
-        });
-    }
-
     setupNavLinks();
 }
