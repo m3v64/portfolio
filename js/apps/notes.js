@@ -9,36 +9,84 @@ function initNotesApp() {
 
     let DEFAULT_WELCOME_NOTE_HTML = `
 <div class="notes-welcome">
-    <header class="notes-welcome__hero">
-        <h1 class="notes-welcome__title">Max Viehofer</h1>
-        <p class="notes-welcome__subtitle">Backend Software Developer</p>
+    <header class="notes-welcome-hero">
+        <h1 class="notes-welcome-title">Max Viehofer</h1>
+        <p class="notes-welcome-subtitle">Backend Software Developer</p>
     </header>
 
-    <section id="about" class="notes-welcome__section">
-        <p class="notes-welcome__about">
+    <section id="about" class="notes-welcome-section">
+        <p class="notes-welcome-about">
             Hey, I'm a 17-year-old software developer currently studying at ROC Nijmegen. 
             I am mostly focused on backend development and enjoy building reliable and effecient applications.
         </p>
     </section>
 
-    <section id="projects" class="notes-welcome__section">
-        <h2 class="notes-welcome__heading">Projects (School)</h2>
-        <ul class="notes-welcome__project-list">
-            <li>Pink Goose - WebDev</li>
-            <li>Mastermind - Java</li>
-            <li>OVOOP - Train Simulation in Java</li>
+    <section id="projects" class="notes-welcome-section">
+        <h2 class="notes-welcome-heading">Projects (School)</h2>
+        <ul class="notes-welcome-project-list">
+            <li><a href="https://github.com/m3v64/portfolio" target="_blank" rel="noopener noreferrer">Portfolio - WebDev</a></li>
+            <li><a href="https://github.com/m3v64/Pink-Goose" target="_blank" rel="noopener noreferrer">Pink Goose - WebDev</a></li>
+            <li><a href="https://github.com/m3v64/masterMind" target="_blank" rel="noopener noreferrer">Mastermind - Java</a></li>
+            <li><a href="https://github.com/m3v64/ovOOP" target="_blank" rel="noopener noreferrer">OVOOP - Java</a></li>
         </ul>
     </section>
+</div>
+    `;
 
-    <section id="contact" class="notes-welcome__section">
-        <h2 class="notes-welcome__heading">Contact</h2>
-        <p class="notes-welcome__contact-text">
-            Get in touch with me via email: <a href="mailto:max@m3v.dev">max@m3v.dev</a>
-        </p>
-        <p class="notes-welcome__contact-text">
-            Or click here for a contact form:
-        </p>
-        <a href="#contact-form" class="notes-welcome__contact-btn glass">Contact</a>
+    let DEFAULT_CONTACT_NOTE_HTML = `
+<div class="notes-contact notes-welcome">
+    <header class="notes-welcome-hero">
+        <h1 class="notes-welcome-title">Get In Touch</h1>
+        <p class="notes-welcome-subtitle">I'd love to hear from you!</p>
+    </header>
+
+    <section class="notes-welcome-section">
+        <h2 class="notes-welcome-heading">Connect With Me</h2>
+        <p class="notes-welcome-contact-text">Feel free to reach out. I typically respond within 24-48 hours.</p>
+        <div class="notes-contact-socials flex row">
+            <a href="https://github.com/m3v64" target="_blank" rel="noopener noreferrer" class="notes-contact-socials-container flex glass center">
+                <img src="assets/svg/github.svg" alt="GitHub" class="notes-contact-social-icon">
+            </a>
+
+            <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="notes-contact-socials-container flex glass center">
+                <img src="assets/svg/linkedin.svg" alt="LinkedIn" class="notes-contact-social-icon">
+            </a>
+
+            <a href="mailto:max@m3v.dev" target="_blank" rel="noopener noreferrer" class="notes-contact-socials-container flex glass center">
+                <img src="assets/svg/Gmail.svg" alt="Email" class="notes-contact-social-icon">
+            </a>
+
+            <a href="https://discord.com/users/" target="_blank" rel="noopener noreferrer" class="notes-contact-socials-container flex glass center">
+                <img src="assets/svg/discord.svg" alt="Discord" class="notes-contact-social-icon">
+            </a>
+        </div>
+    </section>
+
+    <section class="notes-welcome-section">
+        <h2 class="notes-welcome-heading">Contact Form</h2>
+        <form class="notes-contact-form flex column" id="contact-form">
+            <div class="notes-contact-form-group flex column glass">
+                <label for="contact-name" class="notes-contact-label">Name</label>
+                <div class="semi-devider-x"></div>
+                <input type="text" id="contact-name" name="name" class="notes-contact-input flex u-reset" placeholder="Your name" required>
+            </div>
+            <div class="notes-contact-form-group flex column glass">
+                <label for="contact-email" class="notes-contact-label">Email</label>
+                <div class="semi-devider-x"></div>
+                <input type="email" id="contact-email" name="email" class="notes-contact-input flex u-reset" placeholder="your@email.com" required>
+            </div>
+            <div class="notes-contact-form-group flex column glass">
+                <label for="contact-subject" class="notes-contact-label">Subject</label>
+                <div class="semi-devider-x"></div>
+                <input type="text" id="contact-subject" name="subject" class="notes-contact-input flex u-reset" placeholder="What's this about?">
+            </div>
+            <div class="notes-contact-form-group flex column glass">
+                <label for="contact-message" class="notes-contact-label">Message</label>
+                <div class="semi-devider-x"></div>
+                <textarea id="contact-message" name="message" class="notes-contact-textarea flex u-reset" placeholder="Your message..." rows="5" required></textarea>
+            </div>
+            <button type="submit" class="notes-welcome-contact-btn glass u-reset">Send Message</button>
+        </form>
     </section>
 </div>
     `;
@@ -118,6 +166,77 @@ function initNotesApp() {
 
                 if (changed) saveNotes();
             }
+
+            // Handle Contact note
+            let contact = null;
+            for (const n of notes) {
+                if (n && n.isDefaultContact === true) {
+                    contact = n;
+                    break;
+                }
+            }
+            if (!contact) {
+                for (const n of notes) {
+                    if (!n) continue;
+                    if (n.title === 'Contact' && n.locked === true && n.pinned === true) {
+                        contact = n;
+                        break;
+                    }
+                }
+            }
+
+            if (!contact) {
+                notes.push({
+                    id: Date.now() + 1,
+                    title: 'Contact',
+                    content: DEFAULT_CONTACT_NOTE_HTML,
+                    format: 'html',
+                    isDefaultContact: true,
+                    created: nowIso,
+                    modified: nowIso,
+                    locked: true,
+                    pinned: true
+                });
+                saveNotes();
+            } else {
+                let contactChanged = false;
+
+                if (contact.title !== 'Contact') {
+                    contact.title = 'Contact';
+                    contactChanged = true;
+                }
+                if (contact.isDefaultContact !== true) {
+                    contact.isDefaultContact = true;
+                    contactChanged = true;
+                }
+                if (contact.format !== 'html') {
+                    contact.format = 'html';
+                    contactChanged = true;
+                }
+                if (contact.locked !== true) {
+                    contact.locked = true;
+                    contactChanged = true;
+                }
+                if (contact.pinned !== true) {
+                    contact.pinned = true;
+                    contactChanged = true;
+                }
+
+                const desiredContact = String(DEFAULT_CONTACT_NOTE_HTML || '');
+                const currentContact = String(contact.content || '');
+                if (currentContact !== desiredContact) {
+                    contact.content = desiredContact;
+                    contact.modified = nowIso;
+                    contactChanged = true;
+                }
+
+                if (!contact.created) {
+                    contact.created = nowIso;
+                    contactChanged = true;
+                }
+
+                if (contactChanged) saveNotes();
+            }
         } catch (e) {
             console.error('Error loading notes:', e);
             notes = [];
@@ -155,7 +274,10 @@ function initNotesApp() {
     function renderNoteContent(note) {
         if (note && note.format === 'html') {
             try {
-                return DOMPurify.sanitize(String(note.content || ''), { USE_PROFILES: { html: true } });
+                return DOMPurify.sanitize(String(note.content || ''), {
+                    USE_PROFILES: { html: true },
+                    ADD_ATTR: ['target', 'rel']
+                });
             } catch (e) {
                 console.error('Error rendering HTML note:', e);
                 return '<p>Error rendering note</p>';
@@ -853,4 +975,39 @@ function initNotesApp() {
     makeWindowDraggable();
     makeWindowResizable();
     setupKeyboardShortcuts();
+
+    function setupNavLinks() {
+        const navLinks = document.querySelectorAll('[data-nav]');
+        const notesWindow = document.querySelector('.notes-window');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const nav = link.dataset.nav;
+
+                if (nav === 'cv' || nav === 'help') {
+                    editorError('This feature is a work in progress');
+                    return;
+                }
+
+                if (notesWindow) {
+                    notesWindow.style.display = 'flex';
+                    const nextZ = (initNotesApp._z = ((initNotesApp._z != null ? initNotesApp._z : 30) + 1));
+                    notesWindow.style.zIndex = String(nextZ);
+                }
+
+                let targetNote = null;
+                if (nav === 'about' || nav === 'projects') {
+                    targetNote = notes.find(n => n.isDefaultWelcome === true);
+                } else if (nav === 'contact') {
+                    targetNote = notes.find(n => n.isDefaultContact === true);
+                }
+
+                if (targetNote) {
+                    loadNote(targetNote.id);
+                }
+            });
+        });
+    }
+
+    setupNavLinks();
 }

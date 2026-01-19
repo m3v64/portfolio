@@ -781,18 +781,19 @@
 }
 
 .note-preview a {
-	color: #0066cc;
+	color: inherit;
 	text-decoration: none;
 }
 
 .note-preview a:hover {
-	text-decoration: underline;
+	text-decoration: none;
+	opacity: 0.9;
 }
 
 .note-preview img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 0.5rem;
+	border-radius: 0.2rem;
 	margin: 1rem 0;
 }
 
@@ -837,13 +838,12 @@
 	padding: 2rem;
 }
 
-/* Hero Section */
-.note-preview .notes-welcome__hero {
+.note-preview .notes-welcome-hero {
 	text-align: center;
 	margin-bottom: 3rem;
 }
 
-.note-preview .notes-welcome__title {
+.note-preview .notes-welcome-title {
 	font-family: 'Iosevka', monospace;
 	font-weight: 800;
 	font-size: clamp(3rem, 10vw, 8rem);
@@ -852,7 +852,7 @@
 	line-height: 1.1;
 }
 
-.note-preview .notes-welcome__subtitle {
+.note-preview .notes-welcome-subtitle {
 	font-family: 'Iosevka', monospace;
 	font-weight: 600;
 	font-size: clamp(1.25rem, 3vw, 2.5rem);
@@ -860,12 +860,11 @@
 	margin: 0.5rem 0 0 0;
 }
 
-/* Sections */
-.note-preview .notes-welcome__section {
+.note-preview .notes-welcome-section {
 	margin-bottom: 2.5rem;
 }
 
-.note-preview .notes-welcome__heading {
+.note-preview .notes-welcome-heading {
 	font-family: 'Iosevka', monospace;
 	font-weight: 700;
 	font-size: clamp(1.5rem, 3vw, 2.5rem);
@@ -873,8 +872,7 @@
 	margin: 0 0 1rem 0;
 }
 
-/* About */
-.note-preview .notes-welcome__about {
+.note-preview .notes-welcome-about {
 	font-family: 'Iosevka', monospace;
 	font-weight: 400;
 	font-size: clamp(1rem, 2vw, 1.5rem);
@@ -883,8 +881,7 @@
 	margin: 0;
 }
 
-/* Projects List */
-.note-preview .notes-welcome__project-list {
+.note-preview .notes-welcome-project-list {
 	font-family: 'Iosevka', monospace;
 	font-weight: 400;
 	font-size: clamp(1rem, 2vw, 1.25rem);
@@ -894,12 +891,11 @@
 	padding-left: 1.5rem;
 }
 
-.note-preview .notes-welcome__project-list li {
+.note-preview .notes-welcome-project-list li {
 	margin-bottom: 0.25rem;
 }
 
-/* Contact */
-.note-preview .notes-welcome__contact-text {
+.note-preview .notes-welcome-contact-text {
 	font-family: 'Iosevka', monospace;
 	font-weight: 400;
 	font-size: clamp(0.9rem, 1.8vw, 1.25rem);
@@ -907,17 +903,17 @@
 	margin: 0 0 0.75rem 0;
 }
 
-.note-preview .notes-welcome__contact-text a {
+.note-preview .notes-welcome-contact-text a {
 	color: rgba(0, 0, 0, 0.85);
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
 
-.note-preview .notes-welcome__contact-text a:hover {
+.note-preview .notes-welcome-contact-text a:hover {
 	color: rgba(0, 0, 0, 1);
 }
 
-.note-preview .notes-welcome__contact-btn {
+.note-preview .notes-welcome-contact-btn {
 	display: inline-block;
 	padding: 0.75rem 2rem;
 	font-family: 'Iosevka', monospace;
@@ -936,42 +932,42 @@
 	--transition-time: 200ms;
 }
 
-.note-preview .notes-welcome__contact-btn:hover {
+.note-preview .notes-welcome-contact-btn:hover {
 	--c-glass: rgba(255, 255, 255, 0.4);
 	--glass-reflex-light: 0.6;
 }
 
-.note-preview .notes-welcome__lead {
+.note-preview .notes-welcome-lead {
 	font-size: 15px;
 	color: #06172DB3;
 }
 
-.note-preview .notes-welcome__grid {
+.note-preview .notes-welcome-grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 1rem;
 	margin-top: 1rem;
 }
 
-.note-preview .notes-welcome__card {
+.note-preview .notes-welcome-card {
 	padding: 1rem;
 	border-radius: 0.75rem;
 	background: rgba(255, 255, 255, 0.35);
 	border: 1px solid rgba(6, 23, 45, 0.12);
 }
 
-.note-preview .notes-welcome__card h2 {
+.note-preview .notes-welcome-card h2 {
 	margin-top: 0;
 }
 
-.note-preview .notes-welcome__pill-row {
+.note-preview .notes-welcome-pill-row {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem;
 	margin-top: 0.75rem;
 }
 
-.note-preview .notes-welcome__pill {
+.note-preview .notes-welcome-pill {
 	padding: 0.25rem 0.5rem;
 	border-radius: 999px;
 	background: rgba(6, 23, 45, 0.08);
@@ -980,14 +976,14 @@
 	font-size: 12px;
 }
 
-.note-preview .notes-welcome__footer {
+.note-preview .notes-welcome-footer {
 	margin-top: 1.25rem;
 	color: #06172D80;
 	font-size: 12px;
 }
 
 @media (max-width: 720px) {
-	.note-preview .notes-welcome__grid {
+	.note-preview .notes-welcome-grid {
 		grid-template-columns: 1fr;
 	}
 }
@@ -1141,7 +1137,30 @@
 	scrollbar-color: rgba(6, 23, 45, 0.3) transparent;
 }
 
-/* Resize handles for window corners */
+.notes-contact-socials {
+	gap: 0.4rem;
+}
+
+.notes-contact-socials-container {
+	width: 3rem;
+	height: 3rem;
+}
+
+.notes-contact-social-icon {
+	width: 50%;
+	height: auto;
+}
+
+#contact-form {
+	gap: 0.4rem;
+}
+
+#contact-form .glass {
+	padding: 0.6rem;
+
+	--c-glass:#0000;
+}
+
 .resize-handle {
 	position: absolute;
 	width: 15px;
@@ -1173,7 +1192,6 @@
 	cursor: nwse-resize;
 }
 
-/* Delete confirmation dialog */
 .delete-overlay {
 	position: fixed;
 	top: 0;
@@ -1233,7 +1251,6 @@
 	font-size: 14px;
 }
 
-/* Error notification popup */
 .editor-error-popup {
 	position: fixed;
 	top: 20px;

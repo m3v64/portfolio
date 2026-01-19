@@ -5,7 +5,7 @@ const SCREEN_ORDER = {
 };
 
 window.addEventListener('load', () => {
-    let startScreenId = "boot-screen";
+    let startScreenId = "home-screen-guest";
     if (!document.getElementById(startScreenId)) startScreenId = "boot-screen";
 
     navigate(startScreenId, true);
