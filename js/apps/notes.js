@@ -64,7 +64,7 @@ function initNotesApp() {
 
     <section class="notes-welcome-section">
         <h2 class="notes-welcome-heading">Contact Form</h2>
-        <form class="notes-contact-form flex column" id="contact-form">
+        <form class="notes-contact-form flex column" id="contact-form" method="post">
             <div class="notes-contact-form-group flex column glass">
                 <label for="contact-name" class="notes-contact-label">Name</label>
                 <div class="semi-devider-x"></div>
